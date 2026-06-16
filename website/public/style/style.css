@@ -366,6 +366,105 @@ a {
 }
 
 /* ================================================================
+   MDX PROSE PAGES
+   ================================================================ */
+
+.mdx-page {
+    background-color: var(--white);
+    min-height: 60vh;
+    padding: var(--section-gap) var(--page-gutter);
+}
+
+/* Prose content area */
+.mdx-body {
+    width: 100%;
+}
+
+.mdx-body h1 {
+    color: var(--navy);
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid var(--bold-gold);
+    margin-bottom: var(--object-gap);
+}
+
+.mdx-body h2 {
+    color: var(--navy);
+    padding-top: var(--section-gap);
+    padding-bottom: var(--button-gap);
+}
+
+.mdx-body h3 {
+    color: var(--navy);
+    padding-top: var(--object-gap);
+    padding-bottom: var(--button-gap);
+}
+
+.mdx-body p {
+    color: var(--navy);
+    line-height: 1.75;
+    padding-bottom: var(--object-gap);
+}
+
+.mdx-body ul,
+.mdx-body ol {
+    color: var(--navy);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.75;
+    padding-left: 1.25rem;
+    padding-bottom: var(--object-gap);
+}
+
+.mdx-body li {
+    padding-left: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.mdx-body li::marker {
+    color: var(--bold-gold);
+    font-weight: 700;
+}
+
+.mdx-body a {
+    color: var(--navy);
+    text-decoration: underline;
+    text-decoration-color: var(--bold-gold);
+    text-underline-offset: 3px;
+    transition: color 150ms ease;
+}
+
+.mdx-body a:hover {
+    color: var(--gator);
+}
+
+.mdx-body strong {
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.mdx-body em {
+    font-style: italic;
+    color: inherit;
+}
+
+/* Horizontal rule as gold accent */
+.mdx-body hr {
+    border: none;
+    border-top: 2px solid var(--bold-gold);
+    margin: var(--section-gap) 0;
+}
+
+/* Blockquote pull-quote style */
+.mdx-body blockquote {
+    border-left: 4px solid var(--bold-gold);
+    margin: var(--object-gap) 0;
+    padding: 0.75rem 1.25rem;
+    background-color: #f5f7fa;
+    color: var(--navy);
+    font-style: italic;
+}
+
+/* ================================================================
    HEADER & NAV
    ================================================================ */
 
