@@ -1,4 +1,53 @@
 ---
+import HeaderNav from './HeaderNav.jsx';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const navLinks = [
+  {
+    label: "Home",
+    href: `${base}`,
+  },
+  {
+    label: "About",
+    href: `${base}about/statement`,
+    children: [
+      { label: "Our Purpose",  href: `${base}about/statement` },
+      { label: "Faculty",      href: `${base}about/faculty` },
+    ],
+  },
+  {
+    label: "Plan Your Path",
+    href: `${base}plan/overview`,
+    children: [
+      { label: "Overview",  href: `${base}plan/overview` },
+      { label: "My Path",   href: `${base}plan/mypath` },
+    ],
+  },
+  {
+    label: "Resources",
+    href: `${base}resources/overview`,
+    children: [
+      { label: "Overview", href: `${base}resources/overview` },
+    ],
+  },
+  {
+    label: "Community",
+    href: `${base}community/overview`,
+    children: [
+      { label: "Overview",  href: `${base}community/overview` },
+      { label: "Calendar",  href: `${base}community/calendar` },
+      { label: "News",      href: `${base}community/news` },
+    ],
+  },
+  {
+    label: "Opportunities",
+    href: `${base}opportunities/overview`,
+    children: [
+      { label: "Overview", href: `${base}opportunities/overview` },
+    ],
+  },
+];
 ---
 
-<p>header</p>
+<HeaderNav navLinks={navLinks} client:load />

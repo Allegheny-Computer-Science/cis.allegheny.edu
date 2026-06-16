@@ -1,21 +1,36 @@
 ---
-import FillButton from "../FillButton.astro"
-import GhostButton from "../GhostButton.astro"
+import { getCollection } from 'astro:content';
+import UpdateCard from '../UpdateCard.astro';
+import FillButton from '../FillButton.astro';
+import GhostButton from '../GhostButton.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const allUpdates = await getCollection('updates');
+const latest = allUpdates
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 4);
 ---
 
 <section id="recent-updates" class="updates-section navy__band">
 
-    <h1>Recent <em>Updates</em></h1>
+  <h1>Recent <em>Updates</em></h1>
 
-    <div class="recent-updates-grid">
-        <p>grid goes here</p>
-    </div>
+  <div class="updates-grid">
+    {latest.map(entry => (
+      <UpdateCard
+        title={entry.data.title}
+        date={entry.data.date}
+        category={entry.data.category}
+        image={entry.data.image}
+        description={entry.data.description}
+        slug={entry.id}
+      />
+    ))}
+  </div>
 
-    <div class="updates-buttons">
-        <a href="/community/calendar"><FillButton>View Calendar</FillButton></a>
-        <a href="/community/news"><GhostButton>More News</GhostButton></a>
-    </div>
-
-
+  <div class="updates-buttons">
+    <a href={`${base}community/calendar`}><FillButton>View Calendar</FillButton></a>
+    <a href={`${base}community/news`}><GhostButton>More News</GhostButton></a>
+  </div>
 
 </section>

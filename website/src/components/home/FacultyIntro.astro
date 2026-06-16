@@ -2,6 +2,7 @@
 import FillButton from "../FillButton.astro";
 import GhostButton from "../GhostButton.astro";
 import FacultyCarousel from "./FacultyCarousel.jsx";
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const faculty = [
   {
@@ -9,21 +10,21 @@ const faculty = [
     title: "Department Chair, Associate Professor",
     statement:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
-    image: "cis.allegheny.edu/img/jj1.png",
+    image: `${base}img/jj1.png`,
   },
   {
     name: "Oliver Bonham-Carter, Ph.D.",
     title: "Associate Professor",
     statement:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
-    image: "cis.allegheny.edu/img/obc1.jpg",
+    image: `${base}img/obc1.jpg`,
   },
   {
     name: "Greg Kapfhammer, Ph.D.",
     title: "Associate Professor",
     statement:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
-    image: "cis.allegheny.edu/img/gk1.jpeg",
+    image: `${base}img/gk1.jpeg`,
   },
 ];
 ---

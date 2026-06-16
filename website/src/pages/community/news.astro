@@ -1,7 +1,24 @@
 ---
-const pageTitle = "News";
-
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsFilter from '../../components/NewsFilter.jsx';
+
+const allUpdates = await getCollection('updates');
+const updates = allUpdates
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .map(e => ({
+    slug: e.id,
+    title: e.data.title,
+    date: e.data.date.toISOString(),
+    category: e.data.category,
+    image: e.data.image ?? null,
+    description: e.data.description,
+  }));
 ---
 
-<p>hello</p>
+<BaseLayout pageTitle="Allegheny CIS News">
+  <section class="news-page white__band">
+    <h1 class="news-page__heading">Allegheny <em>CIS News</em></h1>
+    <NewsFilter updates={updates} baseUrl={import.meta.env.BASE_URL.replace(/\/?$/, '/')} client:load />
+  </section>
+</BaseLayout>
