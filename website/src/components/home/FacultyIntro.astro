@@ -1,0 +1,43 @@
+---
+import FillButton from "../FillButton.astro";
+import GhostButton from "../GhostButton.astro";
+import FacultyCarousel from "./FacultyCarousel.jsx";
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const faculty = [
+  {
+    name: "Janyl Jumadinova, Ph.D.",
+    title: "Department Chair, Associate Professor",
+    statement:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
+    image: `${base}img/jj1.png`,
+  },
+  {
+    name: "Oliver Bonham-Carter, Ph.D.",
+    title: "Associate Professor",
+    statement:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
+    image: `${base}img/obc1.jpg`,
+  },
+  {
+    name: "Greg Kapfhammer, Ph.D.",
+    title: "Associate Professor",
+    statement:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
+    image: `${base}img/gk1.jpeg`,
+  },
+];
+---
+
+<section id="faculty-intro" class="faculty-section white__band">
+
+    <h1>World-class <em>Faculty & Staff</em></h1>
+
+    <FacultyCarousel faculty={faculty} client:load />
+
+    <div class="faculty-buttons">
+        <a href="/about/faculty"><FillButton>View Faculty</FillButton></a>
+        <a href="/about/statement"><GhostButton>Our Purpose</GhostButton></a>
+    </div>
+
+</section>
