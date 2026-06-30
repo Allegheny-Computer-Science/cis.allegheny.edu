@@ -150,6 +150,10 @@ a {
     letter-spacing: 0.04em;
     color: var(--white);
     line-height: 1.1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .update-card__desc {
@@ -157,6 +161,10 @@ a {
     font-size: 0.85rem;
     color: var(--white);
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* Category borders — 2px all sides, 20px accent on bottom */
@@ -697,16 +705,6 @@ a {
     gap: var(--button-gap);
 }
 
-@media (max-width: 1100px) {
-    .hero-section {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-image,
-    .hero-information {
-        grid-column: auto;
-    }
-}
 
 /* ================================================================
    UPDATES SECTION
@@ -877,13 +875,260 @@ a {
     gap: var(--button-gap);
 }
 
-@media (max-width: 1100px) {
+
+
+/* ================================================================
+   STUDENT ORGS SECTION
+   ================================================================ */
+
+.student-orgs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--section-gap);
+}
+
+.student-orgs__heading {
+    color: var(--navy);
+    text-align: left;
+    width: 100%;
+}
+
+.student-orgs__heading em {
+    color: var(--bold-gold);
+}
+
+.student-orgs__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 22rem));
+    gap: var(--object-gap);
+    justify-content: center;
+    width: 100%;
+}
+
+.org-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    border: 2px solid var(--org-accent);
+    border-bottom: 20px solid var(--org-accent);
+    overflow: hidden;
+    transition: transform 180ms ease;
+}
+
+.org-card:hover {
+    transform: translateY(-2px);
+}
+
+.org-card:active {
+    transform: translateY(0);
+}
+
+.org-card__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #c8d8e8;
+}
+
+.org-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.org-card__body {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.org-card__name {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    letter-spacing: 0.04em;
+    color: var(--org-accent);
+    padding-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.org-card__desc {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--navy);
+    line-height: 1.5;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.org-card__btn {
+    align-self: center;
+    width: 100%;
+    background-color: var(--navy);
+    color: var(--white);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    height: 3rem;
+    margin-top: auto;
+}
+
+.org-card__btn:hover {
+    background-color: var(--org-accent);
+    color: var(--navy);
+    transform: translateY(-2px);
+}
+
+.org-card__btn:active {
+    transform: translateY(0);
+}
+
+/* ================================================================
+   RESPONSIVE — TABLET  (≤ 900px)
+   ================================================================ */
+
+@media (max-width: 900px) {
+
+    /* Header: hide desktop nav links, show only brand + burger */
+    .header__bar {
+        padding: 1rem var(--page-gutter);
+    }
+    .header__nav .header__link {
+        display: none;
+    }
+    .header__college,
+    .header__dept {
+        font-size: 1.4rem;
+    }
+    .header__logo-placeholder {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    /* Hero: hide image, text fills width */
+    .hero-section {
+        grid-template-columns: 1fr;
+    }
+    .hero-image {
+        display: none;
+    }
+    .hero-information {
+        grid-column: auto;
+    }
+
+    /* Faculty carousel: shrink photo, keep horizontal */
+    .faculty-carousel__photo-wrap {
+        width: clamp(6rem, 18vw, 10rem);
+        height: clamp(6rem, 18vw, 10rem);
+    }
+
+    /* Community: hide image */
     .community-section {
         grid-template-columns: 1fr;
     }
-
-    .community-image,
+    .community-image {
+        display: none;
+    }
     .community-information {
         grid-column: auto;
+    }
+
+    /* Update cards: tighter text on smaller cards */
+    .update-card__desc {
+        -webkit-line-clamp: 2;
+    }
+
+    /* Org cards: tighter text */
+    .org-card__desc {
+        -webkit-line-clamp: 2;
+    }
+}
+
+/* ================================================================
+   RESPONSIVE — MOBILE  (≤ 600px)
+   ================================================================ */
+
+@media (max-width: 600px) {
+
+    /* Header: single-line brand */
+    .header__bar {
+        padding: 0.75rem var(--page-gutter);
+    }
+    .header__college,
+    .header__dept {
+        font-size: 1.1rem;
+    }
+    .header__logo-placeholder {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    /* Update cards: 1-line title, 2-line desc, hide date */
+    .update-card__date {
+        display: none;
+    }
+    .update-card__title {
+        -webkit-line-clamp: 1;
+    }
+    .update-card__desc {
+        -webkit-line-clamp: 2;
+    }
+    .update-card__body {
+        padding: 0.5rem;
+    }
+
+    /* Org cards: hide desc entirely on mobile — name + button is enough */
+    .org-card__desc {
+        display: none;
+    }
+    .org-card__body {
+        padding: 0.5rem;
+        gap: 0.4rem;
+    }
+    .org-card__name {
+        font-size: 1rem;
+    }
+    .org-card__btn {
+        font-size: 1rem;
+        height: 2.5rem;
+    }
+
+    .faculty-carousel__photo-wrap {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    /* Hero: tighten buttons */
+    .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Updates: tighten buttons */
+    .updates-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Community: tighten buttons */
+    .community-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Faculty: tighten buttons */
+    .faculty-buttons {
+        flex-direction: column;
+        align-items: center;
     }
 }
