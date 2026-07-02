@@ -1,4 +1,26 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
-<p>footer</p>
+<footer class="site-footer">
+    <a href={`${base}`} class="footer__brand">
+        <div class="header__logo-placeholder" aria-hidden="true"></div>
+        <div class="footer__titles">
+            <span class="footer__college">Allegheny College</span>
+            <span class="footer__dept">Computer &amp; Information Science</span>
+        </div>
+    </a>
+
+    <div class="footer__contact">
+        <div class="footer__contact-group">
+            <span class="footer__contact-label">Address:</span>
+            <span class="footer__contact-value">520 North Main Street</span>
+            <span class="footer__contact-value">Meadville, PA 16335</span>
+        </div>
+        <div class="footer__contact-group">
+            <span class="footer__contact-label">Contact:</span>
+            <a href="tel:8143324351" class="footer__contact-value footer__contact-link">814-332-4351</a>
+            <a href="mailto:compsci@allegheny.edu" class="footer__contact-value footer__contact-link">compsci@allegheny.edu</a>
+        </div>
+    </div>
+</footer>
