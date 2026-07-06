@@ -33,7 +33,9 @@ const faculty = [
 
     <h1>World-class <em>Faculty & Staff</em></h1>
 
-    <FacultyCarousel faculty={faculty} client:load />
+    <div class="scroll-fade">
+        <FacultyCarousel faculty={faculty} client:load />
+    </div>
 
     <div class="faculty-buttons">
         <a href="/about/faculty"><FillButton>View Faculty</FillButton></a>

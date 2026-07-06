@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Brand() {
   return (
@@ -15,15 +15,49 @@ function Brand() {
 export default function HeaderNav({ navLinks }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openSection, setOpenSection] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [linksVisible, setLinksVisible] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    let lastY = window.scrollY;
+    const THRESHOLD = 54;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      const scrollingUp = y < lastY;
+      lastY = y;
+
+      if (y > THRESHOLD) {
+        setScrolled(true);
+        clearTimeout(timer);
+        timer = setTimeout(() => setLinksVisible(true), 250);
+      } else {
+        clearTimeout(timer);
+        setScrolled(false);
+        setLinksVisible(false);
+        // Snap to top when scrolling up through the transition zone
+        if (scrollingUp && y > 0) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(timer);
+    };
+  }, []);
 
   const toggleSection = (label) =>
     setOpenSection(prev => (prev === label ? null : label));
 
   return (
     <>
-      <div className="header__bar">
+      <div className={`header__bar${scrolled ? " header__bar--scrolled" : ""}`}>
         <Brand />
-        <nav className="header__nav">
+        <nav className={`header__nav${linksVisible ? " header__nav--links-visible" : ""}`}>
           {navLinks.map(link => (
             <a key={link.href} href={link.href} className="header__link">{link.label}</a>
           ))}

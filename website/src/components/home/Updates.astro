@@ -15,6 +15,7 @@ const latest = allUpdates
 
   <h1>Recent <em>Updates</em></h1>
 
+  <div class="scroll-fade">
   <div class="updates-grid">
     {latest.map(entry => (
       <UpdateCard
@@ -26,6 +27,7 @@ const latest = allUpdates
         slug={entry.id}
       />
     ))}
+  </div>
   </div>
 
   <div class="updates-buttons">
