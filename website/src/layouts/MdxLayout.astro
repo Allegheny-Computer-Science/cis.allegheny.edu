@@ -1,13 +1,37 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.jsx';
+import { getCollection } from 'astro:content';
 
 const { frontmatter } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const allUpdates = await getCollection('updates');
+const latest = allUpdates
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+
+const latestUpdate = latest ? {
+    title: latest.data.title,
+    date: latest.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    category: latest.data.category,
+    href: `${base}community/news`,
+} : null;
+
+const relatedLinks = frontmatter?.relatedLinks ?? null;
 ---
 
 <BaseLayout pageTitle={frontmatter?.pageTitle ?? ''}>
     <div class="mdx-page">
-        <div class="mdx-body">
-            <slot />
+        <div class="mdx-layout">
+            <TableOfContents
+                latestUpdate={latestUpdate}
+                relatedLinks={relatedLinks}
+                client:load
+            />
+            <div class="mdx-body">
+                <slot />
+            </div>
         </div>
     </div>
 </BaseLayout>

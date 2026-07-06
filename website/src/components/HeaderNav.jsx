@@ -59,7 +59,13 @@ export default function HeaderNav({ navLinks }) {
         <Brand />
         <nav className={`header__nav${linksVisible ? " header__nav--links-visible" : ""}`}>
           {navLinks.map(link => (
-            <a key={link.href} href={link.href} className="header__link">{link.label}</a>
+            <a
+              key={link.href}
+              href={link.href}
+              className={`header__link${link.label === "Home" ? " header__link--home" : ""}`}
+            >
+              {link.label}
+            </a>
           ))}
           <a
             href="https://allegheny.edu/apply/"
