@@ -548,6 +548,8 @@ a {
     overflow: hidden;
     min-height: 0;
     padding-bottom: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .mobile-menu__sublink {
