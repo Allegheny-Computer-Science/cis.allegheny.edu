@@ -548,6 +548,8 @@ a {
     overflow: hidden;
     min-height: 0;
     padding-bottom: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .mobile-menu__sublink {
@@ -705,6 +707,163 @@ a {
     min-height: 60vh;
     padding: var(--section-gap) clamp(1.5rem, 3vw, 5rem);
 }
+
+/* Sidebar + prose two-column layout */
+.mdx-layout {
+    display: grid;
+    grid-template-columns: 16rem 1fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+}
+
+/* — Table of contents sidebar — */
+
+.mdx-toc {
+    position: sticky;
+    top: 5rem; /* overridden at runtime by scroll handler */
+    background-color: var(--navy);
+    padding: 1.25rem;
+}
+
+.mdx-toc__title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    color: var(--bold-gold);
+    line-height: 1.2;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mdx-toc__link {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.3rem 0;
+    line-height: 1.35;
+    transition: color 0.15s;
+}
+
+/* H3 items indented */
+.mdx-toc__link--sub {
+    padding-left: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.mdx-toc__link:hover,
+.mdx-toc__link--active {
+    color: var(--bold-gold);
+}
+
+/* — Section divider (shared by update, contact, related) — */
+
+.mdx-toc__section {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.mdx-toc__section-label {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 0.2rem;
+}
+
+/* — Apply CTA — */
+
+.mdx-toc__apply {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 0.85rem;
+    padding: 0.85rem;
+    background-color: var(--bold-gold);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.mdx-toc__apply-text {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+}
+
+.mdx-toc__apply-btn {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    background-color: var(--navy);
+    padding: 0.3rem 0.85rem;
+    transition: opacity 0.15s;
+}
+
+.mdx-toc__apply-btn:hover { opacity: 0.8; }
+
+/* — Latest update — */
+
+.mdx-toc__update-title {
+    font-size: 0.85rem;
+    color: var(--white);
+    line-height: 1.4;
+    transition: color 0.15s;
+}
+
+.mdx-toc__update-title:hover { color: var(--bold-gold); }
+
+.mdx-toc__update-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.1rem;
+}
+
+.mdx-toc__category {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.1rem 0.4rem;
+}
+
+.mdx-toc__category--event        { background-color: rgba(255, 255, 255, 0.15); color: var(--white); }
+.mdx-toc__category--announcement { background-color: var(--bold-gold); color: var(--navy); }
+.mdx-toc__category--other        { background-color: var(--gator); color: var(--white); }
+
+.mdx-toc__update-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* — Contact — */
+
+.mdx-toc__contact-row {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.15s;
+}
+
+.mdx-toc__contact-row:hover { color: var(--bold-gold); }
+
+/* — Related pages — */
+
+.mdx-toc__related-link {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+    transition: color 0.15s;
+}
+
+.mdx-toc__related-link:hover { color: var(--bold-gold); }
 
 .mdx-body { width: 100%; }
 
@@ -1068,14 +1227,14 @@ a {
 }
 
 @media (max-width: 1042px) {
-    .header__nav .header__link {
+    .header__nav .header__link:not(.header__link--home) {
         display: none;
     }
 }
 
 /* Reveal links on scroll only where there's room (small laptop) */
 @media (min-width: 901px) and (max-width: 1042px) {
-    .header__nav--links-visible .header__link {
+    .header__nav--links-visible .header__link:not(.header__link--home) {
         display: flex;
         animation: nav-links-slide 0.25s ease forwards;
     }
@@ -1126,6 +1285,10 @@ a {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .org-card__desc { -webkit-line-clamp: 2; }
+
+    /* MDX sidebar: collapse to single column */
+    .mdx-layout { grid-template-columns: 1fr; }
+    .mdx-toc    { display: none; }
 
     /* Footer: stack brand above contact */
     .site-footer {
