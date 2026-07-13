@@ -2,6 +2,304 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const pageTitle = "Majors";
 ---
+
 <BaseLayout pageTitle={pageTitle}>
-  <p>Plan Your Path</p>
+  <div style="background-color: #1B3054; min-height: 100vh; padding: 2rem;">
+    <h1>MAJORS & MINORS</h1>
+    <p>The Computer and Information Science field is increasingly saturated with specialists, but as the global approach to computing becomes more holistic and ethically concerned, those with broader knowledge and an open mind secure their place.</p>
+	</br>
+    <p>We offer 4 majors, and though some are designed to focus on one aspect of CIS, our curriculum remains all-encompassing to give our students the edge they need in today’s job market.</p>
+
+    <section class="updates-grid" style="margin-top: 2rem;">
+      <article class="update-card1">
+        <div class="update-card__image1"></div>
+        <div class="update-card__body">
+          <h3 class="update-card__title">Computer Science</h3>
+          <p class="update-card__desc">Build a clear sequence of courses that prepares you for both core requirements and electives.</p>
+          <a href="/community/news" class="button__ghost">Learn More</a>
+        </div>
+      </article>
+      <article class="update-card2">
+        <div class="update-card__image2"></div>
+        <div class="update-card__body">
+          <h3 class="update-card__title">Date Science</h3>
+          <p class="update-card__desc">Explore minor combinations that complement your major and expand your career pathways.</p>
+          <a href="/community/news" class="button__ghost">Learn More</a>
+        </div>
+      </article>
+      <article class="update-card1">
+        <div class="update-card__image1"></div>
+        <div class="update-card__body">
+          <h3 class="update-card__title">Informatics</h3>
+          <p class="update-card__desc">See how study abroad and exchange programs fit into your four-year trajectory.</p>
+          <a href="/community/news" class="button__ghost">Learn More</a>
+        </div>
+      </article>
+      <article class="update-card2">
+        <div class="update-card__image2"></div>
+        <div class="update-card__body">
+          <h3 class="update-card__title">Software Engineering</h3>
+          <p class="update-card__desc">Find hands-on opportunities that align with your interests and strengthen your résumé.</p>
+          <a href="/community/news" class="button__ghost">Learn More</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="info-section">
+      <h5>Computer Science Major/Minor</h5>
+      <h6>Professors Jumadinova (Chair), Bonham-Carter, Kapfhammer, Luman</h6>
+    </br>
+      <p2>Computer Science focuses on computational theory and the rich interplay between computer hardware and software. Students use scientific and design-centric approaches to solve computational problems and to create and evaluate realistic computer and computer-based systems.
+The study of computer science leads to and requires the ability to analyze ideas, to think logically, and to communicate ideas clearly and concisely. In this way, study of computer science contributes to the foundation of an excellent liberal arts education.</p2>
+    </br>
+    </br>
+      <h7>Learning Objectives</h7>
+    </br>
+      <p2>
+Demonstrate and be able to communicate the knowledge of data types, algorithms, and mathematical principles behind discrete objects.
+Use scientific and theoretical methods to design, implement, evaluate, deploy, improve, maintain, and document software and hardware systems.
+Apply and articulate key concepts from a specialization area where the interconnection between software and hardware is important and evident.
+Able to communicate technical details of the produced software and hardware artifacts both in writing and orally. </p2>
+    </section>
+
+    <section class="split-section">
+      <div class="split-panel split-panel--dark">
+        <h7>Major</h7>
+        <p>Computer Science is associated with Mathematics and Natural Sciences. Students who major in Computer Science may not double-major or minor in Data Science, Informatics, or Software Engineering.
+The Computer Science major leads to the Bachelor of Science degree and requires a minimum of 48 semester credit hours. To graduate with a major in Computer Science, a student must have an earned GPA of at least 2.0 in required Computer Science and other courses presented for the major. At most one of the foundation courses (CMPSC 100, CMPSC 101, or CMPSC 102) may be presented for the major on the Credit/No Credit grade basis. Students who are interested in Mathematics and/or planning to attend graduate school in Computer Science are strongly encouraged to take Math 151 early in their academic career. Students who major in Computer Science may incorporate Mathematics courses into their study through the following substitutions:
+Math 205 as a substitute for CMPSC 102
+Math 320, Math 330, Math 345, or Math 370 as a substitute for one of the required specialization courses.</p>
+        <h7>Program Requirements<h7/>
+        <p2>Foundation
+Take all of the following three courses (12 credits):
+CMPSC 100 - Computational Expression Credits: 4
+CMPSC 101 - Data Structures Credits: 4
+CMPSC 102 - Discrete Structures Credits: 4
+Core
+Take all of the following four courses (16 credits):
+CMPSC 200 - Computer Organization Credits: 4
+CMPSC 202 - Algorithm Analysis Credits: 4
+CMPSC 204 - Theoretical Machines Credits: 4
+CMPSC 406 - Internet of Things Credits: 4
+Elective
+Take two of the following three courses (8 credits):
+CMPSC 300 - Bioinformatics Credits: 4
+CMPSC 304 - Robotic Agents Credits: 4
+CMPSC 400 - Operating Systems Credits: 4
+CMPSC 403 - Computer Security Credits: 4
+Project
+CMPSC 580 - Junior Seminar Credits: 4
+CMPSC 600 - Senior Thesis I Credits: 4
+CMPSC 610 - Senior Thesis II Credits: 4 <p2/>
+      </div>
+      <div class="split-panel split-panel--light">
+        <h7>Minor</h7>
+        <p>Students who minor in Computer Science may not major in Data Science, Informatics, or Software Engineering.
+The minor in Computer Science requires the completion of at least 24 semester hours of coursework, as outlined below. Students may take Math 205 as a substitute for CMPSC 102.</p>
+        <h7>Program Requirements<h7/>
+        <p2>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
+
+<style>
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #FEDA48;
+    margin-bottom: 1rem;
+  }
+  p {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #FFFFFF;
+  }
+
+  p2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #1B3054
+  }
+
+  .updates-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .update-card1 {
+    flex: 1 1 calc((100% - 3rem) / 4);
+    min-width: 0;
+    background: #FFFFFF;
+    border: 2px solid #80BD41;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    border-bottom: 20px solid #80BD41;
+  }
+
+  .update-card__image1 {
+    width: 100%;
+    height: 120px;
+    background: #FFFFFF;
+	border-bottom: 2px solid #80BD41;
+	border-radius: 0;
+  }
+
+  .update-card2 {
+    flex: 1 1 calc((100% - 3rem) / 4);
+    min-width: 0;
+    background: #FFFFFF;
+    border: 2px solid #FEDA48;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    border-bottom: 20px solid #FEDA48;
+  }
+
+  .update-card__image2 {
+    width: 100%;
+    height: 120px;
+    background: #FFFFFF;
+	border-bottom: 2px solid #FEDA48;
+	border-radius: 0;
+  }
+
+  .update-card__body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .update-card__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: #1B3054;
+    margin: 0;
+  }
+
+  .update-card__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 16 px;
+    color: #1B3054;
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
+  }
+
+  .button__ghost {
+    display: inline-grid;
+    width: fit-content;
+    padding: 0.75rem 1rem;
+    border: 2px solid #1B3054;
+    background-color: #1B3054;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+
+  .button__ghost:hover {
+    background-color: #FFFFFF;
+    color: #1B3054;
+  }
+
+  .info-section {
+    margin-top: 2rem;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 2rem;
+    width: 100vw;
+    background-color: #FFFFFF !important;
+    color: #1B3054;
+    border-radius: 0;
+    border: none;
+    box-sizing: border-box;
+  }
+
+  .info-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #1B3054;
+  }
+
+  .info-section p {
+    color: #1B3054;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .split-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    min-height: 320px;
+    overflow: hidden;
+    width: 100vw;
+  }
+
+  .split-panel {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .split-panel--light {
+    background-color: #FEDA48;
+    color: #1B3054;
+  }
+
+  .split-panel--dark {
+    background-color: #F6E9A8;
+    color: #1B3054;
+  }
+
+  .split-panel h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    margin: 0 0 1rem;
+    color: #1B3054;
+  }
+
+  .split-panel p {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    color: #1B3054;
+  }
+
+h5 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    color: #1B3054
+    margin-bottom: .5rem;
+  }
+
+h6 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: #1B3054
+  }
+
+h7 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #1B3054
+}
+
+</style>

@@ -3,5 +3,40 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const pageTitle = "Cuppers";
 ---
 <BaseLayout pageTitle={pageTitle}>
-  <p>Plan Your Path</p>
+    <div style="background-color: #1B3054; min-height: 100vh; padding: 2rem;">
+        <div class="header-line">
+            <h1>Cuppers</h1>
+            <h2>Scholarship Program</h2>
+    </div>
+    <section class="intro-section">
+        <p>If you’re interested in collaborative research with a faculty member at Allegheny College, join the Cupper Scholars Program. The program provides students with additional mentoring and research opportunities.</p>
+    </div>
 </BaseLayout>
+
+<style>
+    h1 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 64px;
+        color: #FEDA48;
+        margin-bottom: 1rem;
+    }
+
+    h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 64px;
+        color: #FFFFFF;
+        margin-bottom: 1rem;
+    }
+
+  .header-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .header-line h1 {
+    margin: 0;
+  }
+
+<style/>
