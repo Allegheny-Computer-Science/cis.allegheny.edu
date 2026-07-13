@@ -3,20 +3,45 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const pageTitle = "Research";
 ---
 <BaseLayout pageTitle={pageTitle}>
-  <div style="background-color: #1B3054; min-height: 100vh; padding: 2 rem;">
-  <h1>RESEARCH</h1>
-  </div>
+    <div style="background-color: #1B3054; min-height: 100vh; padding: 2rem;">
+        <div class="header-line">
+            <h1>Student</h1>
+            <h2>Research</h2>
+    </div>
+    <section class="intro-section">
+        <p>Students are encouraged to explore the many summer research opportunities available. For example, please review the National Science Foundation Research Experiences for Undergraduates (REU) site. Students can also find opportunities through Allegheny's URSCA program and the Community Hub, which connect students with faculty mentors, research projects, internships, and community-engaged learning experiences. Of course, there are many more opportunities open to computer science majors. Students who have declared a major in Computer and Information Science should ask their advisor for more information. Please talk to the Chair of the Department of Computer and Information Science if you are seeking a research opportunity and you are either minoring in Computer and Information Science or planning to declare a major in the discipline.
+        Additionally, there are sometimes summer research opportunities at Allegheny College. Please consult faculty members in the Department of Computer and Information Science if you are interested in exploring such opportunities.</p>
+    </div>
 </BaseLayout>
 
 <style>
     h1 {
-        font-family: 'Bebas Neue, sans-serif;
-        font-size: 64 px;
-        color: #FEDA48
-        margin-bottom: 1 rem;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 64px;
+        color: #FEDA48;
+        margin-bottom: 1rem;
     }
 
-    div {
-        background-color: #1B3054
+    h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 64px;
+        color: #FFFFFF;
+        margin-bottom: 1rem;
     }
+    
+    div {
+        background-color: #1B3054;
+    }
+
+  .header-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .header-line h1 {
+    margin: 0;
+  }
+
 </style>

@@ -1,4 +1,104 @@
 ---
 ---
 
-<p>footer</p>
+<footer>
+    <div class="header-line">
+        <h2>Connect with us on</h2>
+        <h1>socials</h1>
+    </div>
+
+    <div class="social-row">
+        <div class="social-box"></div>
+        <div class="social-box"></div>
+        <div class="social-box"></div>
+        <div class="social-box"></div>
+        <div class="social-box"></div>
+        <div class="social-box"></div>
+        <div class="social-box"></div>
+    </div>
+
+    <div class="image-row">
+        <div class="image-box"></div>
+        <div class="image-box"></div>
+        <div class="image-box"></div>
+        <div class="image-box"></div>
+    </div>
+
+    <div class="contact-section">
+        <p><strong>Address:</strong><br />520 North Main Street<br />Meadville, PA 16335</p>
+        <p><strong>Contact:</strong><br />814-332-4351<br />compsci@allegheny.edu</p>
+    </div>
+</footer>
+
+<style>
+  footer {
+    background-color: #1B3054;
+    color: #FFFFFF;
+    padding: 1.5rem 2rem;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #FEDA48;
+    margin: 0;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    margin: 0;
+  }
+
+  .header-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .social-row {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.75rem;
+    align-items: center;
+    width: calc(100% / 4 * 1);
+    max-width: 100%;
+  }
+
+  .social-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #D9D9D9;
+    max-width: 20px;
+  }
+
+  .image-row {
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .image-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #D9D9D9;
+  }
+
+  .contact-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding-left: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .contact-section p {
+    margin: 0;
+  }
+</style>
