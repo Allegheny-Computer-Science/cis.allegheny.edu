@@ -7,10 +7,33 @@ const pageTitle = "Research";
         <div class="header-line">
             <h1>Student</h1>
             <h2>Research</h2>
-    </div>
-    <section class="intro-section">
-        <p>Students are encouraged to explore the many summer research opportunities available. For example, please review the National Science Foundation Research Experiences for Undergraduates (REU) site. Students can also find opportunities through Allegheny's URSCA program and the Community Hub, which connect students with faculty mentors, research projects, internships, and community-engaged learning experiences. Of course, there are many more opportunities open to computer science majors. Students who have declared a major in Computer and Information Science should ask their advisor for more information. Please talk to the Chair of the Department of Computer and Information Science if you are seeking a research opportunity and you are either minoring in Computer and Information Science or planning to declare a major in the discipline.
-        Additionally, there are sometimes summer research opportunities at Allegheny College. Please consult faculty members in the Department of Computer and Information Science if you are interested in exploring such opportunities.</p>
+        </div>
+
+        <section class="intro-section">
+            <div class="text-column">
+                <p>Students are encouraged to explore the many summer research opportunities available. For example, please review the National Science Foundation Research Experiences for Undergraduates (REU) site. Students can also find opportunities through Allegheny's URSCA program and the Community Hub, which connect students with faculty mentors, research projects, internships, and community-engaged learning experiences. Of course, there are many more opportunities open to computer science majors. Students who have declared a major in Computer and Information Science should ask their advisor for more information. Please talk to the Chair of the Department of Computer and Information Science if you are seeking a research opportunity and you are either minoring in Computer and Information Science or planning to declare a major in the discipline.
+                Additionally, there are sometimes summer research opportunities at Allegheny College. Please consult faculty members in the Department of Computer and Information Science if you are interested in exploring such opportunities.</p>
+            </div>
+            <div class="image-column">
+                <img class="research-image" src="/img/obc1.jpg" alt="Student research team" />
+            </div>
+        </section>
+
+        <h2 class="subheading">Internships and Career <span>Opportunities</span></h2>
+        <div class="text-column">
+            <p>The Department of Computer and Information Science encourages students to explore internships and career opportunities that support their academic and professional development.
+Students interested in earning academic credit for an internship or independent study must submit an Internship and Independent Study Approval Form.</p>
+        </div>
+
+        <h2 class="subheading">Recent Job <span>Listings</span></h2>
+        <p>A listing of recent news posts advertising internships, research opportunities, and career opportunities.</p>
+        <ul class="job-list">
+            <li><a href="/community/news/discovery-machine-internships-and-job-opportunities">Discovery Machine Internships and Job Opportunities</a><span>Date: November 03, 2022</span></li>
+            <li><a href="/community/news/software-engineering-job-opportunities-at-daniel-h-wagner-associates">Software Engineering Job Opportunities at Daniel H. Wagner Associates</a><span>Date: October 31, 2022</span></li>
+            <li><a href="/community/news/capital-group-it-internships-and-job-opportunities">Capital Group IT Internships and Job Opportunities</a><span>Date: October 31, 2022</span></li>
+            <li><a href="/community/news/erie-insurance-internships">Erie Insurance Internships</a><span>Date: September 28, 2022</span></li>
+            <li><a href="/community/news/assistant-professor-in-computer-science">Assistant Professor in Computer Science</a><span>Date: September 14, 2022</span></li>
+        </ul>
     </div>
 </BaseLayout>
 
@@ -28,20 +51,148 @@ const pageTitle = "Research";
         color: #FFFFFF;
         margin-bottom: 1rem;
     }
-    
-    div {
-        background-color: #1B3054;
+
+    .subheading {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 64px;
+        color: #FFFFFF;
+        margin: 2.5rem 0 0 0;
+        display: inline-block;
+        white-space: nowrap;
     }
+
+    .section-heading {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 40px;
+        color: #FFFFFF;
+        margin: 2rem 0 0.75rem 0;
+        line-height: 1.1;
+    }
+
+    .job-list {
+        margin: 0;
+        padding-left: 1.25rem;
+        list-style: disc;
+        color: #FFFFFF;
+        font-family: 'Inter', sans-serif;
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .job-list li {
+        margin-bottom: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .job-list a {
+        color: #FFFFFF;
+        text-decoration: underline;
+    }
+
+    .job-list span {
+        color: #FEDA48;
+        font-size: 15px;
+    }
+
+    .subheading span {
+        color: #FEDA48;
+    }
+
+  .subheading p {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    line-height: 1.7;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
 
   .header-line {
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0.75rem;
   }
 
   .header-line h1 {
     margin: 0;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #FFFFFF;
+    margin-bottom: 0.25rem;
+  }
+
+  .intro-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+    gap: 3rem;
+    align-items: start;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    justify-items: stretch;
+  }
+
+  .text-column {
+    max-width: none;
+  }
+
+  .text-column p {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
+  .image-column {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .research-image {
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border: 2px solid #FFFFFF;
+  }
+
+  @media (max-width: 950px) {
+    .intro-section {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .image-column {
+      justify-content: center;
+    }
+
+    .research-image {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .intro-section {
+      gap: 1.5rem;
+    }
+
+    .text-column p,
+    p {
+      font-size: 18px;
+    }
+
+    h2,
+    .subheading {
+      font-size: 48px;
+    }
   }
 
 </style>
