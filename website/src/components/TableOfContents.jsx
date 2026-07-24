@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-export default function TableOfContents({ latestUpdate = null, relatedLinks = null }) {
+export default function TableOfContents({ latestUpdate = null, relatedLinks = null, showApply = false }) {
     const [headings, setHeadings] = useState([]);
     const [activeId, setActiveId] = useState('');
     const sidebarRef = useRef(null);
@@ -99,18 +99,20 @@ export default function TableOfContents({ latestUpdate = null, relatedLinks = nu
                 </nav>
             )}
 
-            {/* Apply CTA */}
-            <div className="mdx-toc__apply">
-                <span className="mdx-toc__apply-text">Ready to Apply?</span>
-                <a
-                    href="https://admissions.allegheny.edu/apply"
-                    className="mdx-toc__apply-btn"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Apply Now
-                </a>
-            </div>
+            {/* Apply CTA — About and Plan pages only */}
+            {showApply && (
+                <div className="mdx-toc__apply">
+                    <span className="mdx-toc__apply-text">Ready to Apply?</span>
+                    <a
+                        href="https://admissions.allegheny.edu/apply"
+                        className="mdx-toc__apply-btn"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Apply Now
+                    </a>
+                </div>
+            )}
 
             {/* Latest update */}
             {latestUpdate && (

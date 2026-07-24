@@ -19,6 +19,9 @@ const latestUpdate = latest ? {
 } : null;
 
 const relatedLinks = frontmatter?.relatedLinks ?? null;
+
+const path = Astro.url.pathname;
+const showApply = path.includes('/about/') || path.includes('/plan/');
 ---
 
 <BaseLayout pageTitle={frontmatter?.pageTitle ?? ''}>
@@ -27,6 +30,7 @@ const relatedLinks = frontmatter?.relatedLinks ?? null;
             <TableOfContents
                 latestUpdate={latestUpdate}
                 relatedLinks={relatedLinks}
+                showApply={showApply}
                 client:load
             />
             <div class="mdx-body">
