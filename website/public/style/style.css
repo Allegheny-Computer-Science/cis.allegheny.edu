@@ -95,6 +95,8 @@ h1, h2, h3 {
 h1 {
     font-size: clamp(3rem, 4vw, 4rem);
     padding-bottom: var(--object-gap);
+    -webkit-text-stroke: var(--navy) 3px;
+    paint-order: stroke fill;
 }
 
 h2 {
@@ -104,6 +106,8 @@ h2 {
 h3 {
     font-size: clamp(1.25rem, 1.5vw, 1.75rem);
     padding-bottom: var(--button-gap);
+    -webkit-text-stroke: var(--navy) 2px;
+    paint-order: stroke fill;
 }
 
 em {
@@ -229,7 +233,8 @@ a {
    ================================================================ */
 
 .update-card,
-.org-card {
+.org-card,
+.faculty-card {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -237,17 +242,20 @@ a {
 }
 
 .update-card:hover,
-.org-card:hover {
+.org-card:hover,
+.faculty-card:hover {
     transform: translateY(-2px);
 }
 
 .update-card:active,
-.org-card:active {
+.org-card:active,
+.faculty-card:active {
     transform: translateY(0);
 }
 
 .update-card__image,
-.org-card__image {
+.org-card__image,
+.faculty-card__image {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
@@ -255,14 +263,17 @@ a {
 }
 
 .update-card__image img,
-.org-card__image img {
+.org-card__image img,
+.faculty-card__image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
 }
 
 .update-card__body,
-.org-card__body {
+.org-card__body,
+.faculty-card__body {
     padding: 0.75rem;
     display: flex;
     flex-direction: column;
@@ -895,14 +906,107 @@ a {
 .faculty-carousel__statement p:last-child { margin-bottom: 0; }
 
 /* ================================================================
-   11. STUDENT ORGS
+   11. FACULTY DIRECTORY PAGE
+   ================================================================ */
+
+.faculty-dir__heading { color: var(--navy); }
+
+.faculty-dir__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--object-gap);
+}
+
+/* White background, gator accent border */
+.faculty-card {
+    background-color: var(--white);
+    border: 2px solid var(--navy);
+    border-bottom: 20px solid var(--navy);
+}
+
+.faculty-card__body { gap: 0.6rem; }
+
+.faculty-card__name {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    line-height: 1.1;
+    padding-bottom: 0;
+}
+
+/* Title uses gator so it pops against the white card */
+.faculty-card__role {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gator);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    -webkit-text-stroke: var(--navy) 1px;
+}
+
+.faculty-card__degrees {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(27, 48, 84, 0.15);
+}
+
+.faculty-card__degrees li {
+    font-size: 0.78rem;
+    color: var(--navy);
+    line-height: 1.4;
+}
+
+.faculty-card__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(27, 48, 84, 0.15);
+}
+
+.faculty-card__contact-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: rgba(27, 48, 84, 0.75);
+    transition: color 0.15s;
+    text-decoration: none;
+}
+
+a.faculty-card__contact-row:hover { color: var(--gator); }
+
+/* Gator-green website button */
+.faculty-card__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    height: 2.75rem;
+    background-color: var(--gator);
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    margin-top: auto;
+    transition: opacity 0.15s;
+}
+
+.faculty-card__btn:hover { opacity: 0.85; }
+
+/* ================================================================
+   12. STUDENT ORGS
    ================================================================ */
 
 .student-orgs {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--section-gap);
 }
 
 .student-orgs__heading {
@@ -1121,6 +1225,9 @@ a {
     }
     .update-card__desc { -webkit-line-clamp: 2; }
 
+    /* Faculty directory: 2-column grid at tablet */
+    .faculty-dir__grid { grid-template-columns: repeat(2, 1fr); }
+
     /* Student orgs: 2-column grid */
     .student-orgs__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1226,6 +1333,9 @@ a {
         width: 5rem;
         height: 5rem;
     }
+
+    /* Faculty directory: single column */
+    .faculty-dir__grid { grid-template-columns: 1fr; }
 
     /* Student orgs: single column */
     .student-orgs__grid          { grid-template-columns: 1fr; }
