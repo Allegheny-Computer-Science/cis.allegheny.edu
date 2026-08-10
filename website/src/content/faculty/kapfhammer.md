@@ -9,6 +9,6 @@ email: "gkapfhammer@allegheny.edu"
 phone: "814-332-0000"
 office: "Alden Hall 108"
 website: "https://www.gregorykapfhammer.com"
-image: "img/gk1.jpeg"
+image: "./gk1.jpeg"
 order: 3
 ---

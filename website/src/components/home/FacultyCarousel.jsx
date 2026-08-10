@@ -3,25 +3,12 @@ import { useEffect, useState } from "react";
 export default function FacultyCarousel({ faculty = [] }) {
   const slideCount = faculty.length;
   const [index, setIndex] = useState(0);
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (slideCount > 1) {
       setIndex(Math.floor(Math.random() * slideCount));
     }
   }, [slideCount]);
-
-  const person = faculty[index % slideCount];
-
-  useEffect(() => {
-    if (!person) return;
-    if (!person.image) { setReady(true); return; }
-    setReady(false);
-    const img = new Image();
-    img.onload = () => setReady(true);
-    img.onerror = () => setReady(true);
-    img.src = person.image;
-  }, [index, person?.image]);
 
   if (slideCount === 0) return null;
 
@@ -42,13 +29,12 @@ export default function FacultyCarousel({ faculty = [] }) {
             key={i}
             className={[
               "faculty-carousel__card",
-              i !== index ? "faculty-carousel__card--inactive" : "",
-              i === index && ready ? "faculty-carousel__card--ready" : "",
-            ].filter(Boolean).join(" ")}
+              i !== index ? "faculty-carousel__card--inactive" : "faculty-carousel__card--ready",
+            ].join(" ")}
           >
             <div className="faculty-carousel__photo-wrap">
               {p.image ? (
-                <img src={p.image} alt={p.name} className="faculty-carousel__photo" />
+                <img src={p.image} alt={p.name} className="faculty-carousel__photo" width="240" height="240" loading="lazy" decoding="async" />
               ) : (
                 <div className="faculty-carousel__photo faculty-carousel__photo--placeholder" aria-hidden="true" />
               )}

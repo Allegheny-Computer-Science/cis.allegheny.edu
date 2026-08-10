@@ -1,27 +1,30 @@
 ---
 import FillButton from "../FillButton.astro";
 import GhostButton from "../GhostButton.astro";
+import { Image } from 'astro:assets';
+import placeholderImg from '../../assets/img/placeholder.jpg';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
-<section id="career" class="career-section navy__band">
+<section id="career" class="career-section gold__band">
 
     <div class="career-image">
-        <img src={`${base}img/placeholder.jpg`} alt="Placeholder photo" />
+        <Image src={placeholderImg} alt="Placeholder photo" />
     </div>
 
     <div class="career-information">
         <h1>Partnerships &amp; Prospects for <em>your future</em></h1>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dictum iaculis nisi quis lobortis. Fusce pulvinar bibendum maximus. Morbi dapibus, dolor in consequat vestibulum, velit justo rhoncus justo, commodo lacinia neque sem sed diam.
-        </p>
-        <br/>
-        <p>
-            Nullam vitae egestas sem. Duis semper est ligula, ac feugiat massa aliquam ut. Phasellus scelerisque, dolor sit amet viverra semper, eros tortor convallis purus, ultrices maximus mauris sapien vel erat. Fusce dapibus lacus sed est luctus accumsan vitae quis eros.
-        </p>
-        <div class="career-buttons">
-            <a href={`${base}opportunities/overview`}><FillButton>CMU Partnerships</FillButton></a>
-            <a href={`${base}resources/overview`}><GhostButton>Job Opportunities</GhostButton></a>
+        <div class="career-information__body">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dictum iaculis nisi quis lobortis. Fusce pulvinar bibendum maximus. Morbi dapibus, dolor in consequat vestibulum, velit justo rhoncus justo, commodo lacinia neque sem sed diam.
+            </p>
+            <p>
+                Nullam vitae egestas sem. Duis semper est ligula, ac feugiat massa aliquam ut. Phasellus scelerisque, dolor sit amet viverra semper, eros tortor convallis purus, ultrices maximus mauris sapien vel erat. Fusce dapibus lacus sed est luctus accumsan vitae quis eros.
+            </p>
+            <div class="career-buttons">
+                <a href={`${base}opportunities/overview`}><FillButton>CMU Partnerships</FillButton></a>
+                <a href={`${base}resources/overview`}><GhostButton variant="dark">Job Opportunities</GhostButton></a>
+            </div>
         </div>
     </div>
 

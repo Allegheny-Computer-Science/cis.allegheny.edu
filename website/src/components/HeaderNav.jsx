@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
 
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+function ExternalLinkIcon({ size = "0.75em" }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+      <path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+    </svg>
+  );
+}
+
 function Brand() {
   return (
     <div className="header__brand">
-      <div className="header__logo-placeholder" aria-hidden="true" />
+      <img src={`${base}img/logo.svg`} alt="Allegheny College CIS gator" className="header__logo" />
       <div className="header__titles">
         <span className="header__college">Allegheny College</span>
         <span className="header__dept">Computer &amp; Information Science</span>
@@ -21,25 +31,20 @@ export default function HeaderNav({ navLinks }) {
   useEffect(() => {
     let timer;
     let lastY = window.scrollY;
-    const THRESHOLD = 54;
+    const THRESHOLD = 8;
 
     const onScroll = () => {
       const y = window.scrollY;
-      const scrollingUp = y < lastY;
       lastY = y;
 
       if (y > THRESHOLD) {
         setScrolled(true);
         clearTimeout(timer);
         timer = setTimeout(() => setLinksVisible(true), 250);
-      } else {
+      } else if (y === 0) {
         clearTimeout(timer);
         setScrolled(false);
         setLinksVisible(false);
-        // Snap to top when scrolling up through the transition zone
-        if (scrollingUp && y > 0) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
       }
     };
 
@@ -74,9 +79,7 @@ export default function HeaderNav({ navLinks }) {
             rel="noopener noreferrer"
           >
             Apply
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.75em" height="0.75em" fill="currentColor" aria-hidden="true">
-              <path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-            </svg>
+            <ExternalLinkIcon />
           </a>
           <button
             className="header__burger"
@@ -130,9 +133,7 @@ export default function HeaderNav({ navLinks }) {
               rel="noopener noreferrer"
             >
               Apply Now
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="currentColor" aria-hidden="true">
-                <path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-              </svg>
+              <ExternalLinkIcon size="0.85em" />
             </a>
           </div>
 

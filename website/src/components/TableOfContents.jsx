@@ -36,20 +36,20 @@ export default function TableOfContents({ latestUpdate = null, relatedLinks = nu
         const sidebar = sidebarRef.current;
         if (!sidebar) return;
 
-        const GAP = 16;
+        const GAP     = 16;
         const headerEl = document.querySelector('header');
+        const headerH  = headerEl?.offsetHeight ?? 80;
 
         let prevY = window.scrollY;
-        sidebar.style.top = (headerEl?.offsetHeight ?? 80) + 'px';
+        sidebar.style.top = headerH + 'px';
 
         const onScroll = () => {
             const y   = window.scrollY;
             const dy  = y - prevY;
             prevY = y;
 
-            const headerH = headerEl?.offsetHeight ?? 80;
-            const vH      = window.innerHeight;
-            const sH      = sidebar.offsetHeight;
+            const vH = window.innerHeight;
+            const sH = sidebar.offsetHeight;
 
             if (sH + headerH + GAP <= vH) {
                 // Fits in viewport — always stick top below header

@@ -1,5 +1,8 @@
 ---
-const { title, date, category, image, description, slug } = Astro.props;
+import { Image } from 'astro:assets';
+import placeholderImg from '../assets/img/placeholder.jpg';
+
+const { title, date, category, image, description, slug, externalUrl } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const categoryClass = {
@@ -13,9 +16,12 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
 });
 ---
 
-<a href={`${base}community/news/${slug}`} class={`update-card ${categoryClass}`}>
+<a href={externalUrl ?? `${base}community/news/${slug}`} class={`update-card ${categoryClass}`} {...externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {}}>
   <div class="update-card__image">
-    <img src={image ?? `${base}img/placeholder.jpg`} alt={title} />
+    {image
+      ? <img src={image} alt={title} width="640" height="360" loading="lazy" decoding="async" />
+      : <Image src={placeholderImg} alt={title} />
+    }
   </div>
   <div class="update-card__body">
     <p class="update-card__date">{formattedDate}</p>

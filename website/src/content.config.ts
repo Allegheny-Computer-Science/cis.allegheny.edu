@@ -14,7 +14,7 @@ const updates = defineCollection({
 
 const faculty = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/faculty' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     name: z.string(),
     title: z.string(),
     degrees: z.array(z.string()),
@@ -22,7 +22,7 @@ const faculty = defineCollection({
     phone: z.string().optional(),
     office: z.string().optional(),
     website: z.string().optional(),
-    image: z.string().optional(),
+    image: image().optional(),
     order: z.number().optional(),
   }),
 });

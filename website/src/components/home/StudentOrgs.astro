@@ -1,5 +1,6 @@
 ---
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+import { Image } from 'astro:assets';
+import placeholderImg from '../../assets/img/placeholder.jpg';
 
 const orgs = [
     {
@@ -7,32 +8,30 @@ const orgs = [
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasel lis id egestas nibh, ac elementum velit doro ban.",
         href: "https://acm.org",
         accent: "var(--navy)",
-        image: `${base}img/placeholder.jpg`,
     },
     {
         name: "UPE",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasel lis id egestas nibh, ac elementum velit doro ban.",
         href: "https://upeallegheny.netlify.app/",
         accent: "var(--bold-gold)",
-        image: `${base}img/placeholder.jpg`,
     },
     {
         name: "Code With Chompers",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasel lis id egestas nibh, ac elementum velit doro ban.",
         href: "https://codewithchompers.com/",
         accent: "var(--gator)",
-        image: `${base}img/placeholder.jpg`,
     },
 ];
 ---
 
 <section class="student-orgs white__band">
     <h1 class="student-orgs__heading">Passionate, Active <em>Student Organizations</em></h1>
+    <div class="student-orgs__scroll-wrap">
     <div class="student-orgs__grid">
         {orgs.map(org => (
-            <div class="org-card" style={`--org-accent: ${org.accent}`}>
+            <div class={`org-card${org.accent === 'var(--navy)' ? ' org-card--navy' : ''}`} style={`--org-accent: ${org.accent}`}>
                 <div class="org-card__image">
-                    <img src={org.image} alt={org.name} />
+                    <Image src={placeholderImg} alt={org.name} />
                 </div>
                 <div class="org-card__body">
                     <h3 class="org-card__name">{org.name}</h3>
@@ -46,5 +45,6 @@ const orgs = [
                 </div>
             </div>
         ))}
+    </div>
     </div>
 </section>

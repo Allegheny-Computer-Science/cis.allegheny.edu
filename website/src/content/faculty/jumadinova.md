@@ -9,6 +9,6 @@ email: "jjumadinova@allegheny.edu"
 phone: "814-332-0000"
 office: "Alden Hall 101"
 website: "https://www.janyljumadinova.com"
-image: "img/jj1.png"
+image: "./jj1.png"
 order: 1
 ---

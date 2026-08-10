@@ -1,6 +1,7 @@
 ---
+const { variant } = Astro.props;
 ---
 
-<div class="button__fill">
+<div class={`button__fill${variant ? ` button__fill--${variant}` : ''}`}>
     <slot/>
 </div>

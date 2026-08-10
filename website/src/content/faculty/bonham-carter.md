@@ -9,6 +9,6 @@ email: "obonhamcarter@allegheny.edu"
 phone: "814-332-0000"
 office: "Alden Hall 104"
 website: "https://www.oliverbonhamcarter.com"
-image: "img/obc1.jpg"
+image: "./obc1.jpg"
 order: 2
 ---

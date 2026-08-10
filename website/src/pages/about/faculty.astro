@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -21,7 +22,7 @@ const faculty = allFaculty.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?
 
             <div class="faculty-card__image">
               {d.image
-                ? <img src={`${base}${d.image}`} alt={d.name} />
+                ? <Image src={d.image} alt={d.name} />
                 : <div aria-hidden="true" />
               }
             </div>
