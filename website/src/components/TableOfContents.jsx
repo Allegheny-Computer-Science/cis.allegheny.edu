@@ -10,7 +10,7 @@ export default function TableOfContents({ latestUpdate = null, relatedLinks = nu
         const body = document.querySelector('.mdx-body');
         if (!body) return;
 
-        const nodes = Array.from(body.querySelectorAll('h1, h2, h3'));
+        const nodes = Array.from(body.querySelectorAll('h1, h2, h3, h4'));
         setHeadings(nodes.map(el => ({
             id: el.id,
             text: el.textContent,
@@ -89,7 +89,7 @@ export default function TableOfContents({ latestUpdate = null, relatedLinks = nu
                             href={`#${h.id}`}
                             className={[
                                 'mdx-toc__link',
-                                h.level === 3 ? 'mdx-toc__link--sub' : '',
+                                h.level >= 3 ? 'mdx-toc__link--sub' : '',
                                 h.id === activeId ? 'mdx-toc__link--active' : '',
                             ].filter(Boolean).join(' ')}
                         >
