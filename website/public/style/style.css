@@ -1061,51 +1061,73 @@ a:hover .button__ghost--dark {
     padding-bottom: 0.75rem;
 }
 
-/* Lists: no default markers; styled ::before handles them */
+/* Lists */
 :is(.mdx-body, .mdx-gold-band) > ul,
 :is(.mdx-body, .mdx-gold-band) > ol {
-    list-style: none;
     font-size: 1rem;
     line-height: 1.75;
-    padding-left: 0;
+    padding-left: 1.5rem;
     padding-bottom: 0.75rem;
 }
 
-:is(.mdx-body, .mdx-gold-band) > ol { counter-reset: mdx-ol; }
-
 :is(.mdx-body, .mdx-gold-band) > ul li,
 :is(.mdx-body, .mdx-gold-band) > ol li {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
     color: var(--navy);
     margin-bottom: 0.25rem;
 }
 
-/* Bullet marker */
-:is(.mdx-body, .mdx-gold-band) > ul li::before {
-    content: '•';
-    font-family: var(--font-heading);
+:is(.mdx-body, .mdx-gold-band) > ul li::marker,
+:is(.mdx-body, .mdx-gold-band) > ol li::marker {
     color: var(--gator);
-
     font-weight: 700;
-    font-size: 1.4rem;
-    line-height: 1;
-    flex-shrink: 0;
 }
 
-/* Numbered marker */
-:is(.mdx-body, .mdx-gold-band) > ol li { counter-increment: mdx-ol; }
+/* Tables */
+:is(.mdx-body, .mdx-gold-band) > table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 1rem 0 0.75rem;
+    font-size: 0.95rem;
+    border: 2px solid var(--navy);
+    border-bottom: 20px solid var(--navy);
+}
 
-:is(.mdx-body, .mdx-gold-band) > ol li::before {
-    content: counter(mdx-ol) '.';
+:is(.mdx-body, .mdx-gold-band) > table thead tr {
+    background-color: var(--navy);
+}
+
+:is(.mdx-body, .mdx-gold-band) > table thead th {
     font-family: var(--font-heading);
-    font-size: 1.15rem;
-    color: var(--gator);
+    font-weight: 400;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    text-align: left;
+    padding: 0.6rem 0.85rem;
+    border: 2px solid var(--navy);
+}
 
-    font-weight: 700;
-    line-height: 1;
-    flex-shrink: 0;
+:is(.mdx-body, .mdx-gold-band) > table tbody tr:nth-child(odd) {
+    background-color: var(--white);
+}
+
+:is(.mdx-body, .mdx-gold-band) > table tbody tr:nth-child(even) {
+    background-color: var(--soft-gold);
+}
+
+:is(.mdx-body, .mdx-gold-band) > table {
+    transition: transform 180ms ease;
+}
+
+:is(.mdx-body, .mdx-gold-band) > table:hover {
+    transform: translateY(-2px);
+}
+
+:is(.mdx-body, .mdx-gold-band) > table td {
+    color: var(--navy);
+    padding: 0.5rem 0.85rem;
+    border: 2px solid var(--navy);
+    line-height: 1.5;
 }
 
 :is(.mdx-body, .mdx-gold-band) > p a {
@@ -1247,15 +1269,31 @@ a:hover .button__ghost--dark {
 
 .faculty-dir__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--object-gap);
 }
 
-/* White background, gator accent border */
+/* White background, navy accent border — horizontal layout */
 .faculty-card {
     background-color: var(--white);
     border: 2px solid var(--navy);
     border-bottom: 20px solid var(--navy);
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.faculty-card .faculty-card__image {
+    width: 14rem;
+    flex-shrink: 0;
+    aspect-ratio: auto;
+}
+
+.faculty-card .faculty-card__image img,
+.faculty-card .faculty-card__image > div {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
 }
 
 .faculty-card__body { gap: 0.6rem; }
@@ -1275,6 +1313,7 @@ a:hover .button__ghost--dark {
     color: var(--gator);
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    padding-bottom: 0;
 }
 
 .faculty-card__degrees {
@@ -1282,7 +1321,7 @@ a:hover .button__ghost--dark {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
-    padding-top: 0.5rem;
+    padding-top: 0.3rem;
     border-top: 1px solid rgba(27, 48, 84, 0.15);
 }
 
@@ -1735,9 +1774,6 @@ a:hover .button__ghost--dark {
     /* News page: 2-column grid */
     .news-grid { grid-template-columns: repeat(2, 1fr); }
 
-    /* Faculty directory: 2-column grid */
-    .faculty-dir__grid { grid-template-columns: repeat(2, 1fr); }
-
     /* Student orgs: all three side by side */
     .student-orgs__grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1838,15 +1874,9 @@ a:hover .button__ghost--dark {
         visibility: visible;
         opacity: 1;
     }
-    /* Faculty directory: single column, square image crop, hide degrees */
+    /* Faculty directory: single column on mobile */
     .faculty-dir__grid  { grid-template-columns: 1fr; }
-    .faculty-card       { flex-direction: row; align-items: flex-start; }
-    .faculty-card__image {
-        width: 6rem;
-        flex-shrink: 0;
-        aspect-ratio: 1;
-    }
-    .faculty-card__image img { object-position: top center; }
+    .faculty-card .faculty-card__image { width: 7rem; }
     .faculty-card__degrees  { display: none; }
     .faculty-card__btn      { height: 2.5rem; font-size: 1rem; }
 

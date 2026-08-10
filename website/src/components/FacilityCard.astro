@@ -1,0 +1,74 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const facilities = [
+    {
+        name: "ALIC Lab",
+        href: "https://allegheny.edu/academics/allegheny-lab-for-innovation-creativity/",
+        accent: "var(--navy)",
+        image: `${base}img/placeholder.jpg`,
+    },
+    {
+        name: "ALIC @ Bessemer",
+        href: "https://alic.allegheny.edu/",
+        accent: "var(--bold-gold)",
+        image: `${base}img/placeholder.jpg`,
+    },
+    {
+        name: "Reis Hall",
+        href: "https://allegheny.edu/about/news/a-new-reis-rising/",
+        accent: "var(--gator)",
+        image: `${base}img/placeholder.jpg`,
+    },
+];
+---
+
+<div class="facility-card-grid">
+    {facilities.map(facility => (
+        <div class={`facility-card${facility.accent === 'var(--navy)' ? ' facility-card--navy' : ''}`} style={`--org-accent: ${facility.accent}`}>
+            <div class="org-card__image">
+                <img src={facility.image} alt={facility.name} />
+            </div>
+            <div class="org-card__body">
+                <h3 class="facility-card__name">{facility.name}</h3>
+                <a href={facility.href} target="_blank" rel="noopener noreferrer" class="org-card__btn button__fill">
+                    Learn More&nbsp;
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M7 1h4v4M11 1L5.5 6.5M2 3H1v8h8V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    ))}
+</div>
+
+<style>
+.facility-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--object-gap);
+    margin: var(--object-gap) 0;
+}
+
+.facility-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 2px solid var(--org-accent);
+    border-bottom: 12px solid var(--org-accent);
+}
+
+.facility-card--navy .org-card__btn:hover {
+    background-color: transparent;
+    color: var(--navy);
+    border: 2px solid var(--navy);
+}
+
+.facility-card__name {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--navy);
+    padding-bottom: 0;
+}
+</style>
