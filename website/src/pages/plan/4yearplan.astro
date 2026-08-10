@@ -1,0 +1,989 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageTitle = "Plan Your Path";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+    <div style="background-color: #1B3054; min-height: 100vh; padding: 2rem;">
+        <div class="header-line">
+            <h1>Plan your</h1>
+            <h2>4 year journey</h2>
+        </div>
+        <p class="page-intro">Curious to what the future holds? See your potential next 4 years with our 4 year journey planner.</p>
+
+    <section class="dropdown-row" aria-label="Plan options">
+      <details class="dropdown" data-dropdown="major-minor">
+        <summary class="button__ghost dropdown-toggle" data-dropdown-label>Major or Minor</summary>
+        <div class="dropdown-menu">
+          <button type="button" class="dropdown-option">Major</button>
+          <button type="button" class="dropdown-option">Minor</button>
+        </div>
+      </details>
+      <details class="dropdown" data-dropdown="field">
+        <summary class="button__ghost dropdown-toggle" data-dropdown-label>Select Field</summary>
+        <div class="dropdown-menu">
+          <button type="button" class="dropdown-option">Computer Science</button>
+          <button type="button" class="dropdown-option">Data Science</button>
+          <button type="button" class="dropdown-option">Informatics</button>
+          <button type="button" class="dropdown-option">Software Engineering</button>
+        </div>
+      </details>
+      <button type="button" class="button__ghost go-button" id="go-button" disabled>Go</button>
+    </section>
+
+    <section class="updates-grid" style="margin-top: 2rem;">
+      <article class="update-card1">
+        <div class="update-card__body">
+          <h3 class="update-card__title">YEAR 1</h3>
+          <div class="class-list">
+            <div class="class-item"><span class="class-name">CS 101</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 102</span><span class="class-credits">4 credits</span></div>
+          </div>
+          <div class="credits-summary">
+            <p><strong>Total CS Credits Completed:</strong> 8</p>
+            <p><strong>Credits Remaining in Major:</strong> 40</p>
+          </div>
+        </div>
+      </article>
+      <article class="update-card2">
+        <div class="update-card__body">
+          <h3 class="update-card__title">YEAR 2</h3>
+          <div class="class-list">
+            <div class="class-item"><span class="class-name">CS 201</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 202</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 204 - Databases</span><span class="class-credits">4 credits</span></div>
+          </div>
+          <div class="credits-summary">
+            <p><strong>Total CS Credits Completed:</strong> 20</p>
+            <p><strong>Credits Remaining in Major:</strong> 28</p>
+          </div>
+        </div>
+      </article>
+      <article class="update-card1">
+        <div class="update-card__body">
+          <h3 class="update-card__title">YEAR 3</h3>
+          <div class="class-list">
+            <div class="class-item"><span class="class-name">CS 301 - Operating Systems</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 302 - Computer Networks</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 303 - Artificial Intelligence</span><span class="class-credits">4 credits</span></div>
+          </div>
+          <div class="credits-summary">
+            <p><strong>Total CS Credits Completed:</strong> 32</p>
+            <p><strong>Credits Remaining in Major:</strong> 16</p>
+          </div>
+        </div>
+      </article>
+      <article class="update-card2">
+        <div class="update-card__body">
+          <h3 class="update-card__title">YEAR 4</h3>
+          <div class="class-list">
+            <div class="class-item"><span class="class-name">CS 401 - Senior Comp I</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 402 - Senior Comp II</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 410 - Advanced Topics</span><span class="class-credits">4 credits</span></div>
+            <div class="class-item"><span class="class-name">CS 420 - Systems Seminar</span><span class="class-credits">4 credits</span></div>
+          </div>
+          <div class="credits-summary">
+            <p><strong>Total CS Credits Completed:</strong> 48</p>
+            <p><strong>Credits Remaining in Major:</strong> 0</p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const defaultMajorMinorLabel = 'Major or Minor';
+  const defaultFieldLabel = 'Select Field';
+
+  const majorMinorSummary = document.querySelector('[data-dropdown="major-minor"] [data-dropdown-label]');
+  const fieldSummary = document.querySelector('[data-dropdown="field"] [data-dropdown-label]');
+  const goButton = document.querySelector('#go-button');
+  const yearCards = Array.from(document.querySelectorAll('.updates-grid .update-card__body'));
+
+  const programRequirements = {
+    Major: {
+      'Computer Science': `Foundation
+Take all of the following three courses (12 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 101 - Data Structures (4)
+CMPSC 102 - Discrete Structures (4)
+
+Core
+Take all of the following four courses (16 credits):
+CMPSC 200 - Computer Organization (4)
+CMPSC 202 - Algorithm Analysis (4)
+CMPSC 204 - Theoretical Machines (4)
+CMPSC 406 - Internet of Things (4)
+
+Elective
+Take two of the following four courses (8 credits):
+CMPSC 300 - Bioinformatics (4)
+CMPSC 304 - Robotic Agents (4)
+CMPSC 400 - Operating Systems (4)
+CMPSC 403 - Computer Security (4)
+
+Project
+CMPSC 580 - Junior Seminar (4)
+CMPSC 600 - Senior Thesis I (4)
+CMPSC 610 - Senior Thesis II (4)`,
+      'Data Science': `Foundation
+Take all of the following three courses (12 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 101 - Data Structures (4)
+CMPSC 105 - Data Exploration (4)
+
+Core
+Take a total of five courses (20 credits), including a statistics course based on area of interest:
+CMPSC 301 - Data Science (4)
+CMPSC 405 - Deep Learning (4)
+
+Effective Communication
+Take one of the following (4 credits):
+COMM 360 - Communication Rhetoric and Civic Engagement (4)
+ENGL 208 - Professional Communication (4)
+ENGL 210 - Writing Creative Nonfiction (4)
+FILM 375 - Documentary Tradition (4)
+
+Ethics
+Take one of the following (4 credits):
+PHIL 130 - Values and Knowledge (4)
+PHIL 140 - Ethics and Community (4)
+PHIL 210 - Oppression and Liberation (4)
+POLSC 140 - Introduction to Political Theory (4)
+PSYCH 162 - Human Social Behavior (4)
+RELST 341 - Jewish Ethics (4)
+
+Statistics
+Take one of the following (4 credits):
+BIO 385 - Biostatistics (4)
+ECON 202 - Economic Statistics (4)
+MATH 345 - Probability and Statistical Inference I (4)
+POLSC 489 - Statistics and Data Analysis (4)
+PSYCH 207 - Statistical Methods in Psychology (4)
+
+Electives
+Take one of the following (4 credits):
+BIO 321 or GHS 321 - Epidemiology (4)
+CMPSC 300 - Bioinformatics (4)
+CMPSC 302 - Web Design (4)
+CMPSC 303 - Artificial Intelligence (4)
+CMPSC 305 - Database Systems (4)
+CMPSC 350 - Computational Narrative (4)
+CMPSC 406 - Internet of Things (4)
+COMM 376 - Ethnographic Methods in Media and Cultural Studies (4)
+ECON 203 - Introductory Econometrics (4)
+GHS 223 - People and Poisons: Foundations of Public Health Toxicology (4)
+GHS 228 - Global Health Data and Visualization (4)
+MATH 320 - Linear Algebra (4)
+MATH 346 - Probability and Statistical Inference II (4)
+PSYCH 307 - Applied Regression and ANOVA (4)
+
+Project
+Take all of the following three courses (12 credits):
+CMPSC 580 - Junior Seminar (4)
+DS 600 - Senior Thesis I (4)
+DS 610 - Senior Thesis II (4)
+
+Note: With advisor approval, students may substitute a Junior Seminar in another department for CMPSC 580.`,
+      Informatics: `Foundation
+Take all of the following three courses (12 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 101 - Data Structures (4)
+CMPSC 105 - Data Exploration (4)
+
+Core
+Take a total of four courses (16 credits), including two courses from Methods:
+CMPSC 350 - Computational Narrative (4)
+COMM 342 - Digital Media and Technology (4)
+
+Methods
+Take two of the following courses (8 credits):
+ART 187 - Electronic and Intermedia Art (4)
+ART 287 - Art at the Intersection of Science and Culture (4)
+CMPSC 302 - Web Design (4)
+COMM 376 - Ethnographic Methods in Media and Cultural Studies (4)
+FILM 171 - Filmmaking 1 (4)
+FILM 300 - Filmmaking 2 (4)
+FILM 375 - Documentary Tradition (4)
+
+Application Modules
+Choose at least two courses (8 credits) from at least one application module.
+
+Humanities Informatics
+Take at least two (one at 200-level or above):
+PHIL 140 - Ethics and Community (4)
+RELST 180 - Religion in American Life (4)
+RELST 341 - Jewish Ethics (4)
+
+Geoinformatics
+Take at least two (one at 200-level or above):
+CMPSC 304 - Robotic Agents (4)
+CMPSC 305 - Database Systems (4)
+CMPSC 406 - Internet of Things (4)
+ENVSC 285 - Quantitative Sustainability (4)
+ENVSC 305 - Environmental GIS I (4)
+ENVSC 306 - Environmental GIS II (4)
+
+Polinformatics
+Take at least two (one at 200-level or above):
+COMM 256 - Power, Politics, and Communication (4)
+COMM 360 - Communication Rhetoric and Civic Engagement (4)
+PHIL 210 - Oppression and Liberation (4)
+POLSC 120 - Comparative Government and Politics (4)
+POLSC 215 - Politics in Popular Culture (4)
+POLSC 318 - Politics and the Media (4)
+POLSC 424 - Inequality and Social Policy (4)
+
+Health Informatics
+Take at least two (one at 200-level or above):
+CMPSC 300 - Bioinformatics (4)
+COMM 331 - Disease, Disability, and Difference in Popular Culture (4)
+GHS 228 - Global Health Data and Visualization (4)
+GHS 235 - Global Health Ethics (4)
+GHS 321 - Epidemiology (4)
+GHS 354 - Medical Anthropology and Perspectives of Health in Asia-Pacific (4)
+HIST 380 - Disease and Medicine in Modern History (4)
+PHIL 385 - Medical Ethics (4)
+
+Project
+CMPSC 580 - Junior Seminar (4)
+INFM 600 - Senior Project I (4)
+INFM 610 - Senior Project II (4)
+
+Note: With advisor approval, students may substitute a Junior Seminar in another department for CMPSC 580.`,
+      'Software Engineering': `Foundation
+Take all of the following three courses (12 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 101 - Data Structures (4)
+CMPSC 104 - Document Engineering (4)
+
+Core
+Take all of the following four courses (16 credits):
+CMPSC 201 - Programming Languages (4)
+CMPSC 203 - Software Engineering (4)
+CMPSC 302 - Web Design (4)
+CMPSC 404 - Web Applications (4)
+
+Electives
+Take eight credits from:
+CMPSC 303 - Artificial Intelligence (4)
+CMPSC 305 - Database Systems (4)
+CMPSC 400 - Operating Systems (4)
+CMPSC 403 - Computer Security (4)
+
+Project
+Take all of the following three courses (12 credits):
+CMPSC 580 - Junior Seminar (4)
+SE 600 - Senior Thesis I (4)
+SE 610 - Senior Thesis II (4)`
+    },
+    Minor: {
+      'Computer Science': `Foundation
+Take all of the following courses (8 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 102 - Discrete Structures (4)
+
+Core
+Take two of the following courses (8 credits):
+CMPSC 200 - Computer Organization (4)
+CMPSC 202 - Algorithm Analysis (4)
+CMPSC 204 - Theoretical Machines (4)
+CMPSC 406 - Internet of Things (4)
+
+Electives
+Take two of the following courses (8 credits):
+CMPSC 304 - Robotic Agents (4)
+CMPSC 400 - Operating Systems (4)
+CMPSC 403 - Computer Security (4)`,
+      'Data Science': `Foundation
+Take all three of the following courses (12 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 105 - Data Exploration (4)
+CMPSC 301 - Data Science (4)
+
+Core: Ethics
+Take one of the following (4 credits):
+PHIL 130 - Values and Knowledge (4)
+PHIL 140 - Ethics and Community (4)
+PHIL 210 - Oppression and Liberation (4)
+POLSC 140 - Introduction to Political Theory (4)
+PSYCH 162 - Human Social Behavior (4)
+RELST 341 - Jewish Ethics (4)
+
+Core: Communication
+Take one of the following (4 credits):
+COMM 360 - Communication Rhetoric and Civic Engagement (4)
+ENGL 208 - Professional Communication (4)
+ENGL 210 - Writing Creative Nonfiction (4)
+FILM 375 - Documentary Tradition (4)
+
+Core: Statistics
+Take one of the following (4 credits):
+BIO 385 - Biostatistics (4)
+ECON 202 - Economic Statistics (4)
+MATH 345 - Probability and Statistical Inference I (4)
+POLSC 489 - Statistics and Data Analysis (4)
+PSYCH 207 - Statistical Methods in Psychology (4)`,
+      Informatics: `Foundation
+Take both of the following courses (8 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 101 - Data Structures (4)
+
+Core
+Take all of the following courses (8 credits):
+CMPSC 350 - Computational Narrative (4)
+COMM 342 - Digital Media and Technology (4)
+
+Application Module
+Take two courses from one application module (8 credits).
+
+Humanities Informatics
+PHIL 140 - Ethics and Community (4)
+RELST 180 - Religion in American Life (4)
+RELST 341 - Jewish Ethics (4)
+
+Geoinformatics
+At least one course must be outside CMPSC:
+CMPSC 304 - Robotic Agents (4)
+CMPSC 305 - Database Systems (4)
+CMPSC 406 - Internet of Things (4)
+ENVSC 285 - Quantitative Sustainability (4)
+ENVSC 305 - Environmental GIS I (4)
+ENVSC 306 - Environmental GIS II (4)
+
+Polinformatics
+COMM 256 - Power, Politics, and Communication (4)
+COMM 360 - Communication Rhetoric and Civic Engagement (4)
+PHIL 210 - Oppression and Liberation (4)
+POLSC 120 - Comparative Government and Politics (4)
+POLSC 215 - Politics in Popular Culture (4)
+POLSC 318 - Politics and the Media (4)
+POLSC 424 - Inequality and Social Policy (4)
+
+Health Informatics
+CMPSC 300 - Bioinformatics (4)
+COMM 331 - Disease, Disability, and Difference in Popular Culture (4)
+GHS 228 - Global Health Data and Visualization (4)
+GHS 235 - Global Health Ethics (4)
+GHS 321 - Epidemiology (4)
+GHS 354 - Medical Anthropology and Perspectives of Health in Asia-Pacific (4)
+HIST 380 - Disease and Medicine in Modern History (4)
+PHIL 385 - Medical Ethics (4)`,
+      'Software Engineering': `Foundation
+Take all three of the following courses (12 credits):
+CMPSC 100 - Computational Expression (4)
+CMPSC 101 - Data Structures (4)
+CMPSC 203 - Software Engineering (4)
+
+Core
+Take one of the following courses (4 credits):
+CMPSC 201 - Programming Languages (4)
+CMPSC 302 - Web Design (4)
+CMPSC 404 - Web Applications (4)
+
+Electives
+Take eight credits from:
+CMPSC 303 - Artificial Intelligence (4)
+CMPSC 305 - Database Systems (4)
+CMPSC 400 - Operating Systems (4)
+CMPSC 403 - Computer Security (4)`
+    }
+  };
+
+  const updateGoButtonState = () => {
+    if (!(majorMinorSummary instanceof HTMLElement) || !(fieldSummary instanceof HTMLElement) || !(goButton instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    const hasMajorMinor = majorMinorSummary.textContent?.trim() !== defaultMajorMinorLabel;
+    const hasField = fieldSummary.textContent?.trim() !== defaultFieldLabel;
+    goButton.disabled = !(hasMajorMinor && hasField);
+  };
+
+  const courseLinePattern = /^(?:[A-Z]{2,}\s*\d{2,3}(?:\s+or\s+[A-Z]{2,}\s*\d{2,3})?)\b/;
+
+  const shuffle = (array) => {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+
+  const parseSelectionCount = (instruction, courseCount) => {
+    if (!instruction) return courseCount;
+
+    const text = instruction.toLowerCase();
+
+    if (text.includes('take all') || text.includes('take both')) return courseCount;
+    if (text.includes('take one') || text.includes('choose one')) return 1;
+    if (text.includes('take two') || text.includes('choose two') || text.includes('at least two') || text.includes('minimum of two')) return 2;
+    if (text.includes('take eight credits')) return 2;
+
+    return courseCount;
+  };
+
+  const toCourseItem = (line) => {
+    const creditsMatch = line.match(/\((\d+)\)$/);
+    return {
+      text: line.replace(/\s*\((\d+)\)$/, '').trim(),
+      credits: creditsMatch ? `${creditsMatch[1]} credits` : ''
+    };
+  };
+
+  const parseRequirementItems = (requirementsText, selectedTrack, selectedField) => {
+    const blocks = requirementsText
+      .split('\n\n')
+      .map((block) => block.trim())
+      .filter(Boolean);
+
+    const selectedItems = [];
+    const informaticsModuleBlocks = [];
+    const informaticsModuleHeadings = new Set([
+      'Humanities Informatics',
+      'Geoinformatics',
+      'Polinformatics',
+      'Health Informatics'
+    ]);
+    const isInformaticsProgram = selectedField === 'Informatics' && (selectedTrack === 'Major' || selectedTrack === 'Minor');
+
+    blocks.forEach((block) => {
+      const lines = block
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      const heading = lines[0] || '';
+      const courseLines = lines.filter((line) => courseLinePattern.test(line));
+
+      if (isInformaticsProgram && informaticsModuleHeadings.has(heading)) {
+        if (courseLines.length > 0) {
+          informaticsModuleBlocks.push(courseLines);
+        }
+        return;
+      }
+
+      const instruction = lines.find((line) => /^(take|choose)\b/i.test(line));
+
+      if (courseLines.length === 0) return;
+
+      const desiredCount = parseSelectionCount(instruction, courseLines.length);
+      const count = Math.max(1, Math.min(desiredCount, courseLines.length));
+      const chosenCourses = count >= courseLines.length ? courseLines : shuffle(courseLines).slice(0, count);
+
+      chosenCourses.forEach((courseLine) => {
+        selectedItems.push(toCourseItem(courseLine));
+      });
+    });
+
+    if (isInformaticsProgram && informaticsModuleBlocks.length > 0) {
+      const chosenModule = shuffle(informaticsModuleBlocks)[0];
+      const chosenCourses = shuffle(chosenModule).slice(0, Math.min(2, chosenModule.length));
+      chosenCourses.forEach((courseLine) => {
+        selectedItems.push(toCourseItem(courseLine));
+      });
+    }
+
+    return selectedItems;
+  };
+
+  const splitIntoYears = (items) => {
+    const buckets = [[], [], [], []];
+    const baseSize = Math.floor(items.length / 4);
+    const remainder = items.length % 4;
+
+    let offset = 0;
+    for (let year = 0; year < 4; year += 1) {
+      const bucketSize = baseSize + (year < remainder ? 1 : 0);
+      buckets[year] = items.slice(offset, offset + bucketSize);
+      offset += bucketSize;
+    }
+
+    return buckets;
+  };
+
+  const enforceCoursePlacement = (yearlyItems) => {
+    const juniorSeminarPattern = /Junior Seminar/i;
+    const seniorThesisPattern = /Senior Thesis I|Senior Thesis II/i;
+
+    const juniorSeminars = [];
+    const seniorThesisCourses = [];
+
+    for (let year = 0; year < 4; year += 1) {
+      const items = yearlyItems[year] || [];
+      const keep = [];
+
+      items.forEach((item) => {
+        if (juniorSeminarPattern.test(item.text)) {
+          juniorSeminars.push(item);
+          return;
+        }
+
+        if (seniorThesisPattern.test(item.text)) {
+          seniorThesisCourses.push(item);
+          return;
+        }
+
+        keep.push(item);
+      });
+
+      yearlyItems[year] = keep;
+    }
+
+    if (juniorSeminars.length > 0) {
+      yearlyItems[2] = [...(yearlyItems[2] || []), ...juniorSeminars];
+    }
+
+    if (seniorThesisCourses.length > 0) {
+      yearlyItems[3] = [...(yearlyItems[3] || []), ...seniorThesisCourses];
+    }
+
+    return yearlyItems;
+  };
+
+  const countCredits = (items) => {
+    return items.reduce((total, item) => {
+      const match = item.credits.match(/(\d+)/);
+      if (!match) return total;
+      return total + Number(match[1]);
+    }, 0);
+  };
+
+  const renderRequirementsToYearCards = () => {
+    if (!(majorMinorSummary instanceof HTMLElement) || !(fieldSummary instanceof HTMLElement)) return;
+
+    const selectedTrack = majorMinorSummary.textContent?.trim() || '';
+    const selectedField = fieldSummary.textContent?.trim() || '';
+    const requirementsText = programRequirements[selectedTrack]?.[selectedField];
+
+    if (!requirementsText || yearCards.length !== 4) return;
+
+    const items = parseRequirementItems(requirementsText, selectedTrack, selectedField);
+    const totalProgramCredits = countCredits(items);
+    const yearlyItems = enforceCoursePlacement(splitIntoYears(items));
+
+    let cumulativeCredits = 0;
+
+    yearCards.forEach((cardBody, index) => {
+      const title = cardBody.querySelector('.update-card__title');
+      const classList = cardBody.querySelector('.class-list');
+      const summary = cardBody.querySelector('.credits-summary');
+
+      if (!(title instanceof HTMLElement) || !(classList instanceof HTMLElement) || !(summary instanceof HTMLElement)) {
+        return;
+      }
+
+      title.textContent = `YEAR ${index + 1}`;
+
+      const cardItems = yearlyItems[index] || [];
+      classList.innerHTML = cardItems
+        .map((item) => {
+          return `<div class="class-item"><span class="class-name">${item.text}</span><span class="class-credits">${item.credits}</span></div>`;
+        })
+        .join('');
+
+      const yearCredits = countCredits(cardItems);
+      cumulativeCredits += yearCredits;
+      const remainingCredits = Math.max(0, totalProgramCredits - cumulativeCredits);
+      summary.innerHTML = [
+        `<p><strong>Total CS Credits Completed:</strong> ${cumulativeCredits}</p>`,
+        `<p><strong>Credits Remaining in Major:</strong> ${remainingCredits}</p>`
+      ].join('');
+    });
+  };
+
+  document.querySelectorAll('.dropdown').forEach((dropdown) => {
+    const summary = dropdown.querySelector('[data-dropdown-label]');
+    const options = dropdown.querySelectorAll('.dropdown-option');
+
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        if (!(summary instanceof HTMLElement)) return;
+        summary.textContent = option.textContent?.trim() || summary.textContent;
+        dropdown.removeAttribute('open');
+        updateGoButtonState();
+      });
+    });
+  });
+
+  if (goButton instanceof HTMLButtonElement) {
+    goButton.addEventListener('click', renderRequirementsToYearCards);
+  }
+
+  updateGoButtonState();
+</script>
+
+<style>
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #FEDA48;
+    margin-bottom: 1rem;
+  }
+
+    h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 64px;
+        color: #FFFFFF;
+        margin-bottom: 1rem;
+    }
+
+  p {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #FFFFFF;
+  }
+
+  p2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #1B3054
+  }
+
+  .header-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-line h1 {
+    margin: 0;
+  }
+
+  .page-intro {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+
+  .updates-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .update-card1 {
+    flex: 1 1 calc((100% - 3rem) / 4);
+    min-width: 0;
+    background: #1B3054;
+    border: 2px solid #80BD41;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    border-bottom: 20px solid #80BD41;
+  }
+
+  .update-card2 {
+    flex: 1 1 calc((100% - 3rem) / 4);
+    min-width: 0;
+    background: #1B3054;
+    border: 2px solid #FEDA48;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    border-bottom: 20px solid #FEDA48;
+  }
+
+  .update-card__body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .update-card__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: #FEDA48;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .class-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    flex: 1;
+  }
+
+  .class-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #FFFFFF;
+    line-height: 1.4;
+  }
+
+  .class-credits {
+    color: #FEDA48;
+    white-space: nowrap;
+  }
+
+  .class-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #FFFFFF;
+    line-height: 1.4;
+  }
+
+  .class-name,
+  .class-credits {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .class-name {
+    color: #FFFFFF;
+  }
+
+  .class-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #FFFFFF;
+    line-height: 1.4;
+  }
+
+  /* Astro scoped CSS does not target JS-injected nodes unless selectors are global. */
+  :global(.updates-grid .class-item) {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #FFFFFF;
+    line-height: 1.4;
+  }
+
+  :global(.updates-grid .class-name) {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #FFFFFF;
+    line-height: 1.4;
+  }
+
+  :global(.updates-grid .class-credits) {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #FEDA48;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .credits-summary {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .credits-summary p {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #FFFFFF;
+    line-height: 1.4;
+  }
+
+  .button__ghost {
+    display: inline-grid;
+    width: fit-content;
+    padding: 0.75rem 1rem;
+    border: 2px solid #ffffff;
+    background-color: #80BD41;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: background-color 180ms ease, color 180ms ease;
+    cursor: pointer;
+  }
+
+  .button__ghost:hover {
+    background-color: #FFFFFF;
+    color: #1B3054;
+  }
+
+  .dropdown-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    margin: 1rem 0 1.5rem;
+    align-items: flex-start;
+  }
+
+  .go-button {
+    align-self: stretch;
+    min-width: 100px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .go-button:disabled {
+    background-color: #90a4bf;
+    color: #dce6f5;
+    border-color: #90a4bf;
+    cursor: not-allowed;
+  }
+
+
+  .dropdown {
+    position: relative;
+    flex: 1 1 0;
+    max-width: 240px;
+  }
+
+  .dropdown-toggle {
+    list-style: none;
+    border: 2px solid #80BD41;
+    min-width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .dropdown-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .dropdown-menu {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    background-color: #FFFFFF;
+    border: 2px solid #FEDA48;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 220px;
+  }
+
+  .dropdown-option {
+    border: none;
+    background: transparent;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    color: #1B3054;
+    font-size: 15px;
+  }
+
+  .dropdown-option:hover {
+    text-decoration: underline;
+  }
+
+  .info-section {
+    margin-top: 2rem;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 2rem;
+    width: 100vw;
+    background-color: #FFFFFF !important;
+    color: #1B3054;
+    border-radius: 0;
+    border: none;
+    box-sizing: border-box;
+  }
+
+  .info-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #1B3054;
+  }
+
+  .info-section p {
+    color: #1B3054;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .split-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    min-height: 320px;
+    overflow: hidden;
+    width: 100vw;
+  }
+
+  .split-panel {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .split-panel--light {
+    background-color: #FEDA48;
+    color: #1B3054;
+  }
+
+  .split-panel--dark {
+    background-color: #F6E9A8;
+    color: #1B3054;
+  }
+
+  .split-panel h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    margin: 0 0 1rem;
+    color: #1B3054;
+  }
+
+  .split-panel p {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    color: #1B3054;
+  }
+
+h5 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    color: #1B3054
+    margin-bottom: .5rem;
+  }
+
+h6 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: #1B3054
+  }
+
+h7 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #1B3054
+}
+
+</style>

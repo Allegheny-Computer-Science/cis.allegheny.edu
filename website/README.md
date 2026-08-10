@@ -41,6 +41,16 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Instagram Footer Feed
+
+The footer is configured to show the most recent 4 Instagram posts.
+
+1. Copy `.env.example` to `.env`.
+2. Set `INSTAGRAM_ACCESS_TOKEN` to a valid long-lived Instagram Basic Display token.
+3. Keep `PUBLIC_INSTAGRAM_PROFILE_URL` set to your account URL.
+
+When `INSTAGRAM_ACCESS_TOKEN` is present, the build fetches the latest posts automatically. If Instagram rate-limits public requests, `PUBLIC_INSTAGRAM_FALLBACK_POST_SHORTCODES` is used as a backup so the footer still renders 4 post images.
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

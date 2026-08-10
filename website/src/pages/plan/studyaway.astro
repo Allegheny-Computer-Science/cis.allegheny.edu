@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import externalLinkIcon from '../../assets/externallink.png';
+
+const pageTitle = "StudyAway";
+const tripLink = "https://sites.allegheny.edu/global-education/study-away-programs/";
+
+---
+<BaseLayout pageTitle={pageTitle}>
+  <div style="background-color: #1B3054; min-height: 100vh; padding: 2rem;">
+    <div class="header-line">
+      <h1>Study Away</h1>
+      <h2>Guide</h2>
+    </div>
+    <section class="intro-section">
+      <div class="image-placeholder" aria-hidden="true"></div>
+      <div class="intro-content">
+        <h2>Take your Computer Science Education to</h2>
+        <h1>New Places</h1>
+        <p>The Global Education Office and the Department of Computer and Information Science (CIS) have compiled the following information for computer science, data science, informatics, and software engineering majors to assist in planning for a semester of study away. Students should let their Academic Advisor know as soon as possible about their plan to study away so they can help fit this experience into the student’s graduation plan.</p>
+          <a href={tripLink} class="button__ghost" target="_blank" rel="noopener noreferrer">
+            Plan Your Trip Now
+            <img src={externalLinkIcon.src} alt="" aria-hidden="true" class="button__icon" />
+          </a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #FEDA48;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #ffffff;
+    margin: 0;
+    display: inline;
+  }
+
+  .header-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .header-line h1 {
+    margin: 0;
+  }
+
+  .intro-section {
+    display: grid;
+    grid-template-columns: 669px 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2rem;
+  }
+
+  .image-placeholder {
+    width: 669px;
+    height: 618px;
+    background-color: #FEDA48;
+    border: 2px solid #FEDA48;
+  }
+
+  .intro-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-left: 1rem;
+    max-width: 640px;
+    margin-top: 0.25rem;
+  }
+
+  .intro-content h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: #ffffff;
+    margin: 0;
+    line-height: 0.9;
+  }
+
+  .intro-content h1 {
+    margin: 0;
+    line-height: 0.9;
+  }
+
+  .intro-content p {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #FFFFFF;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .button__ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 220px;
+    margin-top: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    border: 2px solid #ffffff;
+    background-color: #1B3054;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: background-color 180ms ease, color 180ms ease;
+    white-space: nowrap;
+  }
+
+  .button__ghost:hover {
+    background-color: #FFFFFF;
+    color: #1B3054;
+  }
+
+  .button__icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
