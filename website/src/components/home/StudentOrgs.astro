@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import placeholderImg from '../../assets/img/placeholder.jpg';
+
+const orgs = [
+    {
+        name: "ACM",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasel lis id egestas nibh, ac elementum velit doro ban.",
+        href: "https://acm.org",
+        accent: "var(--navy)",
+    },
+    {
+        name: "UPE",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasel lis id egestas nibh, ac elementum velit doro ban.",
+        href: "https://upeallegheny.netlify.app/",
+        accent: "var(--bold-gold)",
+    },
+    {
+        name: "Code With Chompers",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasel lis id egestas nibh, ac elementum velit doro ban.",
+        href: "https://codewithchompers.com/",
+        accent: "var(--gator)",
+    },
+];
+---
+
+<section class="student-orgs white__band">
+    <h1 class="student-orgs__heading">Passionate, Active <em>Student Organizations</em></h1>
+    <div class="student-orgs__scroll-wrap">
+    <div class="student-orgs__grid">
+        {orgs.map(org => (
+            <div class={`org-card${org.accent === 'var(--navy)' ? ' org-card--navy' : ''}`} style={`--org-accent: ${org.accent}`}>
+                <div class="org-card__image">
+                    <Image src={placeholderImg} alt={org.name} />
+                </div>
+                <div class="org-card__body">
+                    <h3 class="org-card__name">{org.name}</h3>
+                    <p class="org-card__desc">{org.description}</p>
+                    <a href={org.href} target="_blank" rel="noopener noreferrer" class="org-card__btn button__fill">
+                        Their Site&nbsp;
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M7 1h4v4M11 1L5.5 6.5M2 3H1v8h8V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        ))}
+    </div>
+    </div>
+</section>

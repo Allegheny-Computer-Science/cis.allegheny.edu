@@ -12,11 +12,15 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+		<!-- Preconnect to Google Fonts servers before any rendering blocks on them -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" />
 		<link rel="stylesheet" href={`${base}style/style.css`} />
 		<title>{pageTitle}</title>
 	</head>
 	<body>
-		<header>
+		<header style="position:sticky;top:0;z-index:100;">
 			<Header />
 		</header>
 		<main>

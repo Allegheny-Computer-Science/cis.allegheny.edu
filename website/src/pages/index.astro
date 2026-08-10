@@ -3,20 +3,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
 import UpdatesGrid from '../components/home/Updates.astro';
 import FacultyIntro from '../components/home/FacultyIntro.astro';
-import LeftBand from '../components/home/LeftBand.astro';
+import CommunityBand from '../components/home/CommunityBand.astro';
 import StudentOrgs from '../components/home/StudentOrgs.astro';
-import RightBand from '../components/home/RightBand.astro';
+import CareerBand from '../components/home/CareerBand.astro';
 import EndorsementWheel from '../components/home/EndorsementWheel.astro';
 
-const pageTitle = "Home";
+const pageTitle = "Allegheny College CIS";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
 	<Hero />
 	<UpdatesGrid />
 	<FacultyIntro />
-	<LeftBand />
+	<CommunityBand />
 	<StudentOrgs />
-	<RightBand />
+	<CareerBand />
 	<EndorsementWheel />
 </BaseLayout>

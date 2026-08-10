@@ -1,7 +1,43 @@
 ---
-const pageTitle = "Calendar";
-
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import UpdateCard from '../../components/UpdateCard.astro';
+import { CALENDAR_EMBED_URL } from '../../config/calendar';
+import { getCalendarEvents } from '../../lib/getCalendarEvents';
+
+const events = await getCalendarEvents(20);
 ---
 
-<p>hello</p>
+<BaseLayout pageTitle="Calendar | Allegheny CIS">
+  <section class="calendar-page white__band">
+    <h1 class="calendar-page__heading">Department <em>Calendar</em></h1>
+
+    <div class="calendar-page__embed-wrap">
+      <iframe
+        src={CALENDAR_EMBED_URL}
+        class="calendar-page__embed"
+        title="Allegheny CIS Department Calendar"
+        frameborder="0"
+        scrolling="no"
+        loading="lazy"
+      ></iframe>
+    </div>
+
+    {events.length > 0 && (
+      <div class="calendar-page__events">
+        <h2 class="calendar-page__events-heading">Upcoming <em>Events</em></h2>
+        <div class="updates-grid calendar-page__grid">
+          {events.map(event => (
+            <UpdateCard
+              title={event.title}
+              date={event.start}
+              category="event"
+              description={event.description || (event.location ?? '')}
+              slug={event.url}
+              externalUrl={event.url}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+</BaseLayout>

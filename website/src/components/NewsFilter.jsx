@@ -42,9 +42,14 @@ export default function NewsFilter({ updates, baseUrl = '/' }) {
 
       <div className="updates-grid news-grid">
         {shown.map(u => (
-          <a key={u.slug} href={`${baseUrl}community/news/${u.slug}`} className={`update-card update-card--${u.category} update-card--light`}>
+          <a
+            key={u.slug}
+            href={u.externalUrl ?? `${baseUrl}community/news/${u.slug}`}
+            className={`update-card update-card--${u.category} update-card--light`}
+            {...(u.externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
             <div className="update-card__image">
-              <img src={u.image ?? `${baseUrl}img/placeholder.jpg`} alt={u.title} />
+              <img src={u.image ?? `${baseUrl}img/placeholder.jpg`} alt={u.title} width="640" height="360" loading="lazy" decoding="async" />
             </div>
             <div className="update-card__body">
               <p className="update-card__date">{new Date(u.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>

@@ -1,0 +1,76 @@
+---
+import EndorsementCarousel from "./EndorsementCarousel.jsx";
+import { getImage } from 'astro:assets';
+import burdettRaw   from '../../assets/img/endorsements/philburdette.png';
+import kingRaw      from '../../assets/img/endorsements/karaking.png';
+import douglasRaw   from '../../assets/img/endorsements/ahmaddouglas.png';
+import mukherjeeRaw from '../../assets/img/endorsements/dibyomukherjee.png';
+import kukunasRaw   from '../../assets/img/endorsements/jimkukunas.png';
+import beislerRaw   from '../../assets/img/endorsements/katiebeisler.png';
+import haddoxRaw    from '../../assets/img/endorsements/jenniferhaddoxschatz.png';
+
+const [burdette, king, douglas, mukherjee, kukunas, beisler, haddox] = await Promise.all([
+  getImage({ src: burdettRaw,   format: 'webp' }),
+  getImage({ src: kingRaw,      format: 'webp' }),
+  getImage({ src: douglasRaw,   format: 'webp' }),
+  getImage({ src: mukherjeeRaw, format: 'webp' }),
+  getImage({ src: kukunasRaw,   format: 'webp' }),
+  getImage({ src: beislerRaw,   format: 'webp' }),
+  getImage({ src: haddoxRaw,    format: 'webp' }),
+]);
+
+const endorsements = [
+  {
+    name: "Phil Burdette '09",
+    title: "Senior Security Researcher, SecureWorks",
+    statement: "The nurturing learning environment, fostered by the professors of the Computer Science department, enabled me to mature to my full potential. The skill set I acquired while collaborating with fellow students on laboratory assignments and conducting independent research with a professor have stayed with me long after my graduation from Allegheny. In both graduate school at Carnegie Mellon University and as a cyber security professional, the educational experience I gained in Alden Hall prepared me for both the technical and social challenges that I encounter on a daily basis.",
+    image: burdette.src,
+  },
+  {
+    name: "Kara King '15",
+    title: "IT Tech Specialist, FirstEnergy Corporation",
+    statement: "In my four years at Allegheny College, the computer science department had shown me what it was like to be part of a community that does not feel just like a learning environment but a family as well. Students are taught in this department how to gain a wide range of knowledge by themselves as well as with others in order to get ready for taking on the responsibilities and situations that a job will present. When my four years were up, I was more than ready to take on the next steps whether it was grad school or a full-time job.",
+    image: king.src,
+  },
+  {
+    name: "Ahmad Douglas '02",
+    title: "Head of Information Security and Quality, XFINITY Home by Comcast",
+    statement: "My computer science education from Allegheny College laid the foundation for all of my future professional endeavors. In the final analysis, a technical education is important, but you need so much more in order to have a successful career and live a meaningful, satisfying life. My liberal arts computer science education from Allegheny was the springboard that helped me to reach, and surpass, my dreams.",
+    image: douglas.src,
+  },
+  {
+    name: "Dibyo Mukherjee '14",
+    title: "Software Engineer, Google",
+    statement: "I think CS at Allegheny teaches you a good mix of essential theoretical concepts as well as applied technology used every day in the industry. Besides regular courses, working as a research assistant and building a distributed system for my senior project were both instrumental in helping me secure a job in the software industry.",
+    image: mukherjee.src,
+  },
+  {
+    name: "Jim Kukunas '10",
+    title: "Software Engineer, Intel",
+    statement: "Many institutions offer degrees in computer science; however, very few offer such a mature and comprehensive program. At Allegheny College, students of computer science develop strong problem solving skills, which translate into the ability to innovate. This, combined with the top-notch faculty, small class sizes, and ample opportunities for student research, uniquely positions the Allegheny College graduate to attack the challenges of tomorrow and to leave their mark on the world.",
+    image: kukunas.src,
+  },
+  {
+    name: "Katie Beisler '16",
+    title: "Technical Account Manager, Microsoft",
+    statement: "The education I received as a Computer Science Major at Allegheny College launched me into a career I never dreamed was possible. The technical abilities I learned helped, but I would be nowhere without my liberal arts education. While technical skills are important, there are so many other skills that prove to be crucial while shaping an individual for their future as a computer scientist.",
+    image: beisler.src,
+  },
+  {
+    name: "Jennifer Haddox-Schatz '00",
+    title: "Software Engineer, Daniel H. Wagner Associates",
+    statement: "I cannot say enough about the education I received from Allegheny College's computer science department and how well it prepared me for graduate school and my career in industry. Rather than focus on a particular language or technology that was the \"fad\" at the time, my Allegheny education emphasized problem-solving skills, core computer science knowledge, and development of clear and precise written and oral communication skills. This broad background has given me both the ability and the confidence to tackle everything from high level object-oriented design to modifying decades old legacy code written in Ada to training and mentoring new software developers at my company to solving the most obscure of problems reported by our clients and integration partners.",
+    image: haddox.src,
+  },
+];
+---
+
+<section id="endorsements" class="faculty-section white__band">
+
+    <h1>Genuine <em>Endorsements</em></h1>
+
+    <div class="scroll-fade">
+        <EndorsementCarousel endorsements={endorsements} client:visible />
+    </div>
+
+</section>

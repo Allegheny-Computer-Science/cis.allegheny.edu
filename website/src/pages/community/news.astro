@@ -2,18 +2,31 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsFilter from '../../components/NewsFilter.jsx';
+import { getCalendarEvents } from '../../lib/getCalendarEvents';
 
 const allUpdates = await getCollection('updates');
-const updates = allUpdates
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .map(e => ({
+const calendarEvents = await getCalendarEvents(20);
+
+const updates = [
+  ...allUpdates.map(e => ({
     slug: e.id,
     title: e.data.title,
     date: e.data.date.toISOString(),
     category: e.data.category,
     image: e.data.image ?? null,
     description: e.data.description,
-  }));
+    externalUrl: null,
+  })),
+  ...calendarEvents.map(e => ({
+    slug: e.id,
+    title: e.title,
+    date: e.start.toISOString(),
+    category: 'event' as const,
+    image: null,
+    description: e.description || e.location || '',
+    externalUrl: e.url,
+  })),
+].sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
 ---
 
 <BaseLayout pageTitle="Allegheny CIS News">
