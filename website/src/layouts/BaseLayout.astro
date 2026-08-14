@@ -2,32 +2,122 @@
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 
-const { pageTitle } = Astro.props;
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+interface Props {
+  pageTitle: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const {
+  pageTitle,
+  description = 'Allegheny College Department of Computer and Information Science — preparing students for careers in computing through rigorous, innovative, and inclusive education.',
+  ogImage = '/img/og-default.jpg',
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const base        = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const siteUrl     = 'https://cis.allegheny.edu';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageUrl  = new URL(ogImage, siteUrl).toString();
+const siteName    = 'Allegheny College CIS';
+const fullTitle   = pageTitle === siteName ? pageTitle : `${pageTitle} | ${siteName}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: siteName,
+      description,
+      publisher: { '@id': `${siteUrl}/#org` },
+    },
+    {
+      '@type': 'EducationalOrganization',
+      '@id': `${siteUrl}/#org`,
+      name: 'Department of Computer and Information Science, Allegheny College',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/img/logo.svg`,
+      },
+      parentOrganization: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Allegheny College',
+        url: 'https://allegheny.edu',
+      },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '520 N Main St',
+        addressLocality: 'Meadville',
+        addressRegion: 'PA',
+        postalCode: '16335',
+        addressCountry: 'US',
+      },
+    },
+  ],
+};
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-		<!-- Preconnect to Google Fonts servers before any rendering blocks on them -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" />
-		<link rel="stylesheet" href={`${base}style/style.css`} />
-		<title>{pageTitle}</title>
-	</head>
-	<body>
-		<header style="position:sticky;top:0;z-index:100;">
-			<Header />
-		</header>
-		<main>
-			<slot />
-		</main>
-		<footer>
-			<Footer />
-		</footer>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Primary -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content={ogType} />
+    <meta property="og:url"         content={canonicalUrl} />
+    <meta property="og:title"       content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image"       content={ogImageUrl} />
+    <meta property="og:site_name"   content={siteName} />
+    <meta property="og:locale"      content="en_US" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={ogImageUrl} />
+
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon"    href={`${base}apple-touch-icon.png`} />
+    <link rel="icon" type="image/png" sizes="96x96" href={`${base}favicon-96x96.png`} />
+    <link rel="icon" type="image/svg+xml"            href={`${base}favicon.svg`} />
+    <link rel="shortcut icon"                        href={`${base}favicon.ico`} />
+    <link rel="manifest"                             href={`${base}site.webmanifest`} />
+    <meta name="theme-color" content="#1B3054" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href={`${base}style/style.css`} />
+  </head>
+  <body>
+    <header style="position:sticky;top:0;z-index:100;">
+      <Header />
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <Footer />
+    </footer>
+  </body>
 </html>

@@ -1,12 +1,11 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
 import react from '@astrojs/react';
-
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://legendary-adventure-k57g497.pages.github.io',
-  integrations: [react(), mdx()],
+  site: 'https://cis.allegheny.edu',
+  integrations: [react(), mdx(), sitemap()],
 });

@@ -350,7 +350,9 @@ a:hover .button__ghost--dark {
 
 .update-card:hover,
 .org-card:hover,
-.faculty-card:hover {
+.faculty-card:hover,
+.tl-card:hover,
+.tab-card:hover {
     transform: translateY(-2px);
 }
 
@@ -1885,6 +1887,7 @@ a:hover .button__ghost--dark {
     border-bottom: 20px solid var(--navy);
     display: flex;
     align-items: stretch;
+    transition: transform 180ms ease;
 }
 
 .tl-card__image {
@@ -2004,6 +2007,7 @@ a:hover .button__ghost--dark {
     border-bottom: 20px solid var(--navy);
     display: flex;
     align-items: stretch;
+    transition: transform 180ms ease;
 }
 
 .tab-card__position {

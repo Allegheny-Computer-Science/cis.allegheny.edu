@@ -1,6 +1,6 @@
 // ── Technical Leaders directory ────────────────────────────────────────────────
 // Each TL is one object in the list.
-// image: path relative to /public, e.g. "/img/tl/name.jpg" — omit for no photo
+// image: filename in src/assets/img/tl/, e.g. "name.jpg" — omit for no photo
 // skills: array of strings
 // minor: optional
 
@@ -21,7 +21,7 @@ export const technicalLeaders = [
     minor: "",
     officeHours: "",
     skills: ["Python", "React", "Git"],
-    image: "/img/tl/headley.jpg",
+    image: "headley.jpg",
   },
   {
     order: 1,
@@ -30,6 +30,6 @@ export const technicalLeaders = [
     minor: "Writing",
     officeHours: "W 1:00 PM - 2:00 PM, F 11:00 AM - 12:00 PM",
     skills: ["Windows", "Python", "Java", "C", "JavaScript", "HTML", "CSS", "Docker", "Git", "Quarto", "VSCode"],
-    image: "/img/tl/suppo.jpg",
+    image: "suppo.jpg",
   },
 ];

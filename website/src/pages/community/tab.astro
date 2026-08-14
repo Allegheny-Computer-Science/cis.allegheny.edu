@@ -1,6 +1,13 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { members, affiliates } from '../../data/tab.js';
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/img/tab/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
 
 const sortedMembers    = [...members].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
@@ -22,28 +29,31 @@ const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.ord
         <p style="color: var(--navy);">No Board Members listed yet.</p>
       ) : (
         <div class="tab-dir__grid">
-          {sortedMembers.map(d => (
-            <div class="tab-card tab-card--member">
-              <div class="tl-card__image">
-                {d.image
-                  ? <img src={d.image} alt={d.name} loading="lazy" />
-                  : <div class="tl-card__image-placeholder" aria-hidden="true" />
-                }
-              </div>
-              <div class="tl-card__body">
-                <h2 class="tl-card__name">{d.name}</h2>
-                {d.position && <span class="tab-card__position">{d.position}</span>}
-                <div class="tl-card__academics">
-                  <span class="tl-card__major">{d.major}</span>
-                  {d.minor && <span class="tl-card__minor">Minor: {d.minor}</span>}
+          {sortedMembers.map(d => {
+            const imgMod = d.image ? images[`/src/assets/img/tab/${d.image}`] : null;
+            return (
+              <div class="tab-card tab-card--member">
+                <div class="tl-card__image">
+                  {imgMod
+                    ? <Image src={imgMod.default} alt={d.name} width={300} height={300} />
+                    : <div class="tl-card__image-placeholder" aria-hidden="true" />
+                  }
                 </div>
-                <div class="tab-card__work">
-                  <span class="tab-card__job-title">{d.jobTitle}</span>
-                  <span class="tab-card__company">{d.company}</span>
+                <div class="tl-card__body">
+                  <h2 class="tl-card__name">{d.name}</h2>
+                  {d.position && <span class="tab-card__position">{d.position}</span>}
+                  <div class="tl-card__academics">
+                    <span class="tl-card__major">{d.major}</span>
+                    {d.minor && <span class="tl-card__minor">Minor: {d.minor}</span>}
+                  </div>
+                  <div class="tab-card__work">
+                    <span class="tab-card__job-title">{d.jobTitle}</span>
+                    <span class="tab-card__company">{d.company}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

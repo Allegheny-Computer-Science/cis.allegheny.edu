@@ -2,7 +2,7 @@
 // members:    Board Members — have a photo, board position, job, company
 // affiliates: Affiliates — no photo, college, job, company
 //
-// image: path relative to /public, e.g. "/img/tab/name.jpg" — omit for no photo
+// image: filename in src/assets/img/tab/, e.g. "name.jpg" — omit for no photo
 // position: optional board role (e.g. "Chair")
 // minor: optional
 
@@ -15,7 +15,7 @@ export const members = [
   //   position: "Chair",
   //   jobTitle: "Senior Software Engineer",
   //   company: "Example Company",
-  //   image: "/img/tab/example.jpg",
+  //   image: "example.jpg",
   // },
 ];
 

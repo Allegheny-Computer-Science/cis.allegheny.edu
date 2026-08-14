@@ -1,6 +1,13 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { technicalLeaders } from '../../data/tl.js';
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/img/tl/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
 
 const tls = [...technicalLeaders].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 ---
@@ -14,34 +21,37 @@ const tls = [...technicalLeaders].sort((a, b) => (a.order ?? 99) - (b.order ?? 9
       <p style="color: var(--navy);">No Technical Leaders listed yet.</p>
     ) : (
       <div class="tl-dir__grid">
-        {tls.map(d => (
-          <div class="tl-card">
-            <div class="tl-card__image">
-              {d.image
-                ? <img src={d.image} alt={d.name} loading="lazy" />
-                : <div class="tl-card__image-placeholder" aria-hidden="true" />
-              }
-            </div>
-            <div class="tl-card__body">
-              <h2 class="tl-card__name">{d.name}</h2>
-              <div class="tl-card__academics">
-                <span class="tl-card__major">{d.major}</span>
-                {d.minor && <span class="tl-card__minor">Minor: {d.minor}</span>}
+        {tls.map(d => {
+          const imgMod = d.image ? images[`/src/assets/img/tl/${d.image}`] : null;
+          return (
+            <div class="tl-card">
+              <div class="tl-card__image">
+                {imgMod
+                  ? <Image src={imgMod.default} alt={d.name} width={300} height={300} />
+                  : <div class="tl-card__image-placeholder" aria-hidden="true" />
+                }
               </div>
-              {d.officeHours && (
-                <div class="tl-card__hours">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z"/></svg>
-                  {d.officeHours}
+              <div class="tl-card__body">
+                <h2 class="tl-card__name">{d.name}</h2>
+                <div class="tl-card__academics">
+                  <span class="tl-card__major">{d.major}</span>
+                  {d.minor && <span class="tl-card__minor">Minor: {d.minor}</span>}
                 </div>
-              )}
-              {d.skills && d.skills.length > 0 && (
-                <ul class="tl-card__skills">
-                  {d.skills.map(skill => <li class="tl-card__skill">{skill}</li>)}
-                </ul>
-              )}
+                {d.officeHours && (
+                  <div class="tl-card__hours">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5z"/></svg>
+                    {d.officeHours}
+                  </div>
+                )}
+                {d.skills && d.skills.length > 0 && (
+                  <ul class="tl-card__skills">
+                    {d.skills.map(skill => <li class="tl-card__skill">{skill}</li>)}
+                  </ul>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     )}
 

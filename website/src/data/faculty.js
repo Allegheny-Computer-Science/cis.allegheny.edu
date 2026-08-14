@@ -1,7 +1,7 @@
 // ── Faculty & Staff directory ──────────────────────────────────────────────────
 // Each person is one object in the list.
 // group: "faculty" | "staff"
-// image: path relative to /public, e.g. "/img/faculty/jj1.png" — omit for no photo
+// image: filename in src/assets/img/faculty/, e.g. "jj1.png" — omit for no photo
 
 export const people = [
   {
@@ -18,7 +18,7 @@ export const people = [
     phone: "814-332-0000",
     office: "Alden Hall 101",
     website: "https://www.janyljumadinova.com",
-    image: "/img/faculty/jj1.png",
+    image: "jj1.png",
   },
   {
     group: "faculty",
@@ -34,7 +34,7 @@ export const people = [
     phone: "814-332-0000",
     office: "Alden Hall 104",
     website: "https://www.oliverbonhamcarter.com",
-    image: "/img/faculty/obc1.jpg",
+    image: "obc1.jpg",
   },
   {
     group: "faculty",
@@ -50,7 +50,7 @@ export const people = [
     phone: "814-332-0000",
     office: "Alden Hall 108",
     website: "https://www.gregorykapfhammer.com",
-    image: "/img/faculty/gk1.jpeg",
+    image: "gk1.jpeg",
   },
   {
     group: "faculty",
@@ -65,7 +65,7 @@ export const people = [
     phone: "814-332-2881",
     office: "Alden Hall 112",
     website: "https://www.cis.allegheny.edu/sites/dluman",
-    image: "/img/faculty/luman1.png",
+    image: "luman1.png",
   },
   {
     group: "faculty",
@@ -81,7 +81,7 @@ export const people = [
     phone: "",
     office: "Alden Hall 106",
     website: "https://bcmullins.github.io/",
-    image: "/img/faculty/mullins1.jpg",
+    image: "mullins1.jpg",
   },
   {
     group: "staff",
@@ -95,7 +95,7 @@ export const people = [
     email: "ebenge@allegheny.edu",
     phone: "814-332-3629",
     office: "Alden Hall 102",
-    image: "/img/faculty/benge1.png",
+    image: "benge1.png",
   },
   {
     group: "staff",
@@ -108,6 +108,6 @@ export const people = [
     email: "dwagner@allegheny.edu",
     phone: "",
     office: "Murray Hall 118B",
-    image: "/img/faculty/wagner1.png",
+    image: "wagner1.png",
   },
 ];
