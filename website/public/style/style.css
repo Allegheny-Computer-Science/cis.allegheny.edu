@@ -981,8 +981,7 @@ a:hover .button__ghost--dark {
    ================================================================ */
 
 .news-article {
-    max-width: 52rem;
-    margin: 0 auto;
+    width: 100%;
 }
 
 .news-article__hero {

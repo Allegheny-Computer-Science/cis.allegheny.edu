@@ -169,6 +169,11 @@ export default function HeaderNav({ navLinks }) {
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  useEffect(() => {
     let timer;
     const THRESHOLD = 8;
 
