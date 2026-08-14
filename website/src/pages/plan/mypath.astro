@@ -1,0 +1,129 @@
+﻿---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout pageTitle="My Path">
+  <section class="plan-hero">
+    <h1>My Path</h1>
+    <p>Build your 4-year plan. Select your major and optional minor, then drag courses into each semester to map out your degree.</p>
+  </section>
+
+  <div class="planner" id="planner">
+    <!-- Controls row -->
+    <div class="planner__controls">
+      <div class="control-group">
+        <label for="select-major">Major</label>
+        <select id="select-major">
+          <option value="">— Select —</option>
+          <option value="cmpsc">Computer Science</option>
+          <option value="ds">Data Science</option>
+          <option value="infm">Informatics</option>
+          <option value="se">Software Engineering</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="select-minor">Minor (optional)</label>
+        <select id="select-minor">
+          <option value="">— None —</option>
+          <option value="cmpsc">Computer Science</option>
+          <option value="ds">Data Science</option>
+          <option value="infm">Informatics</option>
+          <option value="se">Software Engineering</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="select-year">Class Year</label>
+        <select id="select-year">
+          <option value="">— Select —</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+        </select>
+      </div>
+      <button class="button__fill" id="btn-export">Export as Excel</button>
+      <button class="button__ghost button__ghost--dark" id="btn-clear">Clear All</button>
+    </div>
+
+    <!-- Disclaimer -->
+    <p class="planner__disclaimer">
+      <strong>Note:</strong> Scheduling information is only available for CMPSC, DS, SE, and INFM courses. Courses from other departments (such as Math, Philosophy, or COMM electives) can be dragged from the "Other Courses" section into any semester slot.
+    </p>
+
+    <!-- Progress summary -->
+    <div class="planner__progress" id="planner-progress" aria-live="polite">
+      <div class="progress-item" id="progress-major">
+        <span class="progress-label">Major requirements</span>
+        <span class="progress-value">0 / 0 courses</span>
+      </div>
+      <div class="progress-item" id="progress-credits">
+        <span class="progress-label">Credits planned</span>
+        <span class="progress-value">0 cr</span>
+      </div>
+    </div>
+
+    <!-- Microcredential progress -->
+    <div class="planner__microcreds" id="planner-microcreds" hidden>
+      <p class="planner-microcreds__label">Microcredentials unlocked by your CMPSC courses:</p>
+      <div class="microcred-chips" id="microcred-chips"></div>
+    </div>
+
+    <!-- Year grid -->
+    <div class="planner__grid" id="planner-grid">
+      {[1,2,3,4].map(year => (
+        <div class="planner-year" data-year={year}>
+          <h2 class="planner-year__heading">Year {year}</h2>
+          <div class="planner-semesters">
+            {["Fall","Spring"].map(sem => (
+              <div class="planner-semester">
+                <h3 class="planner-semester__heading">{sem}</h3>
+                <div
+                  class="semester-drop"
+                  data-year={year}
+                  data-sem={sem}
+                  aria-label={`Year ${year} ${sem} — drop courses here`}
+                  role="list"
+                ></div>
+                <div class="semester-credits" data-year={year} data-sem={sem}>0 credits</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Palette: required courses + other -->
+    <div class="planner__palette">
+      <div class="palette-section">
+        <h3 class="palette-heading">Major Requirements</h3>
+        <p class="palette-hint" id="palette-major-hint">Select a major above to see required courses here.</p>
+        <div class="palette-courses" id="palette-required"></div>
+      </div>
+      <div class="palette-section" id="palette-minor-section" hidden>
+        <h3 class="palette-heading" id="palette-minor-heading">Minor Requirements</h3>
+        <div class="palette-courses" id="palette-minor"></div>
+      </div>
+      <div class="palette-section">
+        <h3 class="palette-heading">Other CMPSC Courses</h3>
+        <p class="palette-hint" id="palette-other-hint" hidden>All CMPSC courses appear in your requirements above.</p>
+        <div class="palette-courses" id="palette-other"></div>
+      </div>
+      <div class="palette-section">
+        <h3 class="palette-heading">Other Courses</h3>
+        <div class="palette-add-form">
+          <input type="text" id="dept-course-name" placeholder="Course name…" autocomplete="off" />
+          <input type="number" id="dept-course-credits" value="4" min="1" max="8" aria-label="Credits" />
+          <button id="btn-add-dept-course">Add</button>
+        </div>
+        <div class="palette-courses" id="palette-dept"></div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline src="/vendor/xlsx-js-style.min.js"></script>
+<script>
+  import '../../scripts/mypath.jsx';
+</script>

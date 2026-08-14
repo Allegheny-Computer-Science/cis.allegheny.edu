@@ -1,12 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { people } from '../../data/faculty.js';
 
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-
-const allFaculty = await getCollection('faculty');
-const faculty = allFaculty.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const sorted  = [...people].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+const faculty = sorted.filter(p => p.group === 'faculty');
+const staff   = sorted.filter(p => p.group === 'staff');
 ---
 
 <BaseLayout pageTitle="Faculty & Staff">
@@ -14,62 +12,94 @@ const faculty = allFaculty.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?
 
     <h1 class="faculty-dir__heading">Our <em>Faculty &amp; Staff</em></h1>
 
+    <h2 class="faculty-dir__subheading">Faculty</h2>
     <div class="faculty-dir__grid">
-      {faculty.map(person => {
-        const d = person.data;
-        return (
-          <div class="faculty-card">
-
-            <div class="faculty-card__image">
-              {d.image
-                ? <Image src={d.image} alt={d.name} />
-                : <div aria-hidden="true" />
-              }
-            </div>
-
-            <div class="faculty-card__body">
-              <h2 class="faculty-card__name">{d.name}</h2>
-              <h3 class="faculty-card__role">{d.title}</h3>
-
-              <ul class="faculty-card__degrees">
-                {d.degrees.map(deg => <li>{deg}</li>)}
-              </ul>
-
-              <div class="faculty-card__contact">
-                <a href={`mailto:${d.email}`} class="faculty-card__contact-row">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                  {d.email}
-                </a>
-                {d.phone && (
-                  <a href={`tel:${d.phone.replace(/\D/g,'')}`} class="faculty-card__contact-row">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
-                    {d.phone}
-                  </a>
-                )}
-                {d.office && (
-                  <span class="faculty-card__contact-row">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
-                    {d.office}
-                  </span>
-                )}
-              </div>
-
-              {d.website && (
-                <a
-                  href={d.website}
-                  class="faculty-card__btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit Website
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.75em" height="0.75em" fill="currentColor" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+      {faculty.map(d => (
+        <div class="faculty-card">
+          <div class="faculty-card__image">
+            {d.image
+              ? <img src={d.image} alt={d.name} loading="lazy" />
+              : <div aria-hidden="true" />
+            }
+          </div>
+          <div class="faculty-card__body">
+            <h2 class="faculty-card__name">{d.name}</h2>
+            <h3 class="faculty-card__role">{d.title}</h3>
+            <ul class="faculty-card__degrees">
+              {d.degrees.map(deg => <li>{deg}</li>)}
+            </ul>
+            <div class="faculty-card__contact">
+              <a href={`mailto:${d.email}`} class="faculty-card__contact-row">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                {d.email}
+              </a>
+              {d.phone && (
+                <a href={`tel:${d.phone.replace(/\D/g,'')}`} class="faculty-card__contact-row">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+                  {d.phone}
                 </a>
               )}
+              {d.office && (
+                <span class="faculty-card__contact-row">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                  {d.office}
+                </span>
+              )}
             </div>
-
+            {d.website && (
+              <a href={d.website} class="faculty-card__btn" target="_blank" rel="noopener noreferrer">
+                Visit Website
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.75em" height="0.75em" fill="currentColor" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+              </a>
+            )}
           </div>
-        );
-      })}
+        </div>
+      ))}
+    </div>
+
+    <h2 class="faculty-dir__subheading">Staff</h2>
+    <div class="faculty-dir__grid">
+      {staff.map(d => (
+        <div class="faculty-card">
+          <div class="faculty-card__image">
+            {d.image
+              ? <img src={d.image} alt={d.name} loading="lazy" />
+              : <div aria-hidden="true" />
+            }
+          </div>
+          <div class="faculty-card__body">
+            <h2 class="faculty-card__name">{d.name}</h2>
+            <h3 class="faculty-card__role">{d.title}</h3>
+            <ul class="faculty-card__degrees">
+              {d.degrees.map(deg => <li>{deg}</li>)}
+            </ul>
+            <div class="faculty-card__contact">
+              <a href={`mailto:${d.email}`} class="faculty-card__contact-row">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                {d.email}
+              </a>
+              {d.phone && (
+                <a href={`tel:${d.phone.replace(/\D/g,'')}`} class="faculty-card__contact-row">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+                  {d.phone}
+                </a>
+              )}
+              {d.office && (
+                <span class="faculty-card__contact-row">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                  {d.office}
+                </span>
+              )}
+            </div>
+            {d.website && (
+              <a href={d.website} class="faculty-card__btn" target="_blank" rel="noopener noreferrer">
+                Visit Website
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="0.75em" height="0.75em" fill="currentColor" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+              </a>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
 
   </section>

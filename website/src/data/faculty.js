@@ -1,0 +1,113 @@
+// ── Faculty & Staff directory ──────────────────────────────────────────────────
+// Each person is one object in the list.
+// group: "faculty" | "staff"
+// image: path relative to /public, e.g. "/img/faculty/jj1.png" — omit for no photo
+
+export const people = [
+  {
+    group: "faculty",
+    order: 1,
+    name: "Janyl Jumadinova, Ph.D.",
+    title: "Department Chair, Associate Professor",
+    degrees: [
+      "Ph.D., Computer Science, University of Nebraska-Lincoln",
+      "M.S., Computer Science, University of Nebraska-Lincoln",
+      "B.S., Mathematics, American University of Central Asia",
+    ],
+    email: "jjumadinova@allegheny.edu",
+    phone: "814-332-0000",
+    office: "Alden Hall 101",
+    website: "https://www.janyljumadinova.com",
+    image: "/img/faculty/jj1.png",
+  },
+  {
+    group: "faculty",
+    order: 2,
+    name: "Oliver Bonham-Carter, Ph.D.",
+    title: "Associate Professor",
+    degrees: [
+      "Ph.D., Computer Science, University of Vermont",
+      "M.S., Computer Science, University of Vermont",
+      "B.S., Biology, University of Vermont",
+    ],
+    email: "obonhamcarter@allegheny.edu",
+    phone: "814-332-0000",
+    office: "Alden Hall 104",
+    website: "https://www.oliverbonhamcarter.com",
+    image: "/img/faculty/obc1.jpg",
+  },
+  {
+    group: "faculty",
+    order: 3,
+    name: "Gregory M. Kapfhammer, Ph.D.",
+    title: "Associate Professor",
+    degrees: [
+      "Ph.D., Computer Science, University of Pittsburgh",
+      "M.S., Computer Science, University of Pittsburgh",
+      "B.S., Computer Science, Allegheny College",
+    ],
+    email: "gkapfhammer@allegheny.edu",
+    phone: "814-332-0000",
+    office: "Alden Hall 108",
+    website: "https://www.gregorykapfhammer.com",
+    image: "/img/faculty/gk1.jpeg",
+  },
+  {
+    group: "faculty",
+    order: 4,
+    name: "Douglas Luman",
+    title: "Associate Professor",
+    degrees: [
+      "MFA, George Mason University",
+      "B.S., Bradley University",
+    ],
+    email: "dluman@allegheny.edu",
+    phone: "814-332-2881",
+    office: "Alden Hall 112",
+    website: "https://www.cis.allegheny.edu/sites/dluman",
+    image: "/img/faculty/luman1.png",
+  },
+  {
+    group: "faculty",
+    order: 5,
+    name: "Brett C. Mullins",
+    title: "Assistant Professor",
+    degrees: [
+      "B.S., Economics, Georgia State University",
+      "B.A., Philosophy, Georgia State University",
+      "M.S., Computer Science, University of Massachusetts, Amherst",
+    ],
+    email: "bmullins@allegheny.edu",
+    phone: "",
+    office: "Alden Hall 106",
+    website: "https://bcmullins.github.io/",
+    image: "/img/faculty/mullins1.jpg",
+  },
+  {
+    group: "staff",
+    order: 10,
+    name: "Ebony Benge",
+    title: "Building Coordinator",
+    degrees: [
+      "Office Hours: Tue, Fri 8am–5pm",
+      "Office Hours: Wed 1pm–5pm",
+    ],
+    email: "ebenge@allegheny.edu",
+    phone: "814-332-3629",
+    office: "Alden Hall 102",
+    image: "/img/faculty/benge1.png",
+  },
+  {
+    group: "staff",
+    order: 11,
+    name: "David Wagner",
+    title: "Systems Administrator",
+    degrees: [
+      "Office Hours: Mon–Fri 8am–5pm",
+    ],
+    email: "dwagner@allegheny.edu",
+    phone: "",
+    office: "Murray Hall 118B",
+    image: "/img/faculty/wagner1.png",
+  },
+];

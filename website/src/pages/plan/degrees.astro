@@ -1,0 +1,233 @@
+﻿---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { programs, disciplines } from '../../data/programs.js';
+import { courses } from '../../data/courses.js';
+
+const pageTitle = "Majors & Minors";
+
+function getCourseDetails(code) {
+  return courses.find(c => c.code === code);
+}
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <section class="plan-hero">
+    <h1>Majors &amp; Minors</h1>
+    <p>Four disciplines. One department. Find the program that fits your path — and explore what you'll study along the way.</p>
+  </section>
+
+  <!-- Discipline tabs -->
+  <div class="degree-nav" role="tablist" aria-label="Select discipline">
+    {disciplines.map((d, i) => (
+      <button
+        class="degree-tab"
+        role="tab"
+        data-discipline={d.id}
+        aria-selected={i === 0 ? "true" : "false"}
+      >
+        {d.label}
+      </button>
+    ))}
+  </div>
+
+  <!-- Panels, one per discipline -->
+  {disciplines.map((d, di) => {
+    const major = programs.find(p => p.discipline === d.id && p.type === "major");
+    const minor = programs.find(p => p.discipline === d.id && p.type === "minor");
+    return (
+      <div class="degree-panel" data-panel={d.id} aria-hidden={di !== 0 ? "true" : "false"}>
+        <!-- Major / Minor side-by-side -->
+        <div class="degree-split">
+          <!-- MAJOR -->
+          {major && (
+            <div class="degree-col degree-col--major">
+              <div class="degree-col__header">
+                <span class="degree-col__badge">Major</span>
+                <h2 class="degree-col__title">{major.label}</h2>
+                <p class="degree-col__meta">{major.degree} Â· Min. {major.minCredits} credits</p>
+              </div>
+
+              {major.description && (
+                <p class="degree-col__description">{major.description}</p>
+              )}
+
+              {major.outcomes && major.outcomes.length > 0 && (
+                <details class="degree-outcomes">
+                  <summary>Learning Outcomes</summary>
+                  <ol>
+                    {major.outcomes.map(o => <li>{o}</li>)}
+                  </ol>
+                </details>
+              )}
+
+              {major.notes && major.notes.length > 0 && (
+                <div class="degree-notes">
+                  <ul>
+                    {major.notes.map(n => <li>{n}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              {major.sections.map(section => (
+                <div class="degree-section">
+                  <h3 class="degree-section__heading">{section.heading}</h3>
+                  <p class="degree-section__sub">{section.subheading}</p>
+
+                  {section.type === "module" ? (
+                    <div class="degree-modules">
+                      {section.modules.map(mod => (
+                        <details class="degree-module">
+                          <summary>{mod.name}</summary>
+                          {mod.description && <p class="module-description">{mod.description}</p>}
+                          {mod.note && <p class="module-note">{mod.note}</p>}
+                          <ul class="course-list">
+                            {mod.courses.map(c => {
+                              const code = c.split(" - ")[0].trim();
+                              const details = getCourseDetails(code);
+                              return (
+                                <li>
+                                  {details ? (
+                                    <button class="course-pill course-pill--link" data-code={details.code}>
+                                      <span class="course-pill__code">{details.code}</span>
+                                      <span class="course-pill__title">{details.title}</span>
+                                    </button>
+                                  ) : (
+                                    <span class="course-pill course-pill--external">{c}</span>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </details>
+                      ))}
+                    </div>
+                  ) : (
+                    <ul class="course-list">
+                      {section.courses.map(c => {
+                        const code = typeof c === "string" ? c.split(" - ")[0].trim() : c;
+                        const details = getCourseDetails(code);
+                        return (
+                          <li>
+                            {details ? (
+                              <button class="course-pill course-pill--link" data-code={details.code}>
+                                <span class="course-pill__code">{details.code}</span>
+                                <span class="course-pill__title">{details.title}</span>
+                                <span class="course-pill__credits">{details.credits} cr</span>
+                              </button>
+                            ) : (
+                              <span class="course-pill course-pill--external">{c}</span>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          <!-- MINOR -->
+          {minor && (
+            <div class="degree-col degree-col--minor">
+              <div class="degree-col__header">
+                <span class="degree-col__badge degree-col__badge--minor">Minor</span>
+                <h2 class="degree-col__title">{minor.label}</h2>
+                <p class="degree-col__meta">Min. {minor.minCredits} credits</p>
+              </div>
+
+              {minor.notes && minor.notes.length > 0 && (
+                <div class="degree-notes">
+                  <ul>
+                    {minor.notes.map(n => <li>{n}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              {minor.sections.map(section => (
+                <div class="degree-section">
+                  <h3 class="degree-section__heading">{section.heading}</h3>
+                  <p class="degree-section__sub">{section.subheading}</p>
+
+                  {section.type === "module" ? (
+                    <div class="degree-modules">
+                      {section.modules.map(mod => (
+                        <details class="degree-module">
+                          <summary>{mod.name}</summary>
+                          {mod.note && <p class="module-note">{mod.note}</p>}
+                          <ul class="course-list">
+                            {mod.courses.map(c => {
+                              const code = c.split(" - ")[0].trim();
+                              const details = getCourseDetails(code);
+                              return (
+                                <li>
+                                  {details ? (
+                                    <button class="course-pill course-pill--link" data-code={details.code}>
+                                      <span class="course-pill__code">{details.code}</span>
+                                      <span class="course-pill__title">{details.title}</span>
+                                    </button>
+                                  ) : (
+                                    <span class="course-pill course-pill--external">{c}</span>
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </details>
+                      ))}
+                    </div>
+                  ) : (
+                    <ul class="course-list">
+                      {section.courses.map(c => {
+                        const code = typeof c === "string" ? c.split(" - ")[0].trim() : c;
+                        const details = getCourseDetails(code);
+                        return (
+                          <li>
+                            {details ? (
+                              <button class="course-pill course-pill--link" data-code={details.code}>
+                                <span class="course-pill__code">{details.code}</span>
+                                <span class="course-pill__title">{details.title}</span>
+                                <span class="course-pill__credits">{details.credits} cr</span>
+                              </button>
+                            ) : (
+                              <span class="course-pill course-pill--external">{c}</span>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  })}
+
+  <!-- Course detail popup -->
+  <div class="course-popup" id="course-popup" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <div class="course-popup__backdrop"></div>
+    <div class="course-popup__card">
+      <button class="course-popup__close" aria-label="Close">&times;</button>
+      <p class="course-popup__code" id="popup-code"></p>
+      <h2 class="course-popup__title" id="popup-title"></h2>
+      <div class="course-popup__meta">
+        <span id="popup-credits"></span>
+        <span id="popup-dist"></span>
+      </div>
+      <p class="course-popup__prereq"><strong>Prerequisite:</strong> <span id="popup-prereq"></span></p>
+      <p class="course-popup__description" id="popup-description"></p>
+      <div class="course-popup__outcomes" id="popup-outcomes-wrap">
+        <h3>Learning Outcomes</h3>
+        <ol id="popup-outcomes"></ol>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+
+<script>
+  import '../../scripts/degrees.jsx';
+</script>

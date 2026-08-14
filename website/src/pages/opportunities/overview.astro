@@ -1,7 +1,28 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const pageTitle = "Opportunities";
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const links = [
+  {
+    label: "CMU MSCS Program",
+    href: `${base}opportunities/cmu`,
+    description: "Information on the accelerated pathway to Carnegie Mellon's Master of Science in Computer Science program.",
+  },
+];
 ---
-<BaseLayout pageTitle={pageTitle}>
-  <p>Opportunities</p>
+
+<BaseLayout pageTitle="Opportunities | Allegheny CIS">
+  <section class="overview-page white__band">
+    <h1 class="overview-page__heading">Student <em>Opportunities</em></h1>
+    <p class="overview-page__intro">Programs, partnerships, and pathways that extend your education beyond the classroom.</p>
+    <nav class="overview-nav" aria-label="Opportunities">
+      {links.map(link => (
+        <a href={link.href} class="overview-card">
+          <span class="overview-card__label">{link.label}</span>
+          <p class="overview-card__desc">{link.description}</p>
+          <span class="overview-card__arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </nav>
+  </section>
 </BaseLayout>

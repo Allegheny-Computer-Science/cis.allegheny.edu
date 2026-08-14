@@ -1,6 +1,6 @@
 ---
-import FillButton from "../FillButton.astro";
-import GhostButton from "../GhostButton.astro";
+import FillButton from "../ui/FillButton.astro";
+import GhostButton from "../ui/GhostButton.astro";
 import { Image } from 'astro:assets';
 import placeholderImg from '../../assets/img/placeholder.jpg';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -19,7 +19,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             </p>
             <div class="community-buttons">
                 <a href={`${base}plan/mypath`}><FillButton>Tech Leaders</FillButton></a>
-                <a href="#faculty-intro"><GhostButton variant="dark">Tech Advisory Board</GhostButton></a>
+                <a href={`${base}community/tab`}><GhostButton variant="dark">Tech Advisory Board</GhostButton></a>
             </div>
         </div>
     </div>

@@ -1,7 +1,33 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const pageTitle = "Resources";
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const links = [
+  {
+    label: "References",
+    href: `${base}resources/references`,
+    description: "Curated links to documentation, tools, and academic references useful throughout your CIS courses.",
+  },
+  {
+    label: "Laptops",
+    href: `${base}resources/laptops`,
+    description: "Guidance on recommended hardware specs, loaner programs, and software setup for CIS students.",
+  },
+];
 ---
-<BaseLayout pageTitle={pageTitle}>
-  <p>Resources</p>
+
+<BaseLayout pageTitle="Resources | Allegheny CIS">
+  <section class="overview-page white__band">
+    <h1 class="overview-page__heading">Student <em>Resources</em></h1>
+    <p class="overview-page__intro">Everything you need to get set up and stay supported throughout your time in the CIS department.</p>
+    <nav class="overview-nav" aria-label="Resources">
+      {links.map(link => (
+        <a href={link.href} class="overview-card">
+          <span class="overview-card__label">{link.label}</span>
+          <p class="overview-card__desc">{link.description}</p>
+          <span class="overview-card__arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </nav>
+  </section>
 </BaseLayout>

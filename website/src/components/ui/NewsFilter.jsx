@@ -33,6 +33,7 @@ export default function NewsFilter({ updates, baseUrl = '/' }) {
             key={f.key}
             type="button"
             className={`news-filter__btn news-filter__btn--${f.key}${active === f.key ? " news-filter__btn--active" : ""}`}
+            aria-pressed={active === f.key}
             onClick={() => handleFilter(f.key)}
           >
             {f.label}

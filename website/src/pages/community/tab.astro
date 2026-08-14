@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { members, affiliates } from '../../data/tab.js';
+
+const sortedMembers    = [...members].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+---
+
+<BaseLayout pageTitle="Technical Advisory Board | Allegheny CIS">
+  <section class="tab-dir white__band">
+
+    <h1 class="faculty-dir__heading">Technical <em>Advisory Board</em></h1>
+
+    <div class="tab-dir__nav" role="tablist" aria-label="Advisory Board sections">
+      <button class="degree-tab" role="tab" data-tab="members" aria-selected="true">Board Members</button>
+      <button class="degree-tab" role="tab" data-tab="affiliates" aria-selected="false">Affiliates</button>
+    </div>
+
+    <!-- Members panel -->
+    <div class="tab-panel" data-panel="members" aria-hidden="false">
+      {sortedMembers.length === 0 ? (
+        <p style="color: var(--navy);">No Board Members listed yet.</p>
+      ) : (
+        <div class="tab-dir__grid">
+          {sortedMembers.map(d => (
+            <div class="tab-card tab-card--member">
+              <div class="tl-card__image">
+                {d.image
+                  ? <img src={d.image} alt={d.name} loading="lazy" />
+                  : <div class="tl-card__image-placeholder" aria-hidden="true" />
+                }
+              </div>
+              <div class="tl-card__body">
+                <h2 class="tl-card__name">{d.name}</h2>
+                {d.position && <span class="tab-card__position">{d.position}</span>}
+                <div class="tl-card__academics">
+                  <span class="tl-card__major">{d.major}</span>
+                  {d.minor && <span class="tl-card__minor">Minor: {d.minor}</span>}
+                </div>
+                <div class="tab-card__work">
+                  <span class="tab-card__job-title">{d.jobTitle}</span>
+                  <span class="tab-card__company">{d.company}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- Affiliates panel -->
+    <div class="tab-panel" data-panel="affiliates" aria-hidden="true">
+      {sortedAffiliates.length === 0 ? (
+        <p style="color: var(--navy);">No Affiliates listed yet.</p>
+      ) : (
+        <div class="tab-dir__affiliates-grid">
+          {sortedAffiliates.map(d => (
+            <div class="tab-card tab-card--affiliate">
+              <h2 class="tl-card__name">{d.name}</h2>
+              <span class="tab-card__college">{d.college}</span>
+              <div class="tab-card__work">
+                <span class="tab-card__job-title">{d.jobTitle}</span>
+                <span class="tab-card__company">{d.company}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  const tabs   = document.querySelectorAll('.tab-dir__nav .degree-tab');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab === target ? 'true' : 'false'));
+      panels.forEach(p => p.setAttribute('aria-hidden', p.dataset.panel === target ? 'false' : 'true'));
+    });
+  });
+</script>

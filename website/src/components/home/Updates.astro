@@ -1,13 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
-import UpdateCard from '../UpdateCard.astro';
-import FillButton from '../FillButton.astro';
-import GhostButton from '../GhostButton.astro';
+import UpdateCard from '../ui/UpdateCard.astro';
+import FillButton from '../ui/FillButton.astro';
+import GhostButton from '../ui/GhostButton.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const allUpdates = await getCollection('updates');
-const latest = allUpdates
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const mdxModules = import.meta.glob('../../pages/community/news/*.mdx', { eager: true });
+const latest = Object.entries(mdxModules)
+  .map(([file, mod]: [string, any]) => ({ file, ...mod.frontmatter }))
+  .sort((a: any, b: any) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
   .slice(0, 4);
 ---
 
@@ -17,22 +17,22 @@ const latest = allUpdates
 
   <div class="scroll-fade">
   <div class="updates-grid">
-    {latest.map(entry => (
+    {latest.map((entry: any) => (
       <UpdateCard
-        title={entry.data.title}
-        date={entry.data.date}
-        category={entry.data.category}
-        image={entry.data.image}
-        description={entry.data.description}
-        slug={entry.id}
+        title={entry.title}
+        date={new Date(entry.date)}
+        category={entry.category}
+        image={entry.image}
+        description={entry.description}
+        slug={entry.file.split('/').at(-1).replace('.mdx', '')}
       />
     ))}
   </div>
   </div>
 
   <div class="updates-buttons">
-    <a href={`${base}community/calendar`}><FillButton variant="light">View Calendar</FillButton></a>
-    <a href={`${base}community/news`}><GhostButton>More News</GhostButton></a>
+    <a href={`${base}community/news`}><FillButton variant="light">More Updates</FillButton></a>
+    <a href="#faculty-intro"><GhostButton>About Us</GhostButton></a>
   </div>
 
 </section>

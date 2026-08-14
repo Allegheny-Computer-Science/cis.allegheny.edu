@@ -1,20 +1,20 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import TableOfContents from '../components/TableOfContents.jsx';
-import { getCollection } from 'astro:content';
+import TableOfContents from '../components/ui/TableOfContents.jsx';
 
 const { frontmatter } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
-const allUpdates = await getCollection('updates');
-const latest = allUpdates
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+const mdxModules = import.meta.glob('../pages/community/news/*.mdx', { eager: true });
+const latest = Object.values(mdxModules)
+    .map((mod: any) => mod.frontmatter)
+    .sort((a: any, b: any) => new Date(b.date).valueOf() - new Date(a.date).valueOf())[0];
 
 const latestUpdate = latest ? {
-    title: latest.data.title,
-    date: latest.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-    category: latest.data.category,
+    title: latest.title,
+    date: new Date(latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    category: latest.category,
     href: `${base}community/news`,
 } : null;
 

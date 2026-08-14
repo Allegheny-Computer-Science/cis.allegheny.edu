@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { courses } from '../../data/courses.js';
+
+const pageTitle = "Course Bulletin";
+
+const categories = [
+  { id: "foundation", label: "Foundation" },
+  { id: "core",       label: "Core" },
+  { id: "elective",   label: "Electives" },
+  { id: "project",    label: "Project & Thesis" },
+];
+
+function coursesInCategory(cat) {
+  return courses.filter(c => c.category === cat);
+}
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <section class="plan-hero">
+    <h1>Course Bulletin</h1>
+    <p>Every course offered by the CIS department — with descriptions, prerequisites, and learning outcomes.</p>
+  </section>
+
+  <div class="bulletin-nav">
+    {categories.map(cat => (
+      <a href={`#${cat.id}`} class="bulletin-anchor">{cat.label}</a>
+    ))}
+  </div>
+
+  <div class="bulletin">
+    {categories.map(cat => (
+      <section class="bulletin-category" id={cat.id}>
+        <h2 class="bulletin-category__heading">{cat.label}</h2>
+
+        {coursesInCategory(cat.id).map(course => (
+          <details class="bulletin-course">
+            <summary>
+              <span class="bulletin-course__code">{course.code}</span>
+              <span class="bulletin-course__title">{course.title}</span>
+              <span class="bulletin-course__meta">
+                {course.credits} cr
+                {course.distribution && course.distribution.length > 0 && (
+                  <span class="bulletin-course__dist">· {course.distribution.join(', ')}</span>
+                )}
+              </span>
+            </summary>
+
+            <div class="bulletin-course__body">
+              {course.prereq && course.prereq !== "none" && (
+                <p class="bulletin-course__prereq">
+                  <strong>Prerequisite:</strong> {course.prereq}
+                </p>
+              )}
+
+              <p class="bulletin-course__description">{course.description}</p>
+
+              {course.outcomes && course.outcomes.length > 0 && (
+                <div class="bulletin-course__outcomes">
+                  <h4>Learning Outcomes</h4>
+                  <ol>
+                    {course.outcomes.map((o, i) => (
+                      <li><span class="outcome-num">{i + 1}.</span> {o}</li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+            </div>
+          </details>
+        ))}
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+

@@ -1,20 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import NewsFilter from '../../components/NewsFilter.jsx';
+import NewsFilter from '../../components/ui/NewsFilter.jsx';
+import { CALENDAR_EMBED_URL } from '../../config/calendar';
 import { getCalendarEvents } from '../../lib/getCalendarEvents';
 
-const allUpdates = await getCollection('updates');
+const mdxModules = import.meta.glob('./news/*.mdx', { eager: true });
 const calendarEvents = await getCalendarEvents(20);
 
 const updates = [
-  ...allUpdates.map(e => ({
-    slug: e.id,
-    title: e.data.title,
-    date: e.data.date.toISOString(),
-    category: e.data.category,
-    image: e.data.image ?? null,
-    description: e.data.description,
+  ...Object.entries(mdxModules).map(([file, mod]: [string, any]) => ({
+    slug: file.replace('./news/', '').replace('.mdx', ''),
+    title: mod.frontmatter.title,
+    date: new Date(mod.frontmatter.date).toISOString(),
+    category: mod.frontmatter.category,
+    image: mod.frontmatter.image ?? null,
+    description: mod.frontmatter.description,
     externalUrl: null,
   })),
   ...calendarEvents.map(e => ({
@@ -29,9 +29,45 @@ const updates = [
 ].sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
 ---
 
-<BaseLayout pageTitle="Allegheny CIS News">
-  <section class="news-page white__band">
-    <h1 class="news-page__heading">Allegheny <em>CIS News</em></h1>
-    <NewsFilter updates={updates} baseUrl={import.meta.env.BASE_URL.replace(/\/?$/, '/')} client:load />
-  </section>
+<BaseLayout pageTitle="Calendar & News | Allegheny CIS">
+  <div class="community-feed white__band">
+
+    <!-- Calendar section -->
+    <section class="community-feed__calendar">
+      <h1 class="community-feed__heading">Department <em>Calendar</em></h1>
+      <p class="calendar-page__note">Click on a <strong>TL Office Hours</strong> event to see which Technical Leaders will be in attendance.</p>
+
+      <details class="calendar-collapse" id="calendar-collapse">
+        <summary class="calendar-collapse__toggle">
+          <span>Show Calendar</span>
+          <svg class="calendar-collapse__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+            <path d="M7 10l5 5 5-5z"/>
+          </svg>
+        </summary>
+        <div class="calendar-page__embed-wrap">
+          <iframe
+            src={CALENDAR_EMBED_URL}
+            class="calendar-page__embed"
+            title="Allegheny CIS Department Calendar"
+            frameborder="0"
+            scrolling="no"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </details>
+    </section>
+
+    <!-- News section -->
+    <section class="community-feed__news">
+      <h2 class="community-feed__heading community-feed__heading--news">Allegheny <em>CIS News</em></h2>
+      <NewsFilter updates={updates} baseUrl={import.meta.env.BASE_URL.replace(/\/?$/, '/')} client:load />
+    </section>
+
+  </div>
 </BaseLayout>
+
+<script is:inline>
+  if (window.matchMedia('(min-width: 901px)').matches) {
+    document.getElementById('calendar-collapse').open = true;
+  }
+</script>

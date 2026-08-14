@@ -1,6 +1,6 @@
 ---
-import FillButton from "../FillButton.astro"
-import GhostButton from "../GhostButton.astro"
+import FillButton from "../ui/FillButton.astro"
+import GhostButton from "../ui/GhostButton.astro"
 import { Image } from 'astro:assets';
 import placeholderImg from '../../assets/img/placeholder.jpg';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
             </p>
             <div class="hero-buttons">
                 <a href="/plan/mypath"><FillButton>Plan Your Path Here</FillButton></a>
-                <a href="#faculty-intro"><GhostButton>Learn More</GhostButton></a>
+                <a href={`${base}plan/degrees`}><GhostButton>Our Programs</GhostButton></a>
             </div>
         </div>
     </div>
