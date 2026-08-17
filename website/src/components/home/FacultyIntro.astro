@@ -6,12 +6,16 @@ import { getImage } from 'astro:assets';
 import jj1Raw from '../../assets/img/jj1.png';
 import obc1Raw from '../../assets/img/obc1.jpg';
 import gk1Raw from '../../assets/img/gk1.jpeg';
+import luman1Raw from '../../assets/img/faculty/luman1.png';
+import mullins1Raw from '../../assets/img/faculty/mullins1.jpg';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
-const [jj1, obc1, gk1] = await Promise.all([
+const [jj1, obc1, gk1, luman1, mullins1] = await Promise.all([
   getImage({ src: jj1Raw,  format: 'webp' }),
   getImage({ src: obc1Raw, format: 'webp' }),
   getImage({ src: gk1Raw,  format: 'webp' }),
+  getImage({ src: luman1Raw, format: 'webp' }),
+  getImage({ src: mullins1Raw, format: 'webp' }),
 ]);
 
 const faculty = [
@@ -19,22 +23,36 @@ const faculty = [
     name: "Janyl Jumadinova, Ph.D.",
     title: "Department Chair, Associate Professor",
     statement:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
+      "Dr. Jumadinova's research explores autonomous systems that can improve our quality of life, from robotics to applied machine learning, with a focus on systems that perform complex tasks in dynamic, real-world environments.\n\nShe teaches across the curriculum, including introductory programming, algorithms, software engineering, artificial intelligence, robotics, and security, and as Department Chair she mentors students through research collaborations, independent studies, internships, and senior thesis projects.",
     image: jj1.src,
   },
   {
     name: "Oliver Bonham-Carter, Ph.D.",
     title: "Associate Professor",
     statement:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
+      "Dr. Bonham-Carter's research is rooted in data science, spanning bioinformatics and text analysis. He applies computational methods to questions in biology and health, such as the study of proteins involved in disease, and develops tools that draw insight from large collections of text and data.\n\nHe teaches data structures at the introductory level, specializes in teaching data science, and offers a range of upper-level and elective courses that connect computing to questions across the disciplines.",
     image: obc1.src,
   },
   {
     name: "Greg Kapfhammer, Ph.D.",
     title: "Associate Professor",
     statement:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id egestas nibh, ac elementum velit. Donec aliquam eu ligula ac facilisis.\n\nMauris vel fermentum dui, ac semper lorem. Cras scelerisque dictum risus, sed hendrerit ante. Donec in sodales nisl. Fusce sed quam arcu. Donec mollis nisi sit amet mi hendrerit, sed dictum erat vestibulum. Maecenas vel risus elit. Pellentesque maximus felis eu ligula congue posuere.",
+      "Dr. Kapfhammer's research focuses on software engineering and software testing. He creates open-source tools that help developers build efficient and dependable software, and his work is used by researchers and practitioners around the world.\n\nAn Allegheny College graduate himself, he teaches courses in areas such as algorithm analysis, software engineering, and software testing, and he mentors students in designing, building, and rigorously evaluating real-world software.",
     image: gk1.src,
+  },
+  {
+    name: "Douglas Luman",
+    title: "Associate Professor",
+    statement:
+      "Professor Luman works at the intersection of computing and the arts. Their research and creative practice span computational poetry, book design, and the digital humanities, exploring what happens when algorithms become part of the creative process.\n\nThey teach courses that bridge computer science and design, including computer organization and industrial design fundamentals, and they bring a designer's perspective to helping students build and communicate with technology.",
+    image: luman1.src,
+  },
+  {
+    name: "Brett Mullins, Ph.D.",
+    title: "Assistant Professor",
+    statement:
+      "Dr. Mullins's research focuses on trustworthy computing and statistical data privacy, including differential privacy, explainable machine learning, and synthetic data. His interdisciplinary background spans mathematics, philosophy, economics, and industry experience as a data scientist.\n\nHe teaches foundational and advanced courses, including introductory programming, data structures, algorithms, and applied data exploration, preparing students to reason carefully about both computation and data.",
+    image: mullins1.src,
   },
 ];
 ---
