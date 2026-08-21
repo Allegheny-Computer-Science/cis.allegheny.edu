@@ -35,11 +35,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
-        working-directory: website
         uses: burnett01/rsync-deployments@9.0.0
         with:
           switches: -avz --delete
-          path: dist/
+          path: website/dist/
           remote_path: ${{ secrets.PATH }}
           remote_host: ${{ secrets.HOST }}
           remote_user: ${{ secrets.USER }}
