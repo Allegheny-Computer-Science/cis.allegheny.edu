@@ -1,7 +1,9 @@
 ﻿---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import FillButton from '../../components/ui/FillButton.astro';
 import { programs, disciplines } from '../../data/programs.js';
 import { courses } from '../../data/courses.js';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const pageTitle = "Majors & Minors";
 
@@ -14,6 +16,7 @@ function getCourseDetails(code) {
   <section class="plan-hero">
     <h1>Majors &amp; Minors</h1>
     <p>Four disciplines. One department. Find the program that fits your path — and explore what you'll study along the way.</p>
+    <a href={`${base}plan/mypath`}><FillButton>Plan Your Path</FillButton></a>
   </section>
 
   <!-- Discipline tabs -->

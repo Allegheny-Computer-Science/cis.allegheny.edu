@@ -2288,6 +2288,7 @@ a:hover .button__ghost--dark {
     max-width: 60ch;
     line-height: 1.6;
     color: var(--white);
+    margin-bottom: 1.5rem;
 }
 
 /* â€” Shared accordion chevron (matches header nav SVG) â€” */

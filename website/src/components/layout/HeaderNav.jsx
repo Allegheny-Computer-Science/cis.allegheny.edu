@@ -13,8 +13,8 @@ const STATIC_PAGES = [
   { title: "Faculty",            url: `${base}about/faculty`,             description: "Meet our faculty and staff" },
   { title: "Facilities",         url: `${base}about/facilities`,          description: "Labs, classrooms, and computing facilities" },
   { title: "Policies",           url: `${base}about/policies`,            description: "Department policies and academic integrity" },
-  { title: "My Path",            url: `${base}plan/mypath`,               description: "Build your 4-year degree plan" },
   { title: "Majors & Minors",    url: `${base}plan/degrees`,              description: "Explore CMPSC, DS, INFM, and SE programs" },
+  { title: "My Path",            url: `${base}plan/mypath`,               description: "Build your 4-year degree plan" },
   { title: "Microcredentials",   url: `${base}plan/microcredentials`,     description: "Short-form credentials and skill certifications" },
   { title: "Course Bulletin",    url: `${base}plan/bulletin`,             description: "Full list of CIS courses with descriptions" },
   { title: "Calendar & News",    url: `${base}community/news`,            description: "Department calendar and latest news" },
@@ -259,8 +259,8 @@ export default function HeaderNav({ navLinks }) {
 
         <div className="mobile-menu__body">
           <div className="mobile-menu__left">
-            <p className="mobile-menu__blurb">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod lorem maximus, ornare eros sed, cursus sem. Cras blandit dignissim nisl non lacinia. Aliquam ut mollis risus.</p>
-            <p className="mobile-menu__blurb">Duis ultrices ornare malesuada. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla consectetur libero interdum arcu tempor, at elementum odio accumsan. Maecenas porttitor nunc sapien, non mollis felis accumsan at.</p>
+            <p className="mobile-menu__blurb">Allegheny College's Department of Computer and Information Science offers four majors — Computer Science, Data Science, Informatics, and Software Engineering — designed to prepare you for careers and graduate programs at the forefront of computing.</p>
+            <p className="mobile-menu__blurb">From your first semester you'll work on real projects, collaborate with peers in Alden Hall, and learn from faculty who bring both research expertise and industry experience into the classroom.</p>
             <a
               href="https://allegheny.edu/apply/"
               className="button__fill mobile-menu__apply"
