@@ -2,14 +2,45 @@
 import FillButton from "../ui/FillButton.astro"
 import GhostButton from "../ui/GhostButton.astro"
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import placeholderImg from '../../assets/img/placeholder.jpg';
+
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const heroGlob = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/img/hero/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
+
+// Sort by filename so hero-1, hero-2 … hero-N come out in order
+const heroImages = Object.entries(heroGlob)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([, mod]) => mod.default);
+
+const slides  = heroImages.length > 0 ? heroImages : [placeholderImg];
+const n       = slides.length;
+const perSlide = 4;                  // seconds each slide is shown
+const total   = n * perSlide;        // total animation cycle
 ---
 
 <section id="hero" class="hero-section navy__band">
 
-    <div class="hero-image">
-        <Image src={placeholderImg} alt="Placeholder hero photo" loading="eager" fetchpriority="high" />
+    <div class="hero-image" style={`--hero-n:${n};--hero-total:${total}s;--hero-per:${perSlide}s;`}>
+      {slides.map((img, i) => (
+        <div
+          class={`hero-slide${n === 1 ? ' hero-slide--static' : ''}`}
+          style={`animation-delay:${i * perSlide}s;`}
+        >
+          <Image
+            src={img}
+            alt="Allegheny CIS students and community"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+            width={900}
+            height={700}
+          />
+        </div>
+      ))}
     </div>
 
     <div class="hero-information">
