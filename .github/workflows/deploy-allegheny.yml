@@ -17,9 +17,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7.0.0
         with:
-          node-version: 22.12.0
-          cache: npm
-          cache-dependency-path: website/package-lock.json
+          node-version: 26.7.0
+          package-manager-cache: false
 
       - name: Install dependencies
         working-directory: website
