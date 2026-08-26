@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Archive npm failure logs
-        users: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: npm-logs
