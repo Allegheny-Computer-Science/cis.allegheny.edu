@@ -1,6 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 import placeholderImg from '../../assets/img/placeholder.jpg';
+import upeImg from '../../assets/img/upe.jpg';
+import acmImg from '../../assets/img/acm.png';
+import chomersImg from '../../assets/img/code-with-chompers.jpg';
 
 const orgs = [
     {
@@ -8,18 +11,21 @@ const orgs = [
         description: "Our student chapter of the Association for Computing Machinery brings students together for talks, projects, and social events that span every corner of computing.",
         href: "https://acm.org",
         accent: "var(--navy)",
+        image: acmImg,
     },
     {
         name: "UPE",
         description: "Allegheny's chapter of Upsilon Pi Epsilon, the international honor society for the computing disciplines, celebrates academic excellence with coding nights, workshops, guest lectures, and service projects.",
         href: "https://upeallegheny.netlify.app/",
         accent: "var(--bold-gold)",
+        image: upeImg,
     },
     {
         name: "Code With Chompers",
         description: "A student-powered outreach program that brings computational thinking to K-6 classrooms across the region, led by Allegheny's Computing Outreach Fellows.",
         href: "https://codewithchompers.com/",
         accent: "var(--gator)",
+        image: chomersImg,
     },
 ];
 ---
@@ -31,7 +37,7 @@ const orgs = [
         {orgs.map(org => (
             <div class={`org-card${org.accent === 'var(--navy)' ? ' org-card--navy' : ''}`} style={`--org-accent: ${org.accent}`}>
                 <div class="org-card__image">
-                    <Image src={placeholderImg} alt={org.name} />
+                    <Image src={org.image ?? placeholderImg} alt={org.name} />
                 </div>
                 <div class="org-card__body">
                     <h3 class="org-card__name">{org.name}</h3>

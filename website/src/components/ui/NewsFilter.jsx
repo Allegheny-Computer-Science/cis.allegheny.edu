@@ -7,7 +7,7 @@ const FILTERS = [
   { key: "other",        label: "Other" },
 ];
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 8;
 
 export default function NewsFilter({ updates, baseUrl = '/' }) {
   const [active, setActive]   = useState("all");

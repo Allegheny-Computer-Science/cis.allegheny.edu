@@ -18,7 +18,7 @@ export const people = [
     // phone: "814-332-0000",
     office: "Alden Hall 101",
     website: "https://www.janyljumadinova.com",
-    image: "jj1.png",
+    image: "jumadinova.png",
   },
   {
     group: "faculty",
@@ -34,7 +34,7 @@ export const people = [
     // phone: "814-332-0000",
     office: "Alden Hall 104",
     website: "https://www.oliverbonhamcarter.com",
-    image: "obc1.jpg",
+    image: "bonham-carter.jpg",
   },
   {
     group: "faculty",
@@ -50,7 +50,7 @@ export const people = [
     // phone: "814-332-0000",
     office: "Alden Hall 108",
     website: "https://www.gregorykapfhammer.com",
-    image: "gk1.jpeg",
+    image: "kapfhammer.jpeg",
   },
   {
     group: "faculty",

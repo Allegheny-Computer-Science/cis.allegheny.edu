@@ -1,24 +1,27 @@
 ---
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+import { Image } from 'astro:assets';
+import alicLabImg from '../../assets/img/alic-lab.jpg';
+import alicBessemerImg from '../../assets/img/alic-bessemer.webp';
+import reisHallImg from '../../assets/img/reis-hall.jpg';
 
 const facilities = [
     {
         name: "ALIC Lab",
         href: "https://allegheny.edu/academics/allegheny-lab-for-innovation-creativity/",
         accent: "var(--navy)",
-        image: `${base}img/placeholder.jpg`,
+        image: alicLabImg,
     },
     {
         name: "ALIC @ Bessemer",
         href: "https://alic.allegheny.edu/",
         accent: "var(--bold-gold)",
-        image: `${base}img/placeholder.jpg`,
+        image: alicBessemerImg,
     },
     {
         name: "Reis Hall",
         href: "https://allegheny.edu/about/news/a-new-reis-rising/",
         accent: "var(--gator)",
-        image: `${base}img/placeholder.jpg`,
+        image: reisHallImg,
     },
 ];
 ---
@@ -27,7 +30,7 @@ const facilities = [
     {facilities.map(facility => (
         <div class={`facility-card${facility.accent === 'var(--navy)' ? ' facility-card--navy' : ''}`} style={`--org-accent: ${facility.accent}`}>
             <div class="org-card__image">
-                <img src={facility.image} alt={facility.name} />
+                <Image src={facility.image} alt={facility.name} width={600} height={400} />
             </div>
             <div class="org-card__body">
                 <h3 class="facility-card__name">{facility.name}</h3>

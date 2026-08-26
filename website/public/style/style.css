@@ -1589,19 +1589,22 @@ a:hover .button__ghost--dark {
 .faculty-carousel__track {
     flex: 1;
     max-width: 70rem;
+    display: grid;
 }
 
 .faculty-carousel__card {
+    grid-area: 1 / 1;
     display: flex;
     align-items: center;
     gap: var(--object-gap);
     width: 100%;
     opacity: 0;
+    visibility: hidden;
     transition: opacity 0.3s ease;
 }
 
-.faculty-carousel__card--inactive { display: none; }
-.faculty-carousel__card--ready    { opacity: 1; }
+.faculty-carousel__card--inactive { opacity: 0; visibility: hidden; }
+.faculty-carousel__card--ready    { opacity: 1; visibility: visible; }
 
 .faculty-carousel__photo-wrap {
     flex-shrink: 0;
@@ -3681,7 +3684,7 @@ a:hover .button__ghost--dark {
         align-items: flex-start;
         scroll-snap-align: none;
     }
-    .faculty-carousel__card--inactive { display: none; }
+    .faculty-carousel__card--inactive { opacity: 0; visibility: hidden; }
     .faculty-carousel__photo-wrap {
         width: clamp(5rem, 20vw, 8rem);
         height: clamp(5rem, 20vw, 8rem);
