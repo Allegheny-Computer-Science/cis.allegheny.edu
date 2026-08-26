@@ -24,6 +24,13 @@ jobs:
         working-directory: website
         run: npm ci
 
+      - name: Archive npm failure logs
+        users: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: npm-logs
+          path: ~/.npm/_logs/
+
       - name: Build site
         working-directory: website
         run: npm run build
