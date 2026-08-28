@@ -2088,6 +2088,13 @@ a:hover .button__ghost--dark {
     transition: transform 180ms ease;
 }
 
+/* TAB uses a side image; override the vertical TL card image styles */
+.tab-card--member .tl-card__image {
+    width: 11rem;
+    aspect-ratio: unset;
+    height: 100%;
+}
+
 .tab-card__position {
     font-size: 0.75rem;
     font-weight: 700;
