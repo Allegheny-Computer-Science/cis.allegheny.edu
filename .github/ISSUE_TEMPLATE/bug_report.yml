@@ -1,0 +1,54 @@
+name: Bug Report
+description: Report something broken or incorrect on the site
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue with [cis.allegheny.edu](https://www.cis.allegheny.edu/).
+
+  - type: input
+    id: page-url
+    attributes:
+      label: Page URL
+      description: The page where you found the issue
+      placeholder: https://www.cis.allegheny.edu/about/faculty
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What is wrong?
+      description: Describe the bug, typo, broken link, or outdated information
+      placeholder: The phone number listed for Professor X is incorrect.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should it say or do instead?
+      description: If you know the correct content or expected behavior, include it here
+    validations:
+      required: false
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: Where did you notice this?
+      options:
+        - Desktop
+        - Mobile
+        - Tablet
+        - Not sure / applies everywhere
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: If applicable, drag and drop a screenshot here
+    validations:
+      required: false

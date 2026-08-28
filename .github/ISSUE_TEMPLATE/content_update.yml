@@ -1,0 +1,39 @@
+name: Content Update
+description: Request an update to faculty, staff, courses, programs, or other listed content
+labels: ["content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for updates to information on the site, such as faculty details, course listings, program requirements, or news items.
+
+  - type: dropdown
+    id: section
+    attributes:
+      label: Which section needs updating?
+      options:
+        - Faculty & Staff Directory
+        - Technical Leaders Directory
+        - Technical Advisory Board
+        - Course Bulletin
+        - Majors & Minors
+        - Microcredentials
+        - News & Updates
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: What is currently listed?
+      description: Quote or link to the current content, if applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: requested
+    attributes:
+      label: What should it be changed to?
+    validations:
+      required: true

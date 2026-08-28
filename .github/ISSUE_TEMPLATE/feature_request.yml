@@ -1,0 +1,32 @@
+name: Feature Request
+description: Suggest a new feature, page, or improvement for the site
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement to [cis.allegheny.edu](https://www.cis.allegheny.edu/).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What is missing, confusing, or hard to do on the site today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to see?
+      description: Describe the feature, page, or change you have in mind
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Mockups, examples from other sites, or anything else useful
+    validations:
+      required: false

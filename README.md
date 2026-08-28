@@ -1,6 +1,18 @@
 # Allegheny CIS Website
 
-Built with [Astro](https://astro.build). All commands run from the project root.
+Source for [cis.allegheny.edu](https://www.cis.allegheny.edu/), the website for the Department of Computer & Information Science at Allegheny College. Built with [Astro](https://astro.build).
+
+Most page content lives in plain data files rather than requiring template or component changes, so contributors can update faculty listings, courses, programs, and news without touching page code. See [Updating Data-Driven Pages](#updating-data-driven-pages) below.
+
+## Getting Started
+
+Requires Node.js 22.12 or later. All commands run from the `website/` directory.
+
+```sh
+cd website
+npm install
+npm run dev
+```
 
 | Command | Action |
 | :--- | :--- |
@@ -8,6 +20,12 @@ Built with [Astro](https://astro.build). All commands run from the project root.
 | `npm run dev` | Start dev server at `localhost:4321` |
 | `npm run build` | Build to `./dist/` |
 | `npm run preview` | Preview the production build locally |
+
+Pushes to `main` build and deploy automatically via GitHub Actions (see `.github/workflows/`).
+
+## Contributing
+
+Found a bug, broken link, or outdated information? Open an issue at [github.com/Allegheny-Computer-Science/cis.allegheny.edu/issues](https://github.com/Allegheny-Computer-Science/cis.allegheny.edu/issues). For content updates like faculty info, courses, or programs, see the relevant section below — many can be made by editing a single data file and opening a pull request.
 
 ---
 
