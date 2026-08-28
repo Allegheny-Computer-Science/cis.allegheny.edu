@@ -210,7 +210,7 @@ a {
     gap: var(--section-gap);
 }
 
-.hero-image       { grid-column: 1 / 3; overflow: hidden; align-self: stretch; position: relative; min-height: 420px; }
+.hero-image       { grid-column: 1 / 3; overflow: hidden; align-self: stretch; position: relative; }
 .hero-information { grid-column: 3 / 5; }
 
 /* Hero slideshow — all slides absolutely fill the container */
@@ -3503,6 +3503,11 @@ a:hover .button__ghost--dark {
         display: flex;
         animation: nav-links-slide 0.25s ease forwards;
     }
+}
+
+/* Desktop only: enforce a minimum height on the hero image so it doesn't collapse */
+@media (min-width: 901px) {
+    .hero-image { min-height: 420px; }
 }
 
 /* ================================================================

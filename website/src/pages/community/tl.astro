@@ -4,7 +4,8 @@ import type { ImageMetadata } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FillButton from '../../components/ui/FillButton.astro';
 import { technicalLeaders } from '../../data/tl.js';
-import { CALENDAR_EMBED_URL } from '../../config/calendar';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/img/tl/*.{jpg,jpeg,png,webp}',
@@ -20,8 +21,8 @@ const tls = [...technicalLeaders].sort((a, b) => (a.order ?? 99) - (b.order ?? 9
     <h1 class="faculty-dir__heading">Technical <em>Leaders</em></h1>
     <p class="tl-dir__intro">Technical Leaders are experienced CIS students who serve as a peer support network for the department. They assist in introductory courses and host regular office hours in Alden Hall — offering guidance, debugging help, and a friendly face for students who are new to the field.</p>
     <div class="tl-dir__actions">
-      <a href={CALENDAR_EMBED_URL} target="_blank" rel="noopener noreferrer">
-        <FillButton>View Office Hours Calendar</FillButton>
+      <a href={`${base}community/news`}>
+        <FillButton variant="dark">View Office Hours Calendar</FillButton>
       </a>
     </div>
 

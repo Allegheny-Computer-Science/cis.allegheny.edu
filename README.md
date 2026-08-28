@@ -77,7 +77,7 @@ Each TL is one object in the `technicalLeaders` array.
 
 **To update the intro paragraph** (the description of what TLs do that appears above the grid): edit the `<p class="tl-dir__intro">` element directly in `src/pages/community/tl.astro`.
 
-**To update the office hours calendar link:** the "View Office Hours Calendar" button links to `CALENDAR_EMBED_URL` from `src/config/calendar.ts` — update that value there.
+**The "View Office Hours Calendar" button** links to the site's Calendar & News page (`/community/news`).
 
 ---
 
