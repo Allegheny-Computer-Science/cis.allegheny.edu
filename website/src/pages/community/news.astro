@@ -1,11 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsFilter from '../../components/ui/NewsFilter.jsx';
+import NewsFilterBar from '../../components/ui/NewsFilterBar.jsx';
 import { CALENDAR_EMBED_URL } from '../../config/calendar';
 import { getCalendarEvents } from '../../lib/getCalendarEvents';
 
 const mdxModules = import.meta.glob('./news/*.mdx', { eager: true });
 const calendarEvents = await getCalendarEvents(20);
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const updates = [
   ...Object.entries(mdxModules).map(([file, mod]: [string, any]) => ({
@@ -15,7 +18,7 @@ const updates = [
     category: mod.frontmatter.category,
     image: mod.frontmatter.image ?? null,
     description: mod.frontmatter.description,
-    externalUrl: null,
+    externalUrl: mod.frontmatter.externalUrl ?? null,
   })),
   ...calendarEvents.map(e => ({
     slug: e.id,
@@ -27,47 +30,86 @@ const updates = [
     externalUrl: e.url,
   })),
 ].sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+
+// Enough cards to fill the sidebar; overflow: hidden clips the rest
+const sidebarItems = updates.slice(0, 2);
 ---
 
 <BaseLayout pageTitle="Calendar & News | Allegheny CIS">
   <div class="community-feed white__band">
 
-    <!-- Calendar section -->
-    <section class="community-feed__calendar">
-      <h1 class="community-feed__heading">Department <em>Calendar</em></h1>
-      <p class="calendar-page__note">Click on a <strong>TL Office Hours</strong> event to see which Technical Leaders will be in attendance.</p>
+    <h1 class="community-feed__heading">Department <em>Calendar &amp; Updates</em></h1>
+    <p class="calendar-page__note">Click on a <strong>TL Office Hours</strong> event to see which Technical Leaders will be in attendance.</p>
 
-      <details class="calendar-collapse" id="calendar-collapse">
-        <summary class="calendar-collapse__toggle">
-          <span>Show Calendar</span>
-          <svg class="calendar-collapse__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-            <path d="M7 10l5 5 5-5z"/>
-          </svg>
-        </summary>
-        <div class="calendar-page__embed-wrap">
-          <iframe
-            src={CALENDAR_EMBED_URL}
-            class="calendar-page__embed"
-            title="Allegheny CIS Department Calendar"
-            frameborder="0"
-            scrolling="no"
-            loading="lazy"
-          ></iframe>
+    <!--
+      Desktop (>900px):
+        Top section: 2-col grid — calendar (3fr) | sidebar (1fr), both stretch to same height
+        Then filter bar (full width)
+        Then news grid (full width)
+
+      Tablet/mobile: sidebar + filterbar hidden, news shows inline filter bar
+    -->
+
+    <!--
+      Top grid (>900px): 2 columns (3fr | 1fr), 2 rows (calendar | filter bar) + sidebar spanning both
+        Row 1 col 1: Calendar (stretches to fill)
+        Row 2 col 1: Filter bar
+        Rows 1-2 col 2: Sidebar (spans both rows, overflow:hidden clips excess cards)
+    -->
+    <!--
+      Top grid (>900px): 2 columns (3fr | 1fr)
+        Left col: flex column — calendar (flex:1) + filter bar (auto)
+        Right col: sidebar (overflow:hidden clips excess cards)
+      Left col height = right col height = sidebar card height.
+      Calendar fills left col minus filter bar → calendar bottom flush with filter bar top.
+    -->
+    <div class="community-feed__top">
+
+      <!-- Left: calendar + filter bar stacked -->
+      <div class="community-feed__left">
+        <section class="community-feed__calendar">
+          <div class="calendar-page__embed-wrap">
+            <iframe
+              src={CALENDAR_EMBED_URL}
+              class="calendar-page__embed"
+              title="Allegheny CIS Department Calendar"
+              frameborder="0"
+              scrolling="no"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </section>
+
+        <div class="community-feed__filterbar">
+          <NewsFilterBar client:load />
         </div>
-      </details>
-    </section>
+      </div>
 
-    <!-- News section -->
+      <!-- Right: recent update cards, clipped to column height -->
+      <div class="community-feed__sidebar">
+        {sidebarItems.map(u => (
+          <a
+            href={u.externalUrl ?? `${base}community/news/${u.slug}`}
+            class={`update-card update-card--${u.category} update-card--light`}
+            {...(u.externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
+            <div class="update-card__image">
+              <img src={u.image ?? `${base}img/placeholder.jpg`} alt={u.title} width="640" height="360" loading="lazy" decoding="async" />
+            </div>
+            <div class="update-card__body">
+              <p class="update-card__date">{new Date(u.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              <h3 class="update-card__title">{u.title}</h3>
+              <p class="update-card__desc">{u.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </div>
+
+    <!-- News grid: skip the 2 items already shown in the sidebar -->
     <section class="community-feed__news">
-      <h2 class="community-feed__heading community-feed__heading--news">Allegheny <em>CIS News</em></h2>
-      <NewsFilter updates={updates} baseUrl={import.meta.env.BASE_URL.replace(/\/?$/, '/')} client:load />
+      <NewsFilter updates={updates.slice(2)} baseUrl={base} client:load />
     </section>
-
   </div>
 </BaseLayout>
-
-<script is:inline>
-  if (window.matchMedia('(min-width: 901px)').matches) {
-    document.getElementById('calendar-collapse').open = true;
-  }
-</script>

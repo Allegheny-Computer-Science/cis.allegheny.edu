@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const FILTERS = [
   { key: "all",          label: "All" },
@@ -7,27 +7,41 @@ const FILTERS = [
   { key: "other",        label: "Other" },
 ];
 
+const FILTER_EVENT = "cis:news-filter";
 const PAGE_SIZE = 8;
 
 export default function NewsFilter({ updates, baseUrl = '/' }) {
   const [active, setActive]   = useState("all");
   const [visible, setVisible] = useState(PAGE_SIZE);
 
+  // Sync with the external NewsFilterBar when it's present (desktop)
+  useEffect(() => {
+    const onFilter = (e) => {
+      setActive(e.detail.key);
+      setVisible(PAGE_SIZE);
+    };
+    window.addEventListener(FILTER_EVENT, onFilter);
+    return () => window.removeEventListener(FILTER_EVENT, onFilter);
+  }, []);
+
   const filtered = active === "all"
     ? updates
     : updates.filter(u => u.category === active);
 
-  const shown    = filtered.slice(0, visible);
-  const hasMore  = visible < filtered.length;
+  const shown   = filtered.slice(0, visible);
+  const hasMore = visible < filtered.length;
 
   function handleFilter(key) {
     setActive(key);
     setVisible(PAGE_SIZE);
+    // Also broadcast so the external bar stays in sync
+    window.dispatchEvent(new CustomEvent(FILTER_EVENT, { detail: { key } }));
   }
 
   return (
     <>
-      <div className="news-filter__bar">
+      {/* Shown on mobile/tablet; hidden on desktop by .community-feed__news .news-filter__bar { display:none } */}
+      <div className="news-filter__bar news-filter__bar--inline">
         {FILTERS.map(f => (
           <button
             key={f.key}

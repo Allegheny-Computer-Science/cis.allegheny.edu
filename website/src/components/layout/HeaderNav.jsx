@@ -69,13 +69,13 @@ function ExternalLinkIcon({ size = "0.75em" }) {
 
 function Brand() {
   return (
-    <div className="header__brand">
+    <a href={base} className="header__brand">
       <img src={`${base}img/logo.svg`} alt="Allegheny College CIS gator" className="header__logo" />
       <div className="header__titles">
         <span className="header__college">Allegheny College</span>
         <span className="header__dept">Computer &amp; Information Science</span>
       </div>
-    </div>
+    </a>
   );
 }
 

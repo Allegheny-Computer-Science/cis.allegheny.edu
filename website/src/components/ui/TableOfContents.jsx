@@ -1,42 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-export default function TableOfContents({ latestUpdate = null, relatedLinks = null, showApply = false }) {
-    const [headings, setHeadings] = useState([]);
-    const [activeId, setActiveId] = useState('');
+export default function TableOfContents({
+    latestUpdate = null,
+    relatedLinks = null,
+    showApply = false,
+    sectionPages = null,
+    sectionLabel = null,
+    currentPath = '',
+}) {
     const sidebarRef = useRef(null);
 
-    // Heading detection + active-section tracking
-    useEffect(() => {
-        const body = document.querySelector('.mdx-body');
-        if (!body) return;
-
-        const nodes = Array.from(body.querySelectorAll('h1, h2, h3, h4'));
-        setHeadings(nodes.map(el => ({
-            id: el.id,
-            text: el.textContent,
-            level: parseInt(el.tagName[1]),
-        })));
-
-        const observer = new IntersectionObserver(
-            entries => {
-                const hit = entries.find(e => e.isIntersecting);
-                if (hit) setActiveId(hit.target.id);
-            },
-            { rootMargin: '0px 0px -70% 0px', threshold: 0 }
-        );
-        nodes.forEach(el => { if (el.id) observer.observe(el); });
-        return () => observer.disconnect();
-    }, []);
-
-    // Natural sticky scroll:
-    // - sidebar scrolls with page normally
-    // - sticks when its bottom hits the viewport bottom (scrolling down)
-    // - sticks when its top hits the header bottom (scrolling up)
+    // Natural sticky scroll
     useEffect(() => {
         const sidebar = sidebarRef.current;
         if (!sidebar) return;
 
-        const GAP     = 16;
+        const GAP      = 16;
         const headerEl = document.querySelector('header');
         const headerH  = headerEl?.offsetHeight ?? 80;
 
@@ -44,58 +23,50 @@ export default function TableOfContents({ latestUpdate = null, relatedLinks = nu
         sidebar.style.top = headerH + 'px';
 
         const onScroll = () => {
-            const y   = window.scrollY;
-            const dy  = y - prevY;
+            const y  = window.scrollY;
+            const dy = y - prevY;
             prevY = y;
 
             const vH = window.innerHeight;
             const sH = sidebar.offsetHeight;
 
             if (sH + headerH + GAP <= vH) {
-                // Fits in viewport — always stick top below header
                 sidebar.style.top = headerH + 'px';
                 return;
             }
 
-            // Taller than viewport: scroll through it
-            // top decreases as user scrolls down (sidebar scrolls up through viewport)
-            // clamped so the top never goes above the header and the bottom never exits below viewport
             const current = parseFloat(sidebar.style.top) || headerH;
             let next = current - dy;
-            next = Math.min(next, headerH);         // top boundary: header bottom
-            next = Math.max(next, vH - sH - GAP);  // bottom boundary: viewport bottom
+            next = Math.min(next, headerH);
+            next = Math.max(next, vH - sH - GAP);
             sidebar.style.top = next + 'px';
         };
 
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
-    }, [headings]); // re-run when sidebar height may have changed
-
-    const title    = headings.find(h => h.level === 1);
-    const navItems = headings.filter(h => h.level > 1);
+    }, [sectionPages]);
 
     return (
         <aside className="mdx-toc" ref={sidebarRef}>
 
-            {/* Page title */}
-            {title && <div className="mdx-toc__title">{title.text}</div>}
+            {/* Section heading */}
+            {sectionLabel && <div className="mdx-toc__title">{sectionLabel}</div>}
 
-            {/* Heading navigation */}
-            {navItems.length > 0 && (
+            {/* Section page navigation */}
+            {sectionPages && sectionPages.length > 0 && (
                 <nav className="mdx-toc__nav">
-                    {navItems.map(h => (
-                        <a
-                            key={h.id}
-                            href={`#${h.id}`}
-                            className={[
-                                'mdx-toc__link',
-                                h.level >= 3 ? 'mdx-toc__link--sub' : '',
-                                h.id === activeId ? 'mdx-toc__link--active' : '',
-                            ].filter(Boolean).join(' ')}
-                        >
-                            {h.text}
-                        </a>
-                    ))}
+                    {sectionPages.map(page => {
+                        const isActive = currentPath === page.href || currentPath.startsWith(page.href.replace(/\/$/, '') + '/');
+                        return (
+                            <a
+                                key={page.href}
+                                href={page.href}
+                                className={['mdx-toc__link', isActive ? 'mdx-toc__link--active' : ''].filter(Boolean).join(' ')}
+                            >
+                                {page.label}
+                            </a>
+                        );
+                    })}
                 </nav>
             )}
 

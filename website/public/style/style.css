@@ -29,15 +29,14 @@
    6.  Header & Nav
    7.  Mobile Overlay Menu
    8.  Updates Section       update cards, grid, news page, filters
-   8b. Calendar Page
-   8c. Calendar Collapse Toggle (news page)
+   8b. News Article Page
+   8c. Calendar Page
    9.  MDX Prose Pages
    10. Faculty Section & Carousel
    11. Faculty Directory Page
    11b.Endorsement Carousel
    11c.TL & TAB Directories
    12. Student Orgs
-   13b.Overview Nav Pages
    13. Footer
    14. Plan Pages            degrees, microcredentials, bulletin, mypath
    15. Responsive — ≤1265px  header brand scaling
@@ -465,19 +464,15 @@ a:hover .button__ghost--dark {
     line-height: 1.1;
 }
 
-.header__college {
-    font-family: var(--font-heading);
-    font-size: clamp(1rem, 2.5vw, 2rem);
-    color: var(--bold-gold);
-    letter-spacing: 0.04em;
-}
-
+.header__college,
 .header__dept {
     font-family: var(--font-heading);
     font-size: clamp(1rem, 2.5vw, 2rem);
-    color: var(--white);
     letter-spacing: 0.04em;
 }
+
+.header__college { color: var(--bold-gold); }
+.header__dept    { color: var(--white); }
 
 .header__nav {
     display: flex;
@@ -843,17 +838,68 @@ a:hover .button__ghost--dark {
 .community-feed {
     display: flex;
     flex-direction: column;
-    gap: var(--section-gap);
+    gap: var(--object-gap);
 }
-
-.community-feed__calendar { display: flex; flex-direction: column; gap: 0.5rem; }
 
 .community-feed__heading {
     color: var(--navy);
     padding-bottom: 0;
     margin-bottom: 0;
 }
-.community-feed__heading--news { margin-top: 0; }
+
+/*
+ * Top zone: 2-col grid (3fr | 1fr), both columns same height via align-items:stretch.
+ *   Left col  (.community-feed__left):  flex column — calendar (flex:1) + filter bar (auto)
+ *   Right col (.community-feed__sidebar): overflow:hidden clips cards to column height
+ *
+ * Because left and right columns are the same height (grid stretch), and the
+ * calendar takes flex:1 of the left column, the calendar fills everything above
+ * the filter bar, making calendar-bottom flush with filter-bar-top.
+ */
+.community-feed__top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--object-gap);
+    align-items: stretch;
+}
+
+.community-feed__left {
+    grid-column: 1 / 4;
+    display: flex;
+    flex-direction: column;
+    gap: var(--object-gap);
+}
+
+.community-feed__calendar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+}
+
+.community-feed__calendar .calendar-page__embed-wrap {
+    flex: 1;
+    aspect-ratio: unset;
+}
+
+.community-feed__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--object-gap);
+    overflow: hidden;
+    align-content: flex-start;
+    align-items: stretch;
+}
+
+/* Cards in the sidebar take their natural height only */
+.community-feed__sidebar .update-card {
+    flex: 0 0 auto;
+}
+
+/* No extra bottom padding — flex gap handles spacing */
+.community-feed__filterbar .news-filter__bar {
+    padding-bottom: 0;
+}
 
 /* Collapsible calendar wrapper */
 .calendar-collapse { border: none; }
@@ -886,12 +932,6 @@ a:hover .button__ghost--dark {
 
 
 /* â€” News page â€” */
-
-.news-page {
-    min-height: 60vh;
-}
-
-.news-page__heading { color: var(--navy); }
 
 /* ── Section overview pages (Resources, Opportunities) ── */
 
@@ -986,6 +1026,9 @@ a:hover .button__ghost--dark {
     padding-bottom: var(--object-gap);
 }
 
+/* On desktop the filter bar lives in .community-feed__filterbar; hide the inline one */
+.community-feed__news .news-filter__bar--inline { display: none; }
+
 .news-filter__btn {
     font-size: 0.9rem;
     padding: 0.4rem 1.1rem;
@@ -1057,14 +1100,6 @@ a:hover .button__ghost--dark {
     margin-bottom: 0.75rem;
 }
 
-.news-article__description {
-    font-size: 1.1rem;
-    color: var(--mid-gray, #555);
-    border-left: 3px solid var(--bold-gold);
-    padding-left: 1rem;
-    margin-bottom: 2rem;
-}
-
 .news-article__body {
     font-size: 1rem;
     line-height: 1.75;
@@ -1134,10 +1169,6 @@ a:hover .button__ghost--dark {
 }
 
 .calendar-page__events-heading { color: var(--navy); }
-
-.calendar-page__grid {
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-}
 
 .cal-event-list {
     list-style: none;
@@ -1905,9 +1936,19 @@ a:hover .button__ghost--dark {
 
 /* ── TL Directory ── */
 
+.tl-dir__intro {
+    color: var(--navy);
+    max-width: 65ch;
+    margin-bottom: var(--object-gap);
+}
+
+.tl-dir__actions {
+    margin-bottom: var(--object-gap);
+}
+
 .tl-dir__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--object-gap);
 }
 
@@ -1916,14 +1957,15 @@ a:hover .button__ghost--dark {
     border: 2px solid var(--navy);
     border-bottom: 20px solid var(--navy);
     display: flex;
-    align-items: stretch;
+    flex-direction: column;
     transition: transform 180ms ease;
 }
 
 .tl-card__image {
-    width: 11rem;
-    flex-shrink: 0;
+    width: 100%;
+    aspect-ratio: 3 / 4;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .tl-card__image img,
@@ -1985,6 +2027,12 @@ a:hover .button__ghost--dark {
     color: var(--navy);
     border-top: 1px solid rgba(27, 48, 84, 0.15);
     padding-top: 0.4rem;
+}
+
+.tl-card__hours svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
 }
 
 .tl-card__skills {
@@ -2098,13 +2146,13 @@ a:hover .button__ghost--dark {
 
 /* Responsive */
 @media (max-width: 900px) {
-    .tl-dir__grid,
+    .tl-dir__grid { grid-template-columns: repeat(2, 1fr); }
     .tab-dir__grid { grid-template-columns: 1fr; }
     .tab-dir__affiliates-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 600px) {
-    .tl-card__image { width: 7rem; }
+    .tl-dir__grid { grid-template-columns: 1fr; }
     .tab-dir__affiliates-grid { grid-template-columns: 1fr; }
 }
 
@@ -2125,7 +2173,7 @@ a:hover .button__ghost--dark {
 
 .student-orgs__grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 22rem));
+    grid-template-columns: repeat(4, minmax(0, 22rem));
     gap: var(--object-gap);
     justify-content: center;
     width: 100%;
@@ -2222,19 +2270,15 @@ a:hover .button__ghost--dark {
     line-height: 1.15;
 }
 
-.footer__college {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    letter-spacing: 0.08em;
-    color: var(--bold-gold);
-}
-
+.footer__college,
 .footer__dept {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     letter-spacing: 0.08em;
-    color: var(--white);
 }
+
+.footer__college { color: var(--bold-gold); }
+.footer__dept    { color: var(--white); }
 
 .footer__contact {
     display: flex;
@@ -2292,6 +2336,13 @@ a:hover .button__ghost--dark {
     line-height: 1.6;
     color: var(--white);
     margin-bottom: 1.5rem;
+}
+
+.plan-hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
 }
 
 /* â€” Shared accordion chevron (matches header nav SVG) â€” */
@@ -2453,7 +2504,7 @@ a:hover .button__ghost--dark {
     color: var(--navy);
 }
 
-.degree-outcomes ol li { margin-bottom: 0.35rem; color: var(--navy); }
+.degree-outcomes ol li { margin-bottom: 0.35rem; }
 
 /* Notes band */
 
@@ -2472,7 +2523,7 @@ a:hover .button__ghost--dark {
     color: var(--navy);
 }
 
-.degree-notes ul li { margin-bottom: 0.2rem; color: var(--navy); }
+.degree-notes ul li { margin-bottom: 0.2rem; }
 
 /* Requirement sections */
 
@@ -3531,7 +3582,7 @@ a:hover .button__ghost--dark {
 
     /* Student orgs: all three side by side */
     .student-orgs__grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     .org-card__desc { -webkit-line-clamp: 2; }
 
@@ -3549,7 +3600,13 @@ a:hover .button__ghost--dark {
 
     /* Calendar page / community feed */
     .calendar-page__embed-wrap { aspect-ratio: 4 / 3; }
-    .community-feed { gap: var(--object-gap); }
+    .community-feed__top { grid-template-columns: 1fr; }
+    .community-feed__left { gap: 0; }
+    .community-feed__calendar { flex: unset; min-height: unset; }
+    .community-feed__calendar .calendar-page__embed-wrap { flex: unset; aspect-ratio: 4 / 3; }
+    .community-feed__sidebar   { display: none; }
+    .community-feed__filterbar { display: none; }
+    .community-feed__news .news-filter__bar--inline { display: flex; }
 
     /* Plan pages */
     .degree-split        { grid-template-columns: 1fr; }
@@ -3702,8 +3759,13 @@ a:hover .button__ghost--dark {
 
     /* Calendar / community feed — collapse calendar by default on mobile */
     .calendar-page__embed-wrap { aspect-ratio: 3 / 4; max-height: 70vh; }
-    .calendar-collapse { }
-    .community-feed { gap: var(--object-gap); }
+    .community-feed__top { grid-template-columns: 1fr; }
+    .community-feed__left { gap: 0; }
+    .community-feed__calendar { flex: unset; min-height: unset; }
+    .community-feed__calendar .calendar-page__embed-wrap { flex: unset; aspect-ratio: 3 / 4; }
+    .community-feed__sidebar   { display: none; }
+    .community-feed__filterbar { display: none; }
+    .community-feed__news .news-filter__bar--inline { display: flex; }
 
     /* Plan pages */
     .planner__grid       { grid-template-columns: 1fr; }
