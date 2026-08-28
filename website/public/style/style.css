@@ -2551,7 +2551,23 @@ a:hover .button__ghost--dark {
     margin: 0;
     -webkit-text-stroke: transparent 0;
     border-bottom: 3px solid var(--bold-gold);
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
 }
+.degree-section__heading::marker,
+.degree-section__heading::-webkit-details-marker { display: none; }
+.degree-section__heading::after {
+    content: '▼';
+    font-size: 0.7em;
+    color: var(--gator);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+.degree-section:not([open]) > .degree-section__heading::after { transform: rotate(-90deg); }
 
 .degree-section__sub {
     font-size: 0.85rem;
@@ -3517,6 +3533,19 @@ a:hover .button__ghost--dark {
     .hero-image { min-height: 420px; }
 }
 
+/* Desktop-only: lock collapsible summaries open (non-interactive) */
+@media (min-width: 901px) {
+    .degree-col > .degree-col__header,
+    .planner-year__details > .planner-year__heading {
+        pointer-events: none;
+        list-style: none;
+    }
+    .degree-col > .degree-col__header::marker,
+    .degree-col > .degree-col__header::-webkit-details-marker,
+    .planner-year__details > .planner-year__heading::marker,
+    .planner-year__details > .planner-year__heading::-webkit-details-marker { display: none; }
+}
+
 /* ================================================================
    17. RESPONSIVE — ≤ 900px  (tablet)
    ================================================================ */
@@ -3628,6 +3657,50 @@ a:hover .button__ghost--dark {
     .planner__controls   { flex-direction: column; align-items: stretch; }
     .control-group       { width: 100%; }
     .control-group select { width: 100%; }
+
+    /* Collapsible degree-col headers (Major / Minor title bars) */
+    .degree-col > .degree-col__header {
+        list-style: none;
+        cursor: pointer;
+        position: relative;
+        padding-right: 2.5rem;
+    }
+    .degree-col > .degree-col__header::marker,
+    .degree-col > .degree-col__header::-webkit-details-marker { display: none; }
+    .degree-col > .degree-col__header::after {
+        content: '▼';
+        position: absolute;
+        right: 0.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8em;
+        color: var(--gator);
+        transition: transform 0.2s;
+    }
+    .degree-col:not([open]) > .degree-col__header::after { transform: translateY(-50%) rotate(-90deg); }
+
+    /* Collapsible planner year bars */
+    .planner-year__details > .planner-year__heading {
+        list-style: none;
+        cursor: pointer;
+        position: relative;
+        padding-right: 2.5rem;
+        margin-bottom: 0;
+    }
+    .planner-year__details > .planner-year__heading::marker,
+    .planner-year__details > .planner-year__heading::-webkit-details-marker { display: none; }
+    .planner-year__details > .planner-year__heading::after {
+        content: '▼';
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8em;
+        color: var(--gator);
+        transition: transform 0.2s;
+    }
+    .planner-year__details:not([open]) > .planner-year__heading::after { transform: translateY(-50%) rotate(-90deg); }
+    .planner-year__details[open] > .planner-semesters { margin-top: 0.5rem; }
 }
 
 /* ================================================================

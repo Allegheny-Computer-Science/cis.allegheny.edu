@@ -74,22 +74,24 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <div class="planner__grid" id="planner-grid">
       {[1,2,3,4].map(year => (
         <div class="planner-year" data-year={year}>
-          <h2 class="planner-year__heading">Year {year}</h2>
-          <div class="planner-semesters">
-            {["Fall","Spring"].map(sem => (
-              <div class="planner-semester">
-                <h3 class="planner-semester__heading">{sem}</h3>
-                <div
-                  class="semester-drop"
-                  data-year={year}
-                  data-sem={sem}
-                  aria-label={`Year ${year} ${sem} — drop courses here`}
-                  role="list"
-                ></div>
-                <div class="semester-credits" data-year={year} data-sem={sem}>0 credits</div>
-              </div>
-            ))}
-          </div>
+          <details class="planner-year__details" open>
+            <summary class="planner-year__heading">Year {year}</summary>
+            <div class="planner-semesters">
+              {["Fall","Spring"].map(sem => (
+                <div class="planner-semester">
+                  <h3 class="planner-semester__heading">{sem}</h3>
+                  <div
+                    class="semester-drop"
+                    data-year={year}
+                    data-sem={sem}
+                    aria-label={`Year ${year} ${sem} — drop courses here`}
+                    role="list"
+                  ></div>
+                  <div class="semester-credits" data-year={year} data-sem={sem}>0 credits</div>
+                </div>
+              ))}
+            </div>
+          </details>
         </div>
       ))}
     </div>

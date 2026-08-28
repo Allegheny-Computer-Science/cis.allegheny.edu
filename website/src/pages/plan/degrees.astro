@@ -47,12 +47,12 @@ function getCourseDetails(code) {
         <div class="degree-split">
           <!-- MAJOR -->
           {major && (
-            <div class="degree-col degree-col--major">
-              <div class="degree-col__header">
+            <details class="degree-col degree-col--major" open>
+              <summary class="degree-col__header">
                 <span class="degree-col__badge">Major</span>
                 <h2 class="degree-col__title">{major.label}</h2>
-                <p class="degree-col__meta">{major.degree} Â· Min. {major.minCredits} credits</p>
-              </div>
+                <p class="degree-col__meta">{major.degree} · Min. {major.minCredits} credits</p>
+              </summary>
 
               {major.description && (
                 <p class="degree-col__description">{major.description}</p>
@@ -76,8 +76,8 @@ function getCourseDetails(code) {
               )}
 
               {major.sections.map(section => (
-                <div class="degree-section">
-                  <h3 class="degree-section__heading">{section.heading}</h3>
+                <details class="degree-section" open>
+                  <summary class="degree-section__heading">{section.heading}</summary>
                   <p class="degree-section__sub">{section.subheading}</p>
 
                   {section.type === "module" ? (
@@ -129,19 +129,19 @@ function getCourseDetails(code) {
                       })}
                     </ul>
                   )}
-                </div>
+                </details>
               ))}
-            </div>
+            </details>
           )}
 
           <!-- MINOR -->
           {minor && (
-            <div class="degree-col degree-col--minor">
-              <div class="degree-col__header">
+            <details class="degree-col degree-col--minor" open>
+              <summary class="degree-col__header">
                 <span class="degree-col__badge degree-col__badge--minor">Minor</span>
                 <h2 class="degree-col__title">{minor.label}</h2>
                 <p class="degree-col__meta">Min. {minor.minCredits} credits</p>
-              </div>
+              </summary>
 
               {minor.notes && minor.notes.length > 0 && (
                 <div class="degree-notes">
@@ -152,8 +152,8 @@ function getCourseDetails(code) {
               )}
 
               {minor.sections.map(section => (
-                <div class="degree-section">
-                  <h3 class="degree-section__heading">{section.heading}</h3>
+                <details class="degree-section" open>
+                  <summary class="degree-section__heading">{section.heading}</summary>
                   <p class="degree-section__sub">{section.subheading}</p>
 
                   {section.type === "module" ? (
@@ -204,9 +204,9 @@ function getCourseDetails(code) {
                       })}
                     </ul>
                   )}
-                </div>
+                </details>
               ))}
-            </div>
+            </details>
           )}
         </div>
       </div>
