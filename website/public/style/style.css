@@ -1948,7 +1948,7 @@ a:hover .button__ghost--dark {
 
 .tl-dir__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--object-gap);
 }
 
@@ -1957,13 +1957,14 @@ a:hover .button__ghost--dark {
     border: 2px solid var(--navy);
     border-bottom: 20px solid var(--navy);
     display: flex;
-    flex-direction: column;
+    align-items: stretch;
     transition: transform 180ms ease;
 }
 
 .tl-card__image {
-    width: 100%;
-    aspect-ratio: 3 / 4;
+    width: 11rem;
+    aspect-ratio: unset;
+    height: 100%;
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -1997,6 +1998,14 @@ a:hover .button__ghost--dark {
     margin: 0;
     padding: 0;
     -webkit-text-stroke: transparent 0;
+}
+
+.tl-card__role {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gator);
 }
 
 .tl-card__academics {
@@ -2088,12 +2097,6 @@ a:hover .button__ghost--dark {
     transition: transform 180ms ease;
 }
 
-/* TAB uses a side image; override the vertical TL card image styles */
-.tab-card--member .tl-card__image {
-    width: 11rem;
-    aspect-ratio: unset;
-    height: 100%;
-}
 
 .tab-card__position {
     font-size: 0.75rem;
@@ -2153,7 +2156,7 @@ a:hover .button__ghost--dark {
 
 /* Responsive */
 @media (max-width: 900px) {
-    .tl-dir__grid { grid-template-columns: repeat(2, 1fr); }
+    .tl-dir__grid { grid-template-columns: 1fr; }
     .tab-dir__grid { grid-template-columns: 1fr; }
     .tab-dir__affiliates-grid { grid-template-columns: repeat(2, 1fr); }
 }
