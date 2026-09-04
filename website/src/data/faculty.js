@@ -88,10 +88,9 @@ export const people = [
     group: "staff",
     order: 10,
     name: "Ebony Benge",
-    title: "Building Coordinator",
+    title: "Academic Building Coordinator",
     degrees: [
-      "Office Hours: Tue, Fri 8am–5pm",
-      "Office Hours: Wed 1pm–5pm",
+      "Office Hours: Mon–Fri 8am–4pm",
     ],
     email: "ebenge@allegheny.edu",
     phone: "814-332-3629",
