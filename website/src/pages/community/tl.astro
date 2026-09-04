@@ -12,7 +12,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true }
 );
 
-const tls = [...technicalLeaders].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+const tls = [...technicalLeaders].filter(tl => !tl.hidden).sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 ---
 
 <BaseLayout pageTitle="Technical Leaders | Allegheny CIS">
@@ -42,6 +42,7 @@ const tls = [...technicalLeaders].sort((a, b) => (a.order ?? 99) - (b.order ?? 9
               </div>
               <div class="tl-card__body">
                 <h2 class="tl-card__name">{d.name}</h2>
+                {d.role && <span class="tl-card__role">{d.role}</span>}
                 <div class="tl-card__academics">
                   <span class="tl-card__major">{d.major}</span>
                   {d.minor && <span class="tl-card__minor">Minor: {d.minor}</span>}
