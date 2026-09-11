@@ -13,7 +13,7 @@ const updates = Object.entries(mdxModules).map(([file, mod]: [string, any]) => (
   title: mod.frontmatter.title,
   date: new Date(mod.frontmatter.date).toISOString(),
   category: mod.frontmatter.category,
-  image: mod.frontmatter.image ?? null,
+  image: mod.frontmatter.image ? `${base}${mod.frontmatter.image.replace(/^\//, '')}` : null,
   description: mod.frontmatter.description,
   externalUrl: mod.frontmatter.externalUrl ?? null,
 })).sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());

@@ -16,7 +16,7 @@ const categoryLabel = { event: 'Event', news: 'News', announcements: 'Announceme
 
     <div class="news-article__hero">
       <img
-        src={frontmatter.image ?? `${base}img/placeholder.jpg`}
+        src={frontmatter.image ? `${base}${frontmatter.image.replace(/^\//, '')}` : `${base}img/placeholder.jpg`}
         alt={frontmatter.title}
         class="news-article__hero-img"
         width="1200"
