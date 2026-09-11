@@ -121,12 +121,11 @@ export const technicalLeaders = [
     order: 12,
     name: "Jake McCallen '28",
     role: "Technical Leader",
-    major: null,
-    minor: null,
+    major: "Software Engineering",
+    minor: "Communications & Media, Psychology",
     officeHours: null,
-    skills: [],
-    image: null,
-    hidden: true,
+    skills: ["Windows", "Python", "HTML", "CSS", "SQL", "GitHub Flow"],
+    image: "mccallen01.png",
   },
   // '29 — alphabetical by last name
   {
