@@ -7,8 +7,8 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 const categoryClass = {
   event: 'update-card--event',
-  announcement: 'update-card--announcement',
-  other: 'update-card--other',
+  news: 'update-card--news',
+  announcements: 'update-card--announcements',
 }[category];
 
 const formattedDate = new Date(date).toLocaleDateString('en-US', {

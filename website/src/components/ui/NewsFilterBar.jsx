@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 const FILTERS = [
-  { key: "all",          label: "All" },
-  { key: "event",        label: "Events" },
-  { key: "announcement", label: "Announcements" },
-  { key: "other",        label: "Other" },
+  { key: "all",           label: "All" },
+  { key: "event",         label: "Events" },
+  { key: "news",          label: "News" },
+  { key: "announcements", label: "Announcements" },
 ];
 
 export const FILTER_EVENT = "cis:news-filter";

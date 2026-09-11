@@ -3,65 +3,35 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsFilter from '../../components/ui/NewsFilter.jsx';
 import NewsFilterBar from '../../components/ui/NewsFilterBar.jsx';
 import { CALENDAR_EMBED_URL } from '../../config/calendar';
-import { getCalendarEvents } from '../../lib/getCalendarEvents';
 
 const mdxModules = import.meta.glob('./news/*.mdx', { eager: true });
-const calendarEvents = await getCalendarEvents(20);
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
-const updates = [
-  ...Object.entries(mdxModules).map(([file, mod]: [string, any]) => ({
-    slug: file.replace('./news/', '').replace('.mdx', ''),
-    title: mod.frontmatter.title,
-    date: new Date(mod.frontmatter.date).toISOString(),
-    category: mod.frontmatter.category,
-    image: mod.frontmatter.image ?? null,
-    description: mod.frontmatter.description,
-    externalUrl: mod.frontmatter.externalUrl ?? null,
-  })),
-  ...calendarEvents.map(e => ({
-    slug: e.id,
-    title: e.title,
-    date: e.start.toISOString(),
-    category: 'event' as const,
-    image: null,
-    description: e.description || e.location || '',
-    externalUrl: e.url,
-  })),
-].sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+const updates = Object.entries(mdxModules).map(([file, mod]: [string, any]) => ({
+  slug: file.replace('./news/', '').replace('.mdx', ''),
+  title: mod.frontmatter.title,
+  date: new Date(mod.frontmatter.date).toISOString(),
+  category: mod.frontmatter.category,
+  image: mod.frontmatter.image ?? null,
+  description: mod.frontmatter.description,
+  externalUrl: mod.frontmatter.externalUrl ?? null,
+})).sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
 
-// Enough cards to fill the sidebar; overflow: hidden clips the rest
-const sidebarItems = updates.slice(0, 2);
+// Sidebar shows the 2 most recent events only
+const sidebarItems = updates.filter(u => u.category === 'event').slice(0, 2);
+const sidebarSlugs = new Set(sidebarItems.map(u => u.slug));
+const gridItems = updates.filter(u => !sidebarSlugs.has(u.slug));
 ---
 
 <BaseLayout pageTitle="Calendar & News | Allegheny CIS">
   <div class="community-feed white__band">
 
     <h1 class="community-feed__heading">Department <em>Calendar &amp; Updates</em></h1>
-    <p class="calendar-page__note">Click on a <strong>TL Office Hours</strong> event to see which Technical Leaders will be in attendance.</p>
 
     <!--
-      Desktop (>900px):
-        Top section: 2-col grid — calendar (3fr) | sidebar (1fr), both stretch to same height
-        Then filter bar (full width)
-        Then news grid (full width)
-
+      Desktop: 4-col grid — left (3 cols, flex column: calendar + note) | sidebar (1 col, event cards)
       Tablet/mobile: sidebar + filterbar hidden, news shows inline filter bar
-    -->
-
-    <!--
-      Top grid (>900px): 2 columns (3fr | 1fr), 2 rows (calendar | filter bar) + sidebar spanning both
-        Row 1 col 1: Calendar (stretches to fill)
-        Row 2 col 1: Filter bar
-        Rows 1-2 col 2: Sidebar (spans both rows, overflow:hidden clips excess cards)
-    -->
-    <!--
-      Top grid (>900px): 2 columns (3fr | 1fr)
-        Left col: flex column — calendar (flex:1) + filter bar (auto)
-        Right col: sidebar (overflow:hidden clips excess cards)
-      Left col height = right col height = sidebar card height.
-      Calendar fills left col minus filter bar → calendar bottom flush with filter bar top.
     -->
     <div class="community-feed__top">
 
@@ -80,13 +50,12 @@ const sidebarItems = updates.slice(0, 2);
           </div>
         </section>
 
-        <div class="community-feed__filterbar">
-          <NewsFilterBar client:load />
-        </div>
+        <p class="calendar-page__note">Click on a <strong>TL Office Hours</strong> event to see which Technical Leaders will be in attendance.</p>
       </div>
 
-      <!-- Right: recent update cards, clipped to column height -->
+      <!-- Right: upcoming event cards, clipped to column height -->
       <div class="community-feed__sidebar">
+        <p class="community-feed__sidebar-label">Recent & Upcoming Events</p>
         {sidebarItems.map(u => (
           <a
             href={u.externalUrl ?? `${base}community/news/${u.slug}`}
@@ -98,7 +67,7 @@ const sidebarItems = updates.slice(0, 2);
             </div>
             <div class="update-card__body">
               <p class="update-card__date">{new Date(u.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-              <h3 class="update-card__title">{u.title}</h3>
+              <h2 class="update-card__title">{u.title}</h2>
               <p class="update-card__desc">{u.description}</p>
             </div>
           </a>
@@ -107,9 +76,13 @@ const sidebarItems = updates.slice(0, 2);
 
     </div>
 
-    <!-- News grid: skip the 2 items already shown in the sidebar -->
+    <!-- News grid: excludes items already shown in the sidebar -->
     <section class="community-feed__news">
-      <NewsFilter updates={updates.slice(2)} baseUrl={base} client:load />
+      <h2 class="community-feed__archive-heading">News <em>Archive</em></h2>
+      <div class="community-feed__filterbar">
+        <NewsFilterBar client:load />
+      </div>
+      <NewsFilter updates={gridItems} baseUrl={base} client:load />
     </section>
   </div>
 </BaseLayout>
