@@ -22,7 +22,7 @@ const latest = Object.entries(mdxModules)
         title={entry.title}
         date={new Date(entry.date)}
         category={entry.category}
-        image={entry.image}
+        image={entry.image ? `${base}${entry.image.replace(/^\//, '')}` : null}
         description={entry.description}
         slug={entry.file.split('/').at(-1).replace('.mdx', '')}
       />
