@@ -54,7 +54,7 @@ jobs:
           path: website/dist
 
       - name: Deploy
-        uses: burnett01/rsync-deployments@9.0.0
+        uses: burnett01/rsync-deployments@9.0.1
         with:
           switches: -avz --delete
           path: website/dist/
