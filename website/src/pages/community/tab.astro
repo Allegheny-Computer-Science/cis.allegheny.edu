@@ -31,7 +31,7 @@ const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.ord
     <!-- Members panel -->
     <div class="tab-panel" data-panel="members" aria-hidden="false">
       {sortedMembers.length === 0 ? (
-        <p style="color: var(--navy);">No Board Members listed yet.</p>
+        <p class="tl-dir__empty">No Board Members listed yet.</p>
       ) : (
         <div class="tab-dir__grid">
           {sortedMembers.map(d => {
@@ -40,7 +40,7 @@ const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.ord
               <div class="tab-card tab-card--member">
                 <div class="tl-card__image">
                   {imgMod
-                    ? <Image src={imgMod.default} alt={d.name} width={300} height={300} />
+                    ? <Image src={imgMod.default} alt={d.name} width={352} height={352} />
                     : <div class="tl-card__image-placeholder" aria-hidden="true" />
                   }
                 </div>
@@ -65,7 +65,7 @@ const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.ord
       <!-- Student Members subsection -->
       {sortedStudents.length > 0 && (
         <>
-          <h2 class="faculty-dir__subheading" style="margin-top: 3rem;">Student Members</h2>
+          <h2 class="faculty-dir__subheading tab-dir__subheading">Student Members</h2>
           <div class="tab-dir__grid">
             {sortedStudents.map(d => {
               const imgMod = d.image ? tlImages[`/src/assets/img/tl/${d.image}`] : null;
@@ -73,7 +73,7 @@ const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.ord
                 <div class="tab-card tab-card--member">
                   <div class="tl-card__image">
                     {imgMod
-                      ? <Image src={imgMod.default} alt={d.name} width={300} height={300} />
+                      ? <Image src={imgMod.default} alt={d.name} width={352} height={352} />
                       : <div class="tl-card__image-placeholder" aria-hidden="true" />
                     }
                   </div>
@@ -96,7 +96,7 @@ const sortedAffiliates = [...affiliates].sort((a, b) => (a.order ?? 99) - (b.ord
     <!-- Affiliates panel -->
     <div class="tab-panel" data-panel="affiliates" aria-hidden="true">
       {sortedAffiliates.length === 0 ? (
-        <p style="color: var(--navy);">No Affiliates listed yet.</p>
+        <p class="tl-dir__empty">No Affiliates listed yet.</p>
       ) : (
         <div class="tab-dir__affiliates-grid">
           {sortedAffiliates.map(d => (
