@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsFilter from '../../components/ui/NewsFilter.jsx';
 import NewsFilterBar from '../../components/ui/NewsFilterBar.jsx';
 import { CALENDAR_EMBED_URL } from '../../config/calendar';
+import placeholderImg from '../../assets/img/placeholder.jpg';
 
 const mdxModules = import.meta.glob('./news/*.mdx', { eager: true });
 
@@ -13,7 +14,7 @@ const updates = Object.entries(mdxModules).map(([file, mod]: [string, any]) => (
   title: mod.frontmatter.title,
   date: new Date(mod.frontmatter.date).toISOString(),
   category: mod.frontmatter.category,
-  image: mod.frontmatter.image ? `${base}${mod.frontmatter.image.replace(/^\//, '')}` : null,
+  image: mod.frontmatter.image ? `${base}${mod.frontmatter.image.replace(/^\//, '')}` : placeholderImg.src,
   description: mod.frontmatter.description,
   externalUrl: mod.frontmatter.externalUrl ?? null,
 })).sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
@@ -63,7 +64,7 @@ const gridItems = updates.filter(u => !sidebarSlugs.has(u.slug));
             {...(u.externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
             <div class="update-card__image">
-              <img src={u.image ?? `${base}img/placeholder.jpg`} alt={u.title} width="640" height="360" loading="lazy" decoding="async" />
+              <img src={u.image} alt={u.title} width="640" height="360" loading="lazy" decoding="async" />
             </div>
             <div class="update-card__body">
               <p class="update-card__date">{new Date(u.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</p>
