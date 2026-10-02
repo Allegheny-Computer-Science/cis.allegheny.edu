@@ -67,7 +67,7 @@ export default function NewsFilter({ updates, baseUrl = '/' }) {
               <img src={u.image ?? `${baseUrl}img/placeholder.jpg`} alt={u.title} width="640" height="360" loading="lazy" decoding="async" />
             </div>
             <div className="update-card__body">
-              <p className="update-card__date">{new Date(u.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+              <p className="update-card__date">{new Date(u.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</p>
               <h2 className="update-card__title">{u.title}</h2>
               <p className="update-card__desc">{u.description}</p>
             </div>

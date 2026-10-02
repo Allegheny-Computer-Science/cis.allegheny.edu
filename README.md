@@ -288,7 +288,7 @@ Each microcredential is one object in the `microcredentials` array.
 **Page:** `/community/news`
 **Files:** `src/pages/community/news/*.mdx` (one file per news item)
 
-Each news item is an MDX file. The feed automatically picks up all files in that folder, sorted by `date` descending. Calendar events from Google Calendar are merged in at build time.
+Each news item is an MDX file. The feed automatically picks up all files in that folder, sorted by `date` descending. The two most recent `event` posts also appear beside the calendar.
 
 **Frontmatter schema:**
 ```yaml
@@ -296,19 +296,41 @@ Each news item is an MDX file. The feed automatically picks up all files in that
 layout: ../../../layouts/NewsLayout.astro
 title: "Full title of the post"
 date: 2026-05-01           # YYYY-MM-DD; controls sort order
-category: announcement     # "announcement" | "event" | "other"
-image: /img/news/photo.jpg # optional; path under /public/; shown as card thumbnail
+category: news             # "event" | "news" | "announcements"
+image: /img/news/photo.jpg # optional; path under /public/; card thumbnail and article banner
 description: "One-sentence summary shown in the card grid."
 externalUrl: https://…     # optional; if set, clicking the card goes here instead of the MDX page
+gallery:                   # optional; photos shown in a grid at the end of the article
+  - src: /img/news/my-event/photo-1.jpg
+    alt: Short description of the photo
+  - src: /img/news/my-event/photo-2.jpg
+    alt: Short description of the photo
 ---
 ```
+
+**Choosing a category:** `event` for anything with a date people can attend, `news` for department and research accomplishments, `announcements` for spotlights on individual students and alumni.
 
 **To publish a news item:**
 
 1. Create a file named `src/pages/community/news/your-slug.mdx` (lowercase, hyphens only).
-2. Paste in the frontmatter block above and fill in all fields.
-3. Write the article body in Markdown below the `---` closing fence.
-4. To add a thumbnail, drop the image in `public/img/news/` and set `image: /img/news/filename.jpg`.
+2. Paste in the frontmatter block above and fill in the fields. Delete the optional lines you don't need.
+3. Write the article below the closing `---` (see *Writing the article* below).
+4. To add a thumbnail, drop the image in `public/img/news/` and set `image: /img/news/filename.jpg`. The image is shown at a 2:1 shape, slightly trimmed at the edges on cards and the banner, so keep faces and text away from the edges.
+5. To add more photos, put them in a folder such as `public/img/news/my-event/` and list each one under `gallery:` with a short `alt` description (used by screen readers).
+
+**Writing the article.** Article text is plain Markdown; no HTML or CSS is needed:
+
+| You type | You get |
+| :--- | :--- |
+| A blank line between paragraphs | A new paragraph |
+| Pressing Enter once | A new line in the same paragraph |
+| `## Schedule` | A section heading |
+| `**bold**` and `*italic*` | **bold** and *italic* |
+| `- First item` on each line | A bulleted list |
+| `[link text](https://example.com)` | A link |
+| `---` on its own line | A divider line |
+
+For posts that summarize an allegheny.edu story, end with `[Read the full story on allegheny.edu →](https://…)`.
 
 **To link to an external story** (e.g. an allegheny.edu article): set `externalUrl` to the full URL. The card will link there directly; the MDX body still renders if someone navigates to the page URL, so write a brief summary or leave the body empty.
 

@@ -1112,27 +1112,87 @@ a:hover .button__ghost--dark {
     color: var(--mid-gray, #666);
 }
 
+/* Navy on white: drop the global h1 outline, which fills in Bebas Neue's letterforms at this size */
 .news-article__title {
-    font-size: 2rem;
+    font-size: clamp(2.25rem, 3.5vw, 3rem);
     color: var(--navy);
-    line-height: 1.15;
+    -webkit-text-stroke: transparent 0;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
     margin-bottom: 0.75rem;
 }
 
+/* Reading column: keeps lines a comfortable length under the full-width hero image */
+.news-article__content {
+    max-width: 46rem;
+    margin-inline: auto;
+}
+
 .news-article__body {
-    font-size: 1rem;
+    font-size: 1.0625rem;
     line-height: 1.75;
     color: var(--navy);
     margin-bottom: 2.5rem;
 }
 
-.news-article__body h2 { font-size: 1.4rem; margin: 1.75rem 0 0.5rem; }
-.news-article__body h3 { font-size: 1.15rem; margin: 1.5rem 0 0.4rem; }
-.news-article__body p  { margin-bottom: 1rem; }
-.news-article__body ul,
-.news-article__body ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+/* The body also carries .mdx-body for the shared prose styles (lists, tables, quotes).
+   The .news-article prefix lets these article rules win over that shared spacing,
+   which would otherwise stack on top of it. */
+.news-article .news-article__body > :is(p, ul, ol) {
+    font-size: inherit;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0;
+}
+
+.news-article .news-article__body > h2 {
+    font-size: clamp(1.75rem, 2.5vw, 2rem);
+    margin: 0;
+    padding: 1rem 0 0.4rem;
+}
+
+.news-article .news-article__body > h3 {
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 0.75rem 0 0.3rem;
+}
+
+/* A single line break in the article file starts a new line; a blank line starts a new paragraph */
+.news-article__body > p { white-space: pre-line; }
+
 .news-article__body li { margin-bottom: 0.35rem; }
-.news-article__body a  { color: var(--navy); text-decoration: underline; }
+
+.news-article__body a {
+    color: var(--navy);
+    text-decoration: underline;
+    text-decoration-color: var(--gator);
+    text-underline-offset: 3px;
+}
+
+/* Markdown images (![alt](/img/news/photo.jpg)) fit the reading column */
+.news-article__body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Photo gallery, rendered by NewsLayout from the `gallery:` frontmatter list */
+.news-article__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.news-article__gallery a { display: block; }
+
+.news-article__gallery img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: 50% 30%;
+    display: block;
+}
 
 .news-article__back {
     display: inline-flex;
@@ -3758,6 +3818,9 @@ a:hover .button__ghost--dark {
     .career-image {
         aspect-ratio: 21 / 9;
     }
+
+    /* News article gallery: single column */
+    .news-article__gallery { grid-template-columns: 1fr; }
 
 
     /* Updates: horizontal snap strip â€” peek next card at 80vw */

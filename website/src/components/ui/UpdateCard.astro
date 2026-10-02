@@ -11,8 +11,10 @@ const categoryClass = {
   announcements: 'update-card--announcements',
 }[category];
 
+// Frontmatter dates are calendar dates parsed as UTC midnight; format in UTC
+// so they don't shift to the previous day in US time zones.
 const formattedDate = new Date(date).toLocaleDateString('en-US', {
-  year: 'numeric', month: 'long', day: 'numeric',
+  year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
 ---
 
