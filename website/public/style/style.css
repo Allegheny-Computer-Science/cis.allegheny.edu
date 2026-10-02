@@ -3,10 +3,10 @@
    ================================================================
    Classes follow BEM (Block__Element--Modifier):
 
-     .block               â€” standalone component  e.g. .update-card
-     .block__element      â€” child of a block       e.g. .update-card__title
-     .block--modifier     â€” variant of a block     e.g. .update-card--light
-     .block__el--modifier â€” variant of an element  e.g. .update-card__title--featured
+     .block               — standalone component  e.g. .update-card
+     .block__element      — child of a block       e.g. .update-card__title
+     .block--modifier     — variant of a block     e.g. .update-card--light
+     .block__el--modifier — variant of an element  e.g. .news-filter__btn--active
 
    Page-section IDs are kebab-case and match the Astro component name:
      #recent-updates  #faculty-intro  #endorsements
@@ -16,6 +16,11 @@
 
    CSS custom properties are --kebab-case:
      --bold-gold  --page-gutter  --org-accent (per-card theme token)
+
+   Responsive rules live in the breakpoint sections at the end of the
+   file (19–23), grouped by the component sections they adjust. The one
+   exception is the reduced-motion rule, kept beside the hero slideshow.
+   Component-scoped styles: FacilityCard.astro keeps its own <style>.
    ================================================================ */
 
 /* ================================================================
@@ -23,26 +28,27 @@
    ================================================================
    1.  Variables & Tokens
    2.  Reset & Base
-   3.  Layout Utilities      bands, split-band, button rows, scroll-fade
+   3.  Layout Utilities      bands, split bands, hero slideshow, button rows
    4.  Buttons               .button__fill  .button__ghost
-   5.  Cards — shared base   .update-card  .org-card
-   6.  Header & Nav
-   7.  Mobile Overlay Menu
-   8.  Updates Section       update cards, grid, news page, filters
-   8b. News Article Page
-   8c. Calendar Page
-   9.  MDX Prose Pages
-   10. Faculty Section & Carousel
-   11. Faculty Directory Page
-   11b.Endorsement Carousel
-   11c.TL & TAB Directories
-   12. Student Orgs
-   13. Footer
-   14. Plan Pages            degrees, microcredentials, bulletin, mypath
-   15. Responsive — ≤1265px  header brand scaling
-   16. Responsive — ≤1042px  nav links hide / scrolled reveal
-   17. Responsive — ≤900px   tablet
-   18. Responsive — ≤600px   mobile
+   5.  Cards — shared base   .update-card  .org-card  .faculty-card
+   6.  Header & Nav          Header.astro, HeaderNav.jsx
+   7.  Mobile Menu & Search  HeaderNav.jsx
+   8.  Updates & News Page   update cards, community feed, calendar embed, filters
+   9.  News Article Page     NewsLayout.astro
+   10. Section Overviews     resources/overview, opportunities/overview
+   11. MDX Prose Pages       MdxLayout.astro, TableOfContents.jsx
+   12. Faculty Intro         FacultyIntro.astro, FacultyCarousel.jsx
+   13. Faculty Directory     about/faculty.astro
+   14. Endorsements          EndorsementCarousel.jsx
+   15. TL & TAB Directories  community/tl.astro, community/tab.astro
+   16. Student Orgs          StudentOrgs.astro
+   17. Footer                Footer.astro
+   18. Plan Pages            degrees, microcredentials, bulletin, mypath
+   19. Responsive — ≤1265px  header brand scaling
+   20. Responsive — ≤1042px  nav links hide / scrolled reveal
+   21. Responsive — ≥901px   desktop-only rules
+   22. Responsive — ≤900px   tablet
+   23. Responsive — ≤600px   mobile
    ================================================================ */
 
 /* ================================================================
@@ -58,6 +64,12 @@
     --navy: #1B3054;
     --gator: #80BD41;
     --white: #ffffff;
+
+    /* Tints used in more than one component */
+    --navy-divider: rgba(27, 48, 84, 0.15);       /* thin rules inside cards */
+    --navy-border-light: rgba(27, 48, 84, 0.3);   /* light borders: inputs, chips, drop zones */
+    --scrim: rgba(0, 0, 0, 0.55);                 /* overlay behind the mobile menu and popups */
+    --photo-placeholder: #c8d8e8;                 /* shown where a photo is missing */
 
     --content-max: 80rem;
     --page-gutter: clamp(1.5rem, 4vw, 3rem);
@@ -142,7 +154,7 @@ a {
    3. LAYOUT UTILITIES
    ================================================================ */
 
-/* â€” Bands â€” */
+/* — Bands — */
 
 .navy__band {
     background-color: var(--navy);
@@ -185,7 +197,7 @@ a {
     color: var(--navy);
 }
 
-/* â€” Split-band (image + text grid) â€” */
+/* — Split-band (image + text grid) — */
 
 .hero-section {
     display: grid;
@@ -213,14 +225,14 @@ a {
 .hero-image       { grid-column: 1 / 3; overflow: hidden; align-self: stretch; position: relative; }
 .hero-information { grid-column: 3 / 5; }
 
-/* Hero slideshow — all slides absolutely fill the container */
+/* Hero slideshow (Hero.astro): every slide fills the frame; each fades in on its own
+   animation-delay. --hero-total is set inline from the slide count. */
 .hero-slide {
     position: absolute;
     inset: 0;
     opacity: 0;
     animation: hero-fade var(--hero-total) linear infinite both;
 }
-.hero-slide picture { display: block; width: 100%; height: 100%; }
 .hero-slide--static {
     opacity: 1;
     animation: none;
@@ -234,9 +246,9 @@ a {
     100%    { opacity: 0; }
 }
 
-/* Respect reduced-motion preference */
+/* Reduced motion: no slideshow, just the first photo */
 @media (prefers-reduced-motion: reduce) {
-    .hero-slide { animation: none; opacity: 0; }
+    .hero-slide { animation: none; }
     .hero-slide:first-child { opacity: 1; }
 }
 
@@ -248,7 +260,6 @@ a {
 .career-information { overflow: hidden; }
 
 .hero-image img,
-.hero-slide img,
 .community-image img,
 .career-image img {
     width: 100%;
@@ -257,14 +268,14 @@ a {
     display: block;
 }
 
-/* Paragraph spacing inside band body wrappers â€” replaces <br/> tags */
+/* Paragraph spacing inside band body wrappers — replaces <br/> tags */
 .hero-information__body > p,
 .community-information__body > p,
 .career-information__body > p {
     margin-bottom: var(--button-gap);
 }
 
-/* â€” Button rows â€” */
+/* — Button rows — */
 
 .hero-buttons,
 .updates-buttons,
@@ -281,7 +292,7 @@ a {
     justify-content: center;
 }
 
-/* â€” Scroll-fade indicator (activated at mobile via media query) â€” */
+/* — Scroll-fade indicator (activated at mobile via media query) — */
 
 .scroll-fade { position: relative; }
 
@@ -335,11 +346,7 @@ a {
     color: var(--navy);
 }
 
-.button__fill--light:hover {
-    background-color: var(--gator);
-    color: var(--navy);
-}
-
+.button__fill--light:hover,
 .button__fill--dark:hover {
     background-color: var(--gator);
     color: var(--navy);
@@ -363,7 +370,7 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   5. CARDS â€” SHARED BASE
+   5. CARDS — SHARED BASE
    ================================================================ */
 
 .update-card,
@@ -395,7 +402,7 @@ a:hover .button__ghost--dark {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    background-color: #c8d8e8;
+    background-color: var(--photo-placeholder);
 }
 
 .update-card__image img,
@@ -419,6 +426,13 @@ a:hover .button__ghost--dark {
 /* ================================================================
    6. HEADER & NAV
    ================================================================ */
+
+/* <header> wrapper in BaseLayout.astro: stays pinned while the page scrolls */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
 .header__bar {
     display: flex;
@@ -490,8 +504,8 @@ a:hover .button__ghost--dark {
 
 .header__link:hover { color: var(--bold-gold); }
 
+/* Programs link; .header__link:hover above is more specific, so it still turns gold */
 .header__link--accent { color: var(--gator); }
-.header__link--accent:hover { color: var(--bold-gold); }
 
 .header__link--apply {
     color: var(--bold-gold);
@@ -520,13 +534,13 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   7. MOBILE OVERLAY MENU
+   7. MOBILE MENU & SITE SEARCH  (HeaderNav.jsx)
    ================================================================ */
 
 .mobile-menu__scrim {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.55);
+    background-color: var(--scrim);
     z-index: 150;
     opacity: 0;
     pointer-events: none;
@@ -615,16 +629,15 @@ a:hover .button__ghost--dark {
     pointer-events: none;
 }
 
+/* Site search results dropdown (SearchBox in HeaderNav.jsx) */
 .search-results {
     position: absolute;
     top: calc(100% + 0.25rem);
     left: 0;
     right: 0;
     background: var(--white);
-    border: 1px solid var(--mid-gray, #ccc);
+    border: 1px solid #ccc;
     list-style: none;
-    margin: 0;
-    padding: 0;
     z-index: 200;
     box-shadow: 0 4px 16px rgba(0,0,0,0.18);
     max-height: 22rem;
@@ -645,7 +658,7 @@ a:hover .button__ghost--dark {
 
 .search-result:hover,
 .search-result--active {
-    background: var(--lt-gold, #FFF8D6);
+    background: #FFF8D6;
 }
 
 .search-result__tag {
@@ -653,7 +666,7 @@ a:hover .button__ghost--dark {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--bold-gold, #c8a800);
+    color: var(--bold-gold);
     white-space: nowrap;
     min-width: 3.5rem;
 }
@@ -718,7 +731,6 @@ a:hover .button__ghost--dark {
 .mobile-menu__link:hover { color: var(--bold-gold); }
 
 .mobile-menu__link--accent { color: var(--gator); }
-.mobile-menu__link--accent:hover { color: var(--bold-gold); }
 
 .mobile-menu__chevron {
     width: 1.5rem;
@@ -758,7 +770,7 @@ a:hover .button__ghost--dark {
 .mobile-menu__sublink:hover { color: var(--bold-gold); }
 
 /* ================================================================
-   8. UPDATES SECTION
+   8. UPDATES & NEWS PAGE  (Updates.astro, UpdateCard.astro, community/news.astro, NewsFilter*.jsx)
    ================================================================ */
 
 /* Collapse double padding between adjacent navy bands */
@@ -767,7 +779,7 @@ a:hover .button__ghost--dark {
 }
 
 
-/* â€” Update cards â€” */
+/* — Update cards — */
 
 .updates-grid {
     display: grid;
@@ -833,7 +845,7 @@ a:hover .button__ghost--dark {
 .update-card--light .update-card__title { color: var(--navy); }
 .update-card--light .update-card__desc  { color: var(--navy); }
 
-/* â€” Community feed (combined calendar + news page) â€” */
+/* — Community feed (combined calendar + news page) — */
 
 .community-feed {
     display: flex;
@@ -861,7 +873,6 @@ a:hover .button__ghost--dark {
     grid-template-columns: repeat(4, 1fr);
     gap: var(--object-gap);
     align-items: stretch;
-    height: auto;
 }
 
 .community-feed__left {
@@ -896,8 +907,7 @@ a:hover .button__ghost--dark {
     flex: 0 0 auto;
 }
 
-.community-feed__sidebar .update-card__title { -webkit-line-clamp: 2; padding-bottom: 0; }
-.community-feed__sidebar .update-card__desc  { -webkit-line-clamp: 2; }
+.community-feed__sidebar .update-card__desc { -webkit-line-clamp: 2; }
 
 .community-feed__sidebar-label {
     font-size: 1rem;
@@ -912,39 +922,229 @@ a:hover .button__ghost--dark {
     padding-bottom: 0.75rem;
 }
 
-/* Collapsible calendar wrapper */
-.calendar-collapse { border: none; }
-.calendar-collapse summary { list-style: none; }
-.calendar-collapse summary::-webkit-details-marker { display: none; }
+/* — Calendar embed (Google Calendar iframe on the news page) — */
 
-.calendar-collapse__toggle {
+.calendar-page__note {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--navy);
+    background-color: var(--soft-gold);
+    border-left: 4px solid var(--bold-gold);
+    padding: 0.6rem 0.85rem;
+}
+
+.calendar-page__embed-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 2px solid var(--navy);
+    overflow: hidden;
+}
+
+.calendar-page__embed {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+}
+
+/* — News page grid and "Load More" — */
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.news-load-more {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--object-gap);
+}
+
+.news-load-more__btn {
+    border-color: var(--navy);
+    color: var(--navy);
+}
+
+.news-load-more__btn:hover {
+    background-color: var(--navy);
+    color: var(--white);
+}
+
+/* — News filter bar — */
+
+.news-filter__bar {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-bottom: var(--object-gap);
+}
+
+.community-feed__archive-heading {
+    color: var(--navy);
+    -webkit-text-stroke: var(--navy) 3px;
+    paint-order: stroke fill;
+    margin: 0 0 0.5rem;
+    padding-bottom: 0;
+}
+
+/* On desktop the filter bar lives in .community-feed__filterbar; hide the inline one */
+.community-feed__news .news-filter__bar--inline { display: none; }
+
+.news-filter__btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 1.1rem;
+    cursor: pointer;
+    background: transparent;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+/* Each category button takes its category's card colour */
+.news-filter__btn--all,
+.news-filter__btn--event         { border: 2px solid var(--navy);      color: var(--navy); }
+.news-filter__btn--news          { border: 2px solid var(--bold-gold); color: var(--navy); }
+.news-filter__btn--announcements { border: 2px solid var(--gator);     color: var(--navy); }
+
+.news-filter__btn--all.news-filter__btn--active,
+.news-filter__btn--event.news-filter__btn--active         { background-color: var(--navy);      color: var(--white); }
+.news-filter__btn--news.news-filter__btn--active          { background-color: var(--bold-gold); color: var(--navy); }
+.news-filter__btn--announcements.news-filter__btn--active { background-color: var(--gator);     color: var(--navy); }
+
+/* ================================================================
+   9. NEWS ARTICLE PAGE  (NewsLayout.astro)
+   ================================================================ */
+
+.news-article {
+    width: 100%;
+}
+
+.news-article__hero {
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.news-article__hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-article__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.news-article__category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.6rem;
+}
+
+.news-article__category--event        { background: var(--navy);      color: var(--white); }
+.news-article__category--news          { background: var(--bold-gold); color: var(--navy); }
+.news-article__category--announcements { background: var(--gator);     color: var(--navy); }
+
+.news-article__date {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Navy on white: drop the global h1 outline, which fills in Bebas Neue's letterforms at this size */
+.news-article__title {
+    font-size: clamp(2.25rem, 3.5vw, 3rem);
+    color: var(--navy);
+    -webkit-text-stroke: transparent 0;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+}
+
+/* Reading column: keeps lines a comfortable length under the full-width hero image */
+.news-article__content {
+    max-width: 46rem;
+    margin-inline: auto;
+}
+
+.news-article__body {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--navy);
+    margin-bottom: 2.5rem;
+}
+
+/* The body also carries .mdx-body for the shared prose styles (lists, tables, quotes).
+   The .news-article prefix lets these article rules win over that shared spacing,
+   which would otherwise stack on top of it. */
+.news-article .news-article__body > :is(p, ul, ol) {
+    font-size: inherit;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0;
+}
+
+.news-article .news-article__body > h2 {
+    font-size: clamp(1.75rem, 2.5vw, 2rem);
+    margin: 0;
+    padding: 1rem 0 0.4rem;
+}
+
+.news-article .news-article__body > h3 {
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 0.75rem 0 0.3rem;
+}
+
+/* A single line break in the article file starts a new line; a blank line starts a new paragraph */
+.news-article__body > p { white-space: pre-line; }
+
+.news-article__body li { margin-bottom: 0.35rem; }
+
+.news-article__body a {
+    color: var(--navy);
+    text-decoration: underline;
+    text-decoration-color: var(--gator);
+    text-underline-offset: 3px;
+}
+
+/* Photo gallery, rendered by NewsLayout from the `gallery:` frontmatter list */
+.news-article__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.news-article__gallery a { display: block; }
+
+.news-article__gallery img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: 50% 30%;
+}
+
+.news-article__back {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-heading);
-    font-size: 0.85rem;
+    gap: 0.4rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
     color: var(--navy);
-    cursor: pointer;
-    user-select: none;
-    margin-bottom: 0.5rem;
-    padding: 0.3rem 0;
-}
-.calendar-collapse__toggle:hover { color: var(--bold-gold); }
-
-.calendar-collapse__icon {
-    transition: transform 0.2s ease;
-}
-.calendar-collapse[open] .calendar-collapse__icon {
-    transform: rotate(180deg);
+    text-decoration: none;
+    border-bottom: 2px solid var(--bold-gold);
+    padding-bottom: 0.1rem;
+    transition: opacity 0.15s;
 }
 
+.news-article__back:hover { opacity: 0.7; }
 
-/* â€” News page â€” */
-
-/* ── Section overview pages (Resources, Opportunities) ── */
+/* ================================================================
+   10. SECTION OVERVIEWS  (resources/overview, opportunities/overview)
+   ================================================================ */
 
 .overview-page {
     display: flex;
@@ -1007,324 +1207,8 @@ a:hover .button__ghost--dark {
 }
 .overview-card:hover .overview-card__arrow { transform: translateX(4px); }
 
-.news-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.news-load-more {
-    display: flex;
-    justify-content: center;
-    padding-top: var(--object-gap);
-}
-
-.news-load-more__btn {
-    border-color: var(--navy);
-    color: var(--navy);
-}
-
-.news-load-more__btn:hover {
-    background-color: var(--navy);
-    color: var(--white);
-}
-
-/* â€” News filter bar â€” */
-
-.news-filter__bar {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    padding-bottom: var(--object-gap);
-}
-
-.community-feed__archive-heading {
-    color: var(--navy);
-    -webkit-text-stroke: var(--navy) 3px;
-    paint-order: stroke fill;
-    margin: 0 0 0.5rem;
-    padding-bottom: 0;
-}
-
-/* On desktop the filter bar lives in .community-feed__filterbar; hide the inline one */
-.community-feed__news .news-filter__bar--inline { display: none; }
-
-.news-filter__btn {
-    font-size: 0.9rem;
-    padding: 0.4rem 1.1rem;
-    cursor: pointer;
-    background: transparent;
-    transition: background-color 0.15s, color 0.15s;
-}
-
-.news-filter__btn--all           { border: 2px solid var(--navy);      color: var(--navy); }
-.news-filter__btn--event         { border: 2px solid var(--navy);      color: var(--navy); }
-.news-filter__btn--news          { border: 2px solid var(--bold-gold); color: var(--navy); }
-.news-filter__btn--announcements { border: 2px solid var(--gator);     color: var(--navy); }
-
-.news-filter__btn--all.news-filter__btn--active           { background-color: var(--navy);      color: var(--white); }
-.news-filter__btn--event.news-filter__btn--active         { background-color: var(--navy);      color: var(--white); }
-.news-filter__btn--news.news-filter__btn--active          { background-color: var(--bold-gold); color: var(--navy); }
-.news-filter__btn--announcements.news-filter__btn--active { background-color: var(--gator);     color: var(--navy); }
-
 /* ================================================================
-   8b. NEWS ARTICLE PAGE
-   ================================================================ */
-
-.news-article {
-    width: 100%;
-}
-
-.news-article__hero {
-    width: 100%;
-    aspect-ratio: 21 / 9;
-    overflow: hidden;
-    margin-bottom: 2rem;
-}
-
-.news-article__hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.news-article__meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-}
-
-.news-article__category {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.2rem 0.6rem;
-}
-
-.news-article__category--event        { background: var(--navy);      color: var(--white); }
-.news-article__category--news          { background: var(--bold-gold); color: var(--navy); }
-.news-article__category--announcements { background: var(--gator);     color: var(--navy); }
-
-.news-article__date {
-    font-size: 0.85rem;
-    color: var(--mid-gray, #666);
-}
-
-/* Navy on white: drop the global h1 outline, which fills in Bebas Neue's letterforms at this size */
-.news-article__title {
-    font-size: clamp(2.25rem, 3.5vw, 3rem);
-    color: var(--navy);
-    -webkit-text-stroke: transparent 0;
-    letter-spacing: 0.04em;
-    line-height: 1.1;
-    margin-bottom: 0.75rem;
-}
-
-/* Reading column: keeps lines a comfortable length under the full-width hero image */
-.news-article__content {
-    max-width: 46rem;
-    margin-inline: auto;
-}
-
-.news-article__body {
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    color: var(--navy);
-    margin-bottom: 2.5rem;
-}
-
-/* The body also carries .mdx-body for the shared prose styles (lists, tables, quotes).
-   The .news-article prefix lets these article rules win over that shared spacing,
-   which would otherwise stack on top of it. */
-.news-article .news-article__body > :is(p, ul, ol) {
-    font-size: inherit;
-    margin: 0 0 1.25rem;
-    padding-bottom: 0;
-}
-
-.news-article .news-article__body > h2 {
-    font-size: clamp(1.75rem, 2.5vw, 2rem);
-    margin: 0;
-    padding: 1rem 0 0.4rem;
-}
-
-.news-article .news-article__body > h3 {
-    font-size: 1.4rem;
-    margin: 0;
-    padding: 0.75rem 0 0.3rem;
-}
-
-/* A single line break in the article file starts a new line; a blank line starts a new paragraph */
-.news-article__body > p { white-space: pre-line; }
-
-.news-article__body li { margin-bottom: 0.35rem; }
-
-.news-article__body a {
-    color: var(--navy);
-    text-decoration: underline;
-    text-decoration-color: var(--gator);
-    text-underline-offset: 3px;
-}
-
-/* Markdown images (![alt](/img/news/photo.jpg)) fit the reading column */
-.news-article__body img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Photo gallery, rendered by NewsLayout from the `gallery:` frontmatter list */
-.news-article__gallery {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-    margin: 0.5rem 0 1.5rem;
-}
-
-.news-article__gallery a { display: block; }
-
-.news-article__gallery img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    object-position: 50% 30%;
-    display: block;
-}
-
-.news-article__back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--navy);
-    text-decoration: none;
-    border-bottom: 2px solid var(--bold-gold);
-    padding-bottom: 0.1rem;
-    transition: opacity 0.15s;
-}
-
-.news-article__back:hover { opacity: 0.7; }
-
-/* ================================================================
-   8c. CALENDAR PAGE
-   ================================================================ */
-
-.calendar-page {
-    display: flex;
-    flex-direction: column;
-    gap: var(--object-gap);
-}
-
-.calendar-page__heading {
-    color: var(--navy);
-    padding-bottom: 0;
-}
-
-.calendar-page__note {
-    margin: 0;
-    font-size: 0.88rem;
-    color: var(--navy);
-    background-color: var(--soft-gold);
-    border-left: 4px solid var(--bold-gold);
-    padding: 0.6rem 0.85rem;
-}
-
-.calendar-page__embed-wrap {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    border: 2px solid var(--navy);
-    overflow: hidden;
-}
-
-.calendar-page__embed {
-    width: 100%;
-    height: 100%;
-    display: block;
-    border: none;
-}
-
-.calendar-page__events-heading { color: var(--navy); }
-
-.cal-event-list {
-    list-style: none;
-    margin: 1.5rem 0 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.cal-event {
-    border: 1px solid var(--mid-gray, #ddd);
-    border-left: 4px solid var(--bold-gold);
-    border-radius: 0.375rem;
-    padding: 1rem 1.25rem;
-    background: var(--white);
-}
-
-.cal-event__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem 1rem;
-    margin-bottom: 0.35rem;
-}
-
-.cal-event__title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--navy);
-    text-decoration: none;
-}
-.cal-event__title:hover { text-decoration: underline; }
-
-.cal-event__datetime {
-    font-size: 0.8rem;
-    color: var(--mid-gray, #666);
-    white-space: nowrap;
-}
-
-.cal-event__location,
-.cal-event__desc {
-    font-size: 0.875rem;
-    color: var(--navy);
-    margin: 0.25rem 0 0;
-}
-
-.cal-event__attendees {
-    margin-top: 0.6rem;
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.cal-event__attendees-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--bold-gold);
-    white-space: nowrap;
-}
-
-.cal-event__attendees-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.75rem;
-    font-size: 0.8rem;
-    color: var(--navy);
-}
-
-/* ================================================================
-   9. MDX PROSE PAGES
+   11. MDX PROSE PAGES  (MdxLayout.astro, TableOfContents.jsx)
    ================================================================ */
 
 .mdx-page {
@@ -1341,7 +1225,7 @@ a:hover .button__ghost--dark {
     align-items: start;
 }
 
-/* â€” Table of contents sidebar â€” */
+/* — Table of contents sidebar — */
 
 .mdx-toc {
     position: sticky;
@@ -1370,18 +1254,12 @@ a:hover .button__ghost--dark {
     transition: color 0.15s;
 }
 
-/* H3 items indented */
-.mdx-toc__link--sub {
-    padding-left: 0.75rem;
-    font-size: 0.8rem;
-}
-
 .mdx-toc__link:hover,
 .mdx-toc__link--active {
     color: var(--bold-gold);
 }
 
-/* â€” Section divider (shared by update, contact, related) â€” */
+/* — Section divider (shared by update, contact, related) — */
 
 .mdx-toc__section {
     border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -1401,7 +1279,7 @@ a:hover .button__ghost--dark {
     margin-bottom: 0.2rem;
 }
 
-/* â€” Apply CTA â€” */
+/* — Apply CTA — */
 
 .mdx-toc__apply {
     border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -1436,7 +1314,7 @@ a:hover .button__ghost--dark {
     color: var(--navy);
 }
 
-/* â€” Latest update â€” */
+/* — Latest update — */
 
 .mdx-toc__update-title {
     font-size: 0.85rem;
@@ -1463,16 +1341,17 @@ a:hover .button__ghost--dark {
     padding: 0.1rem 0.4rem;
 }
 
-.mdx-toc__category--event        { background-color: rgba(255, 255, 255, 0.15); color: var(--white); }
-.mdx-toc__category--announcement { background-color: var(--bold-gold); color: var(--navy); }
-.mdx-toc__category--other        { background-color: var(--gator); color: var(--white); }
+/* Category names match the news frontmatter: event | news | announcements */
+.mdx-toc__category--event         { background-color: rgba(255, 255, 255, 0.15); color: var(--white); }
+.mdx-toc__category--news          { background-color: var(--bold-gold); color: var(--navy); }
+.mdx-toc__category--announcements { background-color: var(--gator); color: var(--white); }
 
 .mdx-toc__update-date {
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.45);
 }
 
-/* â€” Contact â€” */
+/* — Contact — */
 
 .mdx-toc__contact-row {
     font-size: 0.82rem;
@@ -1482,7 +1361,7 @@ a:hover .button__ghost--dark {
 
 .mdx-toc__contact-row:hover { color: var(--bold-gold); }
 
-/* â€” Related pages â€” */
+/* — Related pages — */
 
 .mdx-toc__related-link {
     font-size: 0.82rem;
@@ -1510,7 +1389,7 @@ a:hover .button__ghost--dark {
     margin-bottom: 0;
 }
 
-/* â€• shared prose rules for body and gold band â€• */
+/* — shared prose rules for body and gold band — */
 
 /* Page title: navy, no base stroke, gator underline */
 :is(.mdx-body, .mdx-gold-band) > h1 {
@@ -1580,6 +1459,7 @@ a:hover .button__ghost--dark {
     font-size: 0.95rem;
     border: 2px solid var(--navy);
     border-bottom: 20px solid var(--navy);
+    transition: transform 180ms ease;
 }
 
 :is(.mdx-body, .mdx-gold-band) > table thead tr {
@@ -1605,10 +1485,6 @@ a:hover .button__ghost--dark {
     background-color: var(--soft-gold);
 }
 
-:is(.mdx-body, .mdx-gold-band) > table {
-    transition: transform 180ms ease;
-}
-
 :is(.mdx-body, .mdx-gold-band) > table:hover {
     transform: translateY(-2px);
 }
@@ -1628,9 +1504,15 @@ a:hover .button__ghost--dark {
     transition: color 150ms ease;
 }
 
-:is(.mdx-body, .mdx-gold-band) > p a:hover  { color: var(--gator); }
-:is(.mdx-body, .mdx-gold-band) > p strong    { font-weight: 700; color: var(--navy); }
-:is(.mdx-body, .mdx-gold-band) > p em        { font-style: italic; color: inherit; }
+:is(.mdx-body, .mdx-gold-band) > p a:hover { color: var(--gator); }
+/* Undo the global gold, upright <em> so Markdown *italics* read as italics */
+:is(.mdx-body, .mdx-gold-band) > p em      { font-style: italic; color: inherit; }
+
+/* Full-width figure image placed directly in an MDX page (e.g. the values graphic in about/statement.mdx) */
+:is(.mdx-body, .mdx-gold-band) > .mdx-figure {
+    width: 100%;
+    margin: 1.5rem 0;
+}
 
 /* Section break: gator 3px */
 :is(.mdx-body, .mdx-gold-band) > hr {
@@ -1649,7 +1531,7 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   10. FACULTY SECTION & CAROUSEL
+   12. FACULTY INTRO  (FacultyIntro.astro, FacultyCarousel.jsx)
    ================================================================ */
 
 /* Override white-band heading and body colours */
@@ -1662,9 +1544,7 @@ a:hover .button__ghost--dark {
     color: var(--navy);
 }
 
-
-
-/* â€” Carousel â€” */
+/* — Carousel: all cards share one grid cell; only the --ready card is visible — */
 
 .faculty-carousel {
     display: flex;
@@ -1713,8 +1593,7 @@ a:hover .button__ghost--dark {
     transition: opacity 0.3s ease;
 }
 
-.faculty-carousel__card--inactive { opacity: 0; visibility: hidden; }
-.faculty-carousel__card--ready    { opacity: 1; visibility: visible; }
+.faculty-carousel__card--ready { opacity: 1; visibility: visible; }
 
 .faculty-carousel__photo-wrap {
     flex-shrink: 0;
@@ -1731,7 +1610,7 @@ a:hover .button__ghost--dark {
     object-fit: cover;
 }
 
-.faculty-carousel__photo--placeholder { background-color: #c8d8e8; }
+.faculty-carousel__photo--placeholder { background-color: var(--photo-placeholder); }
 
 .faculty-carousel__info { flex: 1; }
 
@@ -1755,7 +1634,7 @@ a:hover .button__ghost--dark {
 .faculty-carousel__statement p:last-child { margin-bottom: 0; }
 
 /* ================================================================
-   11. FACULTY DIRECTORY PAGE  (faculty.astro)
+   13. FACULTY DIRECTORY  (about/faculty.astro)
    ================================================================ */
 
 .faculty-dir__heading { color: var(--navy); }
@@ -1778,7 +1657,11 @@ a:hover .button__ghost--dark {
     gap: var(--object-gap);
 }
 
-/* White background, navy accent border â€” horizontal layout */
+/* Faculty cards carry more text than staff cards; full width keeps them short
+   enough that the photo fills the card at a normal portrait shape */
+.faculty-dir__grid--single { grid-template-columns: 1fr; }
+
+/* White background, navy accent border — horizontal layout */
 .faculty-card {
     background-color: var(--white);
     border: 2px solid var(--navy);
@@ -1827,7 +1710,7 @@ a:hover .button__ghost--dark {
     flex-direction: column;
     gap: 0.15rem;
     padding-top: 0.3rem;
-    border-top: 1px solid rgba(27, 48, 84, 0.15);
+    border-top: 1px solid var(--navy-divider);
 }
 
 .faculty-card__degrees li {
@@ -1841,7 +1724,7 @@ a:hover .button__ghost--dark {
     flex-direction: column;
     gap: 0.3rem;
     padding-top: 0.5rem;
-    border-top: 1px solid rgba(27, 48, 84, 0.15);
+    border-top: 1px solid var(--navy-divider);
 }
 
 .faculty-card__contact-row {
@@ -1851,7 +1734,6 @@ a:hover .button__ghost--dark {
     font-size: 0.8rem;
     color: rgba(27, 48, 84, 0.75);
     transition: color 0.15s;
-    text-decoration: none;
 }
 
 .faculty-card__contact-row:hover { color: var(--gator); }
@@ -1862,7 +1744,8 @@ a:hover .button__ghost--dark {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    width: 100%;
+    align-self: flex-start;
+    padding: 0 1.75rem;
     height: 2.75rem;
     background-color: var(--gator);
     color: var(--white);
@@ -1879,7 +1762,7 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   11b. ENDORSEMENT CAROUSEL  (EndorsementCarousel.jsx)
+   14. ENDORSEMENTS  (EndorsementWheel.astro, EndorsementCarousel.jsx)
    ================================================================ */
 
 .endorsement-carousel {
@@ -1888,9 +1771,9 @@ a:hover .button__ghost--dark {
     gap: var(--object-gap);
 }
 
+/* Desktop shows the cycling carousel; phones swap to one static card (see ≤600px) */
 .endorsement-carousel__desktop { display: contents; }
 .endorsement-carousel__mobile  { display: none; }
-
 
 .endorsement-carousel__quote-row {
     display: flex;
@@ -1952,7 +1835,6 @@ a:hover .button__ghost--dark {
 .endorsement-carousel__person {
     grid-area: 1 / 1;
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 0.75rem;
     visibility: hidden;
@@ -1987,7 +1869,7 @@ a:hover .button__ghost--dark {
 }
 
 .endorsement-carousel__photo--placeholder {
-    background-color: #c8d8e8;
+    background-color: var(--photo-placeholder);
     width: 100%;
     height: 100%;
 }
@@ -1997,7 +1879,6 @@ a:hover .button__ghost--dark {
     font-size: 1.75rem;
     letter-spacing: 0.08em;
     color: var(--navy);
-    margin: 0;
     line-height: 1.1;
 }
 
@@ -2006,11 +1887,10 @@ a:hover .button__ghost--dark {
     font-size: 1.25rem;
     letter-spacing: 0.06em;
     color: var(--gator);
-    margin: 0;
 }
 
 /* ================================================================
-   11c. TECHNICAL LEADERS & ADVISORY BOARD PAGES
+   15. TL & TAB DIRECTORIES  (community/tl.astro, community/tab.astro)
    ================================================================ */
 
 /* ── TL Directory ── */
@@ -2025,13 +1905,19 @@ a:hover .button__ghost--dark {
     margin-bottom: var(--object-gap);
 }
 
+/* "No … listed yet" message when a directory list is empty (TL and TAB pages) */
+.tl-dir__empty { color: var(--navy); }
+
 .tl-dir__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--object-gap);
 }
 
-.tl-card {
+/* TL cards and TAB member cards share one layout: photo column + text body
+   (TAB cards reuse the .tl-card__* element classes) */
+.tl-card,
+.tab-card--member {
     background: var(--white);
     border: 2px solid var(--navy);
     border-bottom: 20px solid var(--navy);
@@ -2042,7 +1928,6 @@ a:hover .button__ghost--dark {
 
 .tl-card__image {
     width: 11rem;
-    aspect-ratio: unset;
     height: 100%;
     overflow: hidden;
     flex-shrink: 0;
@@ -2054,7 +1939,6 @@ a:hover .button__ghost--dark {
     height: 100%;
     object-fit: cover;
     object-position: top;
-    display: block;
 }
 
 .tl-card__image-placeholder {
@@ -2074,8 +1958,6 @@ a:hover .button__ghost--dark {
     font-size: 1.5rem;
     letter-spacing: 0.05em;
     color: var(--navy);
-    margin: 0;
-    padding: 0;
     -webkit-text-stroke: transparent 0;
 }
 
@@ -2091,7 +1973,7 @@ a:hover .button__ghost--dark {
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
-    border-top: 1px solid rgba(27, 48, 84, 0.15);
+    border-top: 1px solid var(--navy-divider);
     padding-top: 0.4rem;
 }
 
@@ -2113,7 +1995,7 @@ a:hover .button__ghost--dark {
     gap: 0.35rem;
     font-size: 0.82rem;
     color: var(--navy);
-    border-top: 1px solid rgba(27, 48, 84, 0.15);
+    border-top: 1px solid var(--navy-divider);
     padding-top: 0.4rem;
 }
 
@@ -2125,12 +2007,10 @@ a:hover .button__ghost--dark {
 
 .tl-card__skills {
     list-style: none;
-    padding: 0;
-    margin: 0;
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem;
-    border-top: 1px solid rgba(27, 48, 84, 0.15);
+    border-top: 1px solid var(--navy-divider);
     padding-top: 0.4rem;
 }
 
@@ -2146,6 +2026,10 @@ a:hover .button__ghost--dark {
 }
 
 /* ── TAB Directory ── */
+
+/* "Student Members" heading: it is the first <h2> in its panel, so it would otherwise
+   pick up .faculty-dir__subheading:first-of-type's smaller top margin */
+.faculty-dir__subheading.tab-dir__subheading { margin-top: 3rem; }
 
 .tab-dir__nav {
     display: flex;
@@ -2167,16 +2051,6 @@ a:hover .button__ghost--dark {
     gap: var(--object-gap);
 }
 
-.tab-card--member {
-    background: var(--white);
-    border: 2px solid var(--navy);
-    border-bottom: 20px solid var(--navy);
-    display: flex;
-    align-items: stretch;
-    transition: transform 180ms ease;
-}
-
-
 .tab-card__position {
     font-size: 0.75rem;
     font-weight: 700;
@@ -2189,7 +2063,7 @@ a:hover .button__ghost--dark {
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
-    border-top: 1px solid rgba(27, 48, 84, 0.15);
+    border-top: 1px solid var(--navy-divider);
     padding-top: 0.4rem;
     margin-top: auto;
 }
@@ -2233,20 +2107,8 @@ a:hover .button__ghost--dark {
     margin-bottom: 0.1rem;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-    .tl-dir__grid { grid-template-columns: 1fr; }
-    .tab-dir__grid { grid-template-columns: 1fr; }
-    .tab-dir__affiliates-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 600px) {
-    .tl-dir__grid { grid-template-columns: 1fr; }
-    .tab-dir__affiliates-grid { grid-template-columns: 1fr; }
-}
-
 /* ================================================================
-   12. STUDENT ORGS  (StudentOrgs.astro)
+   16. STUDENT ORGS  (StudentOrgs.astro)
    ================================================================ */
 
 .student-orgs {
@@ -2290,7 +2152,6 @@ a:hover .button__ghost--dark {
     overflow: hidden;
 }
 
-
 .org-card__desc {
     font-size: 0.85rem;
     color: var(--navy);
@@ -2321,7 +2182,6 @@ a:hover .button__ghost--dark {
 .org-card__btn:hover {
     background-color: var(--org-accent);
     color: var(--navy);
-    transform: none;
 }
 
 .org-card--navy .org-card__btn:hover {
@@ -2333,7 +2193,7 @@ a:hover .button__ghost--dark {
 .org-card__btn:active { background-color: var(--org-accent); }
 
 /* ================================================================
-   13. FOOTER
+   17. FOOTER  (Footer.astro)
    ================================================================ */
 
 .site-footer {
@@ -2399,12 +2259,11 @@ a:hover .button__ghost--dark {
 
 .footer__contact-link:hover { opacity: 0.75; }
 
-
 /* ================================================================
-   14. PLAN PAGES  (degrees, microcredentials, bulletin, mypath)
+   18. PLAN PAGES  (plan/degrees, microcredentials, bulletin, mypath)
    ================================================================ */
 
-/* â€” Shared: plan hero band â€” */
+/* — Shared: plan hero band — */
 
 .plan-hero {
     background-color: var(--navy);
@@ -2416,7 +2275,6 @@ a:hover .button__ghost--dark {
     color: var(--gator);
     -webkit-text-stroke: transparent 0;
     padding-bottom: 0.5rem;
-    margin: 0;
 }
 
 .plan-hero p {
@@ -2434,7 +2292,7 @@ a:hover .button__ghost--dark {
     align-items: center;
 }
 
-/* â€” Shared accordion chevron (matches header nav SVG) â€” */
+/* — Shared accordion chevron (matches header nav SVG) — */
 
 .degree-outcomes summary::after,
 .degree-module summary::after,
@@ -2460,7 +2318,7 @@ a:hover .button__ghost--dark {
     transform: rotate(-90deg);
 }
 
-/* â€” Degrees page: discipline tabs â€” */
+/* — Degrees page: discipline tabs — */
 
 .degree-nav {
     display: flex;
@@ -2497,7 +2355,7 @@ a:hover .button__ghost--dark {
     padding: var(--object-gap) var(--outer-gutter) var(--section-gap);
 }
 
-/* â€” Degrees page: major / minor columns â€” */
+/* — Degrees page: major / minor columns — */
 
 .degree-split {
     display: grid;
@@ -2547,7 +2405,6 @@ a:hover .button__ghost--dark {
 .degree-col__meta {
     font-size: 0.9rem;
     opacity: 0.75;
-    margin: 0;
     color: var(--white);
 }
 
@@ -2585,7 +2442,6 @@ a:hover .button__ghost--dark {
 
 .degree-outcomes ol {
     list-style: decimal;
-    margin: 0;
     padding: 0.75rem 0.75rem 0.75rem 1.75rem;
     font-size: 0.9rem;
     line-height: 1.6;
@@ -2605,7 +2461,6 @@ a:hover .button__ghost--dark {
 }
 
 .degree-notes ul {
-    margin: 0;
     padding-left: 1.2rem;
     font-size: 0.88rem;
     line-height: 1.55;
@@ -2630,7 +2485,6 @@ a:hover .button__ghost--dark {
     color: var(--white);
     background-color: var(--navy);
     padding: 0.5rem 0.85rem;
-    margin: 0;
     -webkit-text-stroke: transparent 0;
     border-bottom: 3px solid var(--bold-gold);
     list-style: none;
@@ -2655,7 +2509,6 @@ a:hover .button__ghost--dark {
     font-size: 0.85rem;
     color: var(--navy);
     opacity: 0.75;
-    margin: 0;
     padding: 0.4rem 0.85rem 0;
     font-style: italic;
 }
@@ -2664,7 +2517,6 @@ a:hover .button__ghost--dark {
 
 .course-list {
     list-style: none;
-    margin: 0;
     padding: 0.5rem 0.75rem 0.75rem;
     display: flex;
     flex-direction: column;
@@ -2713,7 +2565,7 @@ a:hover .button__ghost--dark {
 
 .course-pill--external {
     background: transparent;
-    border-color: rgba(27, 48, 84, 0.3);
+    border-color: var(--navy-border-light);
     color: var(--navy);
     opacity: 0.8;
     font-style: italic;
@@ -2753,7 +2605,6 @@ a:hover .button__ghost--dark {
     line-height: 1.55;
     color: var(--navy);
     padding: 0.5rem 0.7rem 0;
-    margin: 0;
 }
 
 .module-note {
@@ -2762,7 +2613,6 @@ a:hover .button__ghost--dark {
     color: var(--navy);
     opacity: 0.75;
     padding: 0.2rem 0.7rem 0;
-    margin: 0;
 }
 
 /* Course detail popup */
@@ -2788,7 +2638,7 @@ a:hover .button__ghost--dark {
 .course-popup__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
+    background: var(--scrim);
 }
 
 .course-popup__card {
@@ -2875,17 +2725,16 @@ a:hover .button__ghost--dark {
 
 .course-popup__outcomes ol {
     list-style: decimal;
-    margin: 0;
     padding-left: 1.25rem;
     font-size: 0.9rem;
     line-height: 1.65;
     color: var(--navy);
 }
 
-.course-popup__outcomes ol li { margin-bottom: 0.4rem; color: var(--navy); }
+.course-popup__outcomes ol li { margin-bottom: 0.4rem; }
 .course-popup__outcomes ol li::marker { color: var(--gator); font-weight: 700; }
 
-/* â€” Microcredentials page â€” */
+/* — Microcredentials page — */
 
 .mc-intro {
     padding: var(--object-gap) var(--outer-gutter) 0;
@@ -2971,7 +2820,6 @@ a:hover .button__ghost--dark {
     font-style: italic;
     color: var(--navy);
     opacity: 0.7;
-    margin: 0;
     padding: 0.35rem 0.6rem;
     border-left: 3px solid var(--gator);
 }
@@ -2991,7 +2839,6 @@ a:hover .button__ghost--dark {
 .mc-competencies {
     list-style: none;
     margin: 0 0 1rem;
-    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -3026,8 +2873,6 @@ a:hover .button__ghost--dark {
 
 .mc-courses {
     list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -3041,7 +2886,7 @@ a:hover .button__ghost--dark {
     border-left: 3px solid var(--navy);
 }
 
-/* â€” Course Bulletin page â€” */
+/* — Course Bulletin page — */
 
 .bulletin-nav {
     display: flex;
@@ -3173,8 +3018,6 @@ a:hover .button__ghost--dark {
 
 .bulletin-course__outcomes ol {
     list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
@@ -3194,7 +3037,7 @@ a:hover .button__ghost--dark {
     flex-shrink: 0;
 }
 
-/* â€” My Path planner â€” */
+/* — My Path planner — */
 
 .planner {
     padding: var(--object-gap) var(--outer-gutter) var(--section-gap);
@@ -3281,7 +3124,7 @@ a:hover .button__ghost--dark {
     gap: 0.4rem;
     padding: 0.25rem 0.6rem;
     background: var(--white);
-    border: 2px solid rgba(27, 48, 84, 0.3);
+    border: 2px solid var(--navy-border-light);
     font-size: 0.82rem;
     color: var(--navy);
     opacity: 0.7;
@@ -3360,7 +3203,7 @@ a:hover .button__ghost--dark {
 
 .semester-drop {
     min-height: 80px;
-    border: 2px dashed rgba(27, 48, 84, 0.3);
+    border: 2px dashed var(--navy-border-light);
     padding: 0.35rem;
     display: flex;
     flex-direction: column;
@@ -3451,13 +3294,12 @@ a:hover .button__ghost--dark {
     opacity: 0.5;
     cursor: pointer;
     font-size: 1rem;
-    padding: 0;
     margin-left: auto;
     line-height: 1;
     flex-shrink: 0;
 }
 
-.chip__remove:hover { opacity: 1; color: var(--navy); }
+.chip__remove:hover { opacity: 1; }
 
 /* Palette (course pool) */
 
@@ -3484,36 +3326,30 @@ a:hover .button__ghost--dark {
 
 .palette-add-form {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     gap: 0.4rem;
     padding: 0.5rem 0.75rem;
 }
 
-.palette-add-form input[type="text"] {
+.palette-add-form input {
     font-family: var(--font-body);
     font-size: 0.85rem;
-    padding: 0.35rem 0.5rem;
-    border: 1px solid rgba(27,48,84,0.3);
+    border: 1px solid var(--navy-border-light);
     border-radius: 0;
     background: var(--white);
     color: var(--navy);
+}
+
+.palette-add-form input[type="text"] {
+    padding: 0.35rem 0.5rem;
     flex: 1 1 6rem;
     min-width: 0;
-    box-sizing: border-box;
 }
 
 .palette-add-form input[type="number"] {
-    font-family: var(--font-body);
-    font-size: 0.85rem;
     padding: 0.35rem 0.4rem;
-    border: 1px solid rgba(27,48,84,0.3);
-    border-radius: 0;
-    background: var(--white);
-    color: var(--navy);
     width: 3.5rem;
     flex-shrink: 0;
-    box-sizing: border-box;
 }
 
 .palette-add-form input:focus {
@@ -3574,7 +3410,7 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   15. RESPONSIVE — ≤ 1265px  (header brand scaling)
+   19. RESPONSIVE — ≤ 1265px  (header brand scaling)
    ================================================================ */
 
 @media (max-width: 1265px) {
@@ -3588,7 +3424,7 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   16. RESPONSIVE — ≤ 1042px  (nav links hide / scrolled reveal)
+   20. RESPONSIVE — ≤ 1042px  (nav links hide / scrolled reveal)
    ================================================================ */
 
 @media (max-width: 1042px) {
@@ -3610,13 +3446,16 @@ a:hover .button__ghost--dark {
     }
 }
 
-/* Desktop only: enforce a minimum height on the hero image so it doesn't collapse */
-@media (min-width: 901px) {
-    .hero-image { min-height: 420px; }
-}
+/* ================================================================
+   21. RESPONSIVE — ≥ 901px  (desktop-only rules)
+   ================================================================ */
 
-/* Desktop-only: lock collapsible summaries open (non-interactive) */
 @media (min-width: 901px) {
+    /* Hero slides are absolutely positioned, so give the frame a minimum height */
+    .hero-image { min-height: 420px; }
+
+    /* Major/minor and planner-year headers are <summary> elements that collapse on
+       tablet/phone (see ≤900px); on desktop they stay open and non-interactive */
     .degree-col > .degree-col__header,
     .planner-year__details > .planner-year__heading {
         pointer-events: none;
@@ -3629,7 +3468,7 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   17. RESPONSIVE — ≤ 900px  (tablet)
+   22. RESPONSIVE — ≤ 900px  (tablet)
    ================================================================ */
 
 @media (max-width: 900px) {
@@ -3653,7 +3492,6 @@ a:hover .button__ghost--dark {
         align-self: auto;
         grid-column: auto;
         aspect-ratio: 16 / 9;
-        order: 0;
     }
 
     /* Dissolve info wrappers so h1 and body become independent grid items */
@@ -3703,11 +3541,16 @@ a:hover .button__ghost--dark {
     /* News page: 2-column grid */
     .news-grid { grid-template-columns: repeat(2, 1fr); }
 
-    /* Student orgs: all three side by side */
+    /* Student orgs: all four side by side, shorter descriptions */
     .student-orgs__grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     .org-card__desc { -webkit-line-clamp: 2; }
+
+    /* TL & TAB directories: one card per row, affiliates in two columns */
+    .tl-dir__grid,
+    .tab-dir__grid             { grid-template-columns: 1fr; }
+    .tab-dir__affiliates-grid  { grid-template-columns: repeat(2, 1fr); }
 
     /* MDX sidebar: collapse to single column */
     .mdx-layout { grid-template-columns: 1fr; }
@@ -3721,7 +3564,8 @@ a:hover .button__ghost--dark {
     }
     .footer__contact { text-align: left; }
 
-    /* Calendar page / community feed */
+    /* News page: calendar takes the full width; event sidebar and desktop filter bar
+       hide, and the news grid shows its own inline filter bar */
     .calendar-page__embed-wrap { aspect-ratio: 4 / 3; }
     .community-feed__top { grid-template-columns: 1fr; }
     .community-feed__left { gap: 0; }
@@ -3786,7 +3630,7 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
-   18. RESPONSIVE — ≤ 600px  (mobile)
+   23. RESPONSIVE — ≤ 600px  (mobile)
    ================================================================ */
 
 @media (max-width: 600px) {
@@ -3801,7 +3645,7 @@ a:hover .button__ghost--dark {
     .mobile-menu__body         { grid-template-columns: 1fr; }
     .mobile-menu__search-inner { width: 100%; }
 
-    /* Button rows: wrap and center at tablet/mobile */
+    /* Button rows: wrap and centre */
     .hero-buttons,
     .updates-buttons,
     .faculty-buttons,
@@ -3809,7 +3653,6 @@ a:hover .button__ghost--dark {
     .career-buttons {
         flex-wrap: wrap;
         justify-content: center;
-        padding-top: var(--object-gap);
     }
 
     /* Band images: panoramic crop at mobile to save vertical space */
@@ -3822,24 +3665,10 @@ a:hover .button__ghost--dark {
     /* News article gallery: single column */
     .news-article__gallery { grid-template-columns: 1fr; }
 
-
-    /* Updates: horizontal snap strip â€” peek next card at 80vw */
-    .updates-section .updates-grid {
-        display: flex;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        gap: var(--object-gap);
-        padding-bottom: 0.5rem;
-        scrollbar-width: none;
-    }
-    .updates-section .updates-grid::-webkit-scrollbar { display: none; }
-    .updates-section .update-card {
-        flex: 0 0 80vw;
-        scroll-snap-align: start;
-    }
+    /* Updates strip (set up at ≤900px): one card at a time, peeking the next */
+    .updates-section .update-card { flex: 0 0 80vw; }
     .update-card__date  { display: none; }
-    .update-card__title { -webkit-line-clamp: 2; }
-    .update-card__desc  { -webkit-line-clamp: 3; }
+    .update-card__desc  { -webkit-line-clamp: 3; }   /* undoes the ≤900px limit of 2 */
     .update-card__body  { padding: 0.5rem; }
 
     /* News page: single column list */
@@ -3853,7 +3682,6 @@ a:hover .button__ghost--dark {
         gap: var(--object-gap);
     }
     .endorsement-carousel__mobile .endorsement-carousel__quote {
-        position: relative;
         padding-left: 2rem;
         visibility: visible;
         opacity: 1;
@@ -3862,14 +3690,11 @@ a:hover .button__ghost--dark {
         font-size: 2.75rem;
     }
     .endorsement-carousel__mobile .endorsement-carousel__person {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.75rem;
         visibility: visible;
         opacity: 1;
     }
-    /* Faculty directory: single column on mobile */
+
+    /* Faculty directory: single column, narrower photo, degrees hidden */
     .faculty-dir__grid  { grid-template-columns: 1fr; }
     .faculty-card .faculty-card__image { width: 7rem; }
     .faculty-card__degrees  { display: none; }
@@ -3886,7 +3711,6 @@ a:hover .button__ghost--dark {
         justify-content: flex-start;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
-        gap: var(--object-gap);
         padding-bottom: 0.5rem;
         scrollbar-width: none;
     }
@@ -3895,23 +3719,16 @@ a:hover .button__ghost--dark {
         flex: 0 0 78vw;
         scroll-snap-align: start;
     }
-    .org-card__desc { -webkit-line-clamp: 3; }
+    .org-card__desc { -webkit-line-clamp: 3; }   /* undoes the ≤900px limit of 2 */
     .org-card__name { font-size: 1.75rem; }
 
-    /* Faculty carousel: single random card, no scroll */
-    .faculty-carousel        { gap: clamp(2rem, 4vw, 4rem); }
+    /* Faculty carousel: one random card, photo above the text, no arrows */
     .faculty-carousel__arrow { display: none; }
-    .faculty-carousel__track {
-        overflow-x: visible;
-        scroll-snap-type: none;
-    }
     .faculty-carousel__card {
         flex: 1 1 100%;
         flex-direction: column;
         align-items: flex-start;
-        scroll-snap-align: none;
     }
-    .faculty-carousel__card--inactive { opacity: 0; visibility: hidden; }
     .faculty-carousel__photo-wrap {
         width: clamp(5rem, 20vw, 8rem);
         height: clamp(5rem, 20vw, 8rem);
@@ -3927,15 +3744,12 @@ a:hover .button__ghost--dark {
     .footer__college,
     .footer__dept    { font-size: 1.25rem; }
 
-    /* Calendar / community feed — collapse calendar by default on mobile */
+    /* News page: portrait calendar so the week view stays readable */
     .calendar-page__embed-wrap { aspect-ratio: 3 / 4; max-height: 70vh; }
-    .community-feed__top { grid-template-columns: 1fr; }
-    .community-feed__left { gap: 0; }
-    .community-feed__calendar { flex: unset; min-height: unset; }
-    .community-feed__calendar .calendar-page__embed-wrap { flex: unset; aspect-ratio: 3 / 4; }
-    .community-feed__sidebar   { display: none; }
-    .community-feed__filterbar { display: none; }
-    .community-feed__news .news-filter__bar--inline { display: flex; }
+    .community-feed__calendar .calendar-page__embed-wrap { aspect-ratio: 3 / 4; }
+
+    /* TAB affiliates: one per row */
+    .tab-dir__affiliates-grid { grid-template-columns: 1fr; }
 
     /* Plan pages */
     .planner__grid       { grid-template-columns: 1fr; }
