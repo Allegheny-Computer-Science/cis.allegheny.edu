@@ -1,3 +1,4 @@
 ---
-return Astro.redirect('/community/news', 301);
+// Old URL kept so existing links still work; the Community section starts at the news page.
+return Astro.redirect(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}community/news`, 301);
 ---
