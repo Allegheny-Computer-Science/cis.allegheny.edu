@@ -27,7 +27,7 @@ const tls = [...technicalLeaders].filter(tl => !tl.hidden).sort((a, b) => (a.ord
     </div>
 
     {tls.length === 0 ? (
-      <p style="color: var(--navy);">No Technical Leaders listed yet.</p>
+      <p class="tl-dir__empty">No Technical Leaders listed yet.</p>
     ) : (
       <div class="tl-dir__grid">
         {tls.map(d => {
@@ -36,7 +36,7 @@ const tls = [...technicalLeaders].filter(tl => !tl.hidden).sort((a, b) => (a.ord
             <div class="tl-card">
               <div class="tl-card__image">
                 {imgMod
-                  ? <Image src={imgMod.default} alt={d.name} width={300} height={300} />
+                  ? <Image src={imgMod.default} alt={d.name} width={352} height={440} />
                   : <div class="tl-card__image-placeholder" aria-hidden="true" />
                 }
               </div>

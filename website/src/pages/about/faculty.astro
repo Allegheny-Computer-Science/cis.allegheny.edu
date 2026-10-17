@@ -20,14 +20,14 @@ const staff   = sorted.filter(p => p.group === 'staff');
     <h1 class="faculty-dir__heading">Our <em>Faculty &amp; Staff</em></h1>
 
     <h2 class="faculty-dir__subheading">Faculty</h2>
-    <div class="faculty-dir__grid">
+    <div class="faculty-dir__grid faculty-dir__grid--single">
       {faculty.map(d => {
         const imgMod = d.image ? images[`/src/assets/img/faculty/${d.image}`] : null;
         return (
           <div class="faculty-card">
             <div class="faculty-card__image">
               {imgMod
-                ? <Image src={imgMod.default} alt={d.name} width={300} height={300} />
+                ? <Image src={imgMod.default} alt={d.name} width={448} height={560} />
                 : <div aria-hidden="true" />
               }
             </div>
@@ -75,7 +75,7 @@ const staff   = sorted.filter(p => p.group === 'staff');
           <div class="faculty-card">
             <div class="faculty-card__image">
               {imgMod
-                ? <Image src={imgMod.default} alt={d.name} width={300} height={300} />
+                ? <Image src={imgMod.default} alt={d.name} width={448} height={560} />
                 : <div aria-hidden="true" />
               }
             </div>

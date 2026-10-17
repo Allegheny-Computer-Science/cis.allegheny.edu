@@ -1,5 +1,7 @@
 ﻿---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <BaseLayout pageTitle="My Path">
@@ -125,7 +127,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   </div>
 </BaseLayout>
 
-<script is:inline src="/vendor/xlsx-js-style.min.js"></script>
+<script is:inline src={`${base}vendor/xlsx-js-style.min.js`}></script>
 <script>
   import '../../scripts/mypath.jsx';
 </script>

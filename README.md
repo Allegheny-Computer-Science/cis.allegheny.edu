@@ -23,6 +23,12 @@ npm run dev
 
 Pushes to `main` build and deploy automatically via GitHub Actions (see `.github/workflows/`).
 
+### Styles
+
+All site styles live in one stylesheet, `public/style/style.css`. Its table of contents lists numbered sections, one per component or page, each naming the files it styles; responsive adjustments are grouped by breakpoint in the last sections. Colours and spacing come from the custom properties in section 1 (e.g. `var(--navy)`, `var(--object-gap)`) — use those rather than new hard-coded values. The only component with its own `<style>` block is `FacilityCard.astro`.
+
+Images that pages reference by URL (news photos, `og-default.jpg`, `logo.svg`) live in `public/img/`; images imported by components and pages live in `src/assets/img/`, where Astro optimizes them.
+
 ## Contributing
 
 Found a bug, broken link, or outdated information? Open an issue at [github.com/Allegheny-Computer-Science/cis.allegheny.edu/issues](https://github.com/Allegheny-Computer-Science/cis.allegheny.edu/issues). For content updates like faculty info, courses, or programs, see the relevant section below — many can be made by editing a single data file and opening a pull request.
@@ -62,7 +68,7 @@ Each person is one object in the `people` array. Order on the page matches the `
 
 **To add a person:** copy an existing entry, update all fields, set a unique `order`, and place the object in the right position in the array.
 
-**To add a photo:** drop the image file into `src/assets/img/faculty/` and set the `image` field to the filename. Recommended size: 400 × 400 px, square crop, JPEG or PNG.
+**To add a photo:** drop the image file into `src/assets/img/faculty/` and set the `image` field to the filename. Recommended: a square head-and-shoulders photo, at least 800 × 800 px, face centred, JPEG or PNG. The same photo is shown as a circle on the home page and as a 4:5 portrait in the directory.
 
 **To remove a person:** delete the object from the array. Re-number `order` values if gaps bother you (not required).
 
@@ -87,7 +93,7 @@ Each TL is one object in the `technicalLeaders` array.
 }
 ```
 
-**To add a TL:** copy an existing entry, fill in all fields, drop the photo into `src/assets/img/tl/`. Recommended photo size: 400 × 500 px (portrait), JPEG or PNG.
+**To add a TL:** copy an existing entry, fill in all fields, drop the photo into `src/assets/img/tl/`. Recommended: a 4:5 portrait (head and shoulders), at least 600 × 750 px, JPEG or PNG.
 
 **To update office hours:** edit the `officeHours` string. Use `null` when hours are not set for the semester.
 
@@ -338,19 +344,19 @@ For posts that summarize an allegheny.edu story, end with `[Read the full story 
 
 ---
 
-### Google Calendar Integration
+### Google Calendar
 
-**Page:** `/community/news` (calendar embed + merged events in the feed)
+**Page:** `/community/news` (embedded calendar)
 **Config:** `src/config/calendar.ts`
 
 ```ts
 export const CALENDAR_ID = "c_abc123…@group.calendar.google.com";
-export const CALENDAR_EMBED_URL = "https://calendar.google.com/calendar/embed?…";
+export const CALENDAR_EMBED_URL = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(CALENDAR_ID)}&…`;
 ```
 
-- `CALENDAR_ID` is used by `src/lib/getCalendarEvents.ts` at build time to fetch upcoming events via the Google Calendar API. Set `GOOGLE_CALENDAR_API_KEY` in `.env`.
-- `CALENDAR_EMBED_URL` is the iframe src for the embedded calendar widget on the news page.
+- `CALENDAR_EMBED_URL` is the iframe `src` for the calendar on the news page. It is built from `CALENDAR_ID`; the rest of the URL sets display options such as the time zone and the default week view.
+- No API key is needed. The calendar is only embedded, not fetched at build time.
 
-**To switch to a different calendar:** update both values in `calendar.ts`. The embed URL can be copied from Google Calendar → Settings → *Integrate calendar* → *Embed code* (use only the `src` attribute value).
+**To switch to a different calendar:** replace `CALENDAR_ID` with the new calendar's ID (Google Calendar → Settings → the calendar → *Integrate calendar* → *Calendar ID*). The calendar must be public for visitors to see its events.
 
 ---

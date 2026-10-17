@@ -58,7 +58,7 @@ export const people = [
     name: "Douglas Luman",
     title: "Associate Professor",
     degrees: [
-      "MFA, George Mason University",
+      "M.F.A., George Mason University",
       "B.S., Bradley University",
     ],
     email: "dluman@allegheny.edu",
@@ -70,7 +70,7 @@ export const people = [
   {
     group: "faculty",
     order: 5,
-    name: "Brett C. Mullins",
+    name: "Brett C. Mullins, Ph.D.",
     title: "Assistant Professor",
     degrees: [
       "Ph.D., Computer Science, University of Massachusetts Amherst",
@@ -79,7 +79,6 @@ export const people = [
       "B.A., Philosophy, Georgia State University",
     ],
     email: "bmullins@allegheny.edu",
-    phone: "",
     office: "Alden Hall 106",
     website: "https://bcmullins.github.io/",
     image: "mullins1.jpg",
@@ -106,7 +105,6 @@ export const people = [
       "Office Hours: Mon–Fri 8am–5pm",
     ],
     email: "dwagner@allegheny.edu",
-    phone: "",
     office: "Murray Hall 118B",
     image: "wagner1.png",
   },
