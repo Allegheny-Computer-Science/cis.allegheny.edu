@@ -1,0 +1,240 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FillButton from '../../components/ui/FillButton.astro';
+import GhostButton from '../../components/ui/GhostButton.astro';
+import chompersImg from '../../assets/img/code-with-chompers.jpg';
+import { currentCampaign, pastCampaigns } from '../../data/fundraising.js';
+import { campaignWindow, campaignStatus, formatCampaignDate } from '../../lib/campaignWindow';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const money = (n: number) => `$${n.toLocaleString('en-US')}`;
+const linkLabel = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '');
+
+// Site paths get the base prefix (staging serves under a subpath); full URLs open in a new tab
+const linkAttrs = (url: string) => url.startsWith('/')
+  ? { href: `${base}${url.replace(/^\//, '')}` }
+  : { href: url, target: '_blank', rel: 'noopener noreferrer' };
+
+const { goal, raised } = currentCampaign;
+
+// Status as of the build; the script at the bottom re-checks it on each visit
+const giving = campaignWindow(currentCampaign);
+const status = campaignStatus(giving);
+const progress = typeof raised === 'number' ? Math.min(100, Math.round((raised / goal) * 100)) : null;
+
+const totalRaised   = pastCampaigns.reduce((sum, c) => sum + (c.raised ?? 0), 0);
+const totalStudents = pastCampaigns.reduce((sum, c) => sum + (c.students ?? 0), 0);
+const studentsShort = pastCampaigns.some(c => c.students == null);
+const firstYear     = Math.min(...pastCampaigns.map(c => c.year));
+---
+
+<BaseLayout
+  pageTitle="Fundraising"
+  description="Support the Allegheny College CIS department's current fundraising campaign and see how past campaigns have funded student research, teaching tools, and community outreach."
+>
+
+  <!-- Current campaign: plan-page hero -->
+  <section id="current-campaign" class="plan-hero fundraising-hero">
+
+    <div class="fundraising-hero__info">
+      <span class="fundraising-hero__badge">Current Campaign</span>
+      <h1>{currentCampaign.name}</h1>
+      <p>{currentCampaign.description}</p>
+      <div class="plan-hero__buttons">
+        <a href={currentCampaign.giveUrl} target="_blank" rel="noopener noreferrer" data-campaign-when="active" hidden={status !== 'active'}><FillButton>Give Now</FillButton></a>
+        <a href="mailto:cis@allegheny.edu"><GhostButton>Ask About Giving</GhostButton></a>
+      </div>
+    </div>
+
+    <div class="fundraising-hero__image">
+      <Image src={chompersImg} alt="An Allegheny student guides an elementary schooler through a tablet lesson during Code with Chompers" />
+    </div>
+
+  </section>
+
+  <!-- Current campaign: goal readout and what the gift supports -->
+  <section id="campaign-details" class="white__band fundraising-details">
+
+    <div class="fundraising-progress">
+      <div class="fundraising-progress__item">
+        <span class="fundraising-progress__label">Campaign Goal</span>
+        <span class="fundraising-progress__value">{money(goal)}</span>
+      </div>
+      {progress !== null && (
+        <>
+          <div class="fundraising-progress__item">
+            <span class="fundraising-progress__label">Raised So Far</span>
+            <span class="fundraising-progress__value">{money(raised)}</span>
+          </div>
+          <div class="fundraising-progress__item">
+            <span class="fundraising-progress__label">Of Goal</span>
+            <span class="fundraising-progress__value">{progress}%</span>
+          </div>
+        </>
+      )}
+      <div class="fundraising-progress__item">
+        <span class="fundraising-progress__label">Initiatives</span>
+        <span class="fundraising-progress__value">{currentCampaign.focusAreas.length}</span>
+      </div>
+      {giving && (
+        <>
+          <div class="fundraising-progress__item" data-campaign-when="upcoming" hidden={status !== 'upcoming'}>
+            <span class="fundraising-progress__label">Giving Opens</span>
+            <span class="fundraising-progress__value">{formatCampaignDate(currentCampaign.startDate)}</span>
+          </div>
+          <div class="fundraising-progress__item" data-campaign-when="active" hidden={status !== 'active'}>
+            <span class="fundraising-progress__label">Giving Open Through</span>
+            <span class="fundraising-progress__value">{formatCampaignDate(currentCampaign.endDate)}</span>
+          </div>
+          <div class="fundraising-progress__item" data-campaign-when="closed" hidden={status !== 'closed'}>
+            <span class="fundraising-progress__label">Giving Closed</span>
+            <span class="fundraising-progress__value">{formatCampaignDate(currentCampaign.endDate)}</span>
+          </div>
+        </>
+      )}
+      {progress !== null && (
+        <div class="fundraising-progress__bar" role="progressbar" aria-label="Raised toward goal" aria-valuemin="0" aria-valuemax={goal} aria-valuenow={raised}>
+          <div class="fundraising-progress__fill" style={`width: ${progress}%`}></div>
+        </div>
+      )}
+    </div>
+
+    <h2 class="fundraising-details__heading">What Your Gift Supports</h2>
+
+    <ul class="fundraising-areas">
+      {currentCampaign.focusAreas.map(area => (
+        <li class="fundraising-area">
+          <div class="fundraising-area__header">
+            <span class="fundraising-area__badge">{area.category}</span>
+            <h3 class="fundraising-area__title">{area.title}</h3>
+          </div>
+          <p class="fundraising-area__desc">{area.description}</p>
+          {area.url && (
+            <a class="fundraising-area__link" {...linkAttrs(area.url)}>
+              {area.url.startsWith('/') ? 'Read More' : 'Visit Site'}
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <p class="fundraising-details__note">{currentCampaign.note}</p>
+
+  </section>
+
+  {giving && (
+    <script is:inline define:vars={{ start: giving.start, end: giving.end }}>
+      const now = Date.now();
+      const status = now < start ? 'upcoming' : now >= end ? 'closed' : 'active';
+      document.querySelectorAll('[data-campaign-when]').forEach(el => {
+        el.hidden = el.dataset.campaignWhen !== status;
+      });
+    </script>
+  )}
+
+  <!-- Past campaigns -->
+  <section id="campaign-archive" class="white__band">
+
+    <h1 class="faculty-dir__heading">Campaign <em>Archive</em></h1>
+    <p class="fundraising-archive__intro">Every past campaign has gone directly to students — funding research, open-source teaching tools, classroom equipment, and outreach in our local schools. Here is where each gift went.</p>
+
+    <dl class="fundraising-stats fundraising-stats--totals">
+      <div class="fundraising-stat fundraising-stat--total">
+        <dt>Raised since {firstYear}</dt>
+        <dd>{money(totalRaised)}</dd>
+      </div>
+      <div class="fundraising-stat">
+        <dt>Campaigns</dt>
+        <dd>{pastCampaigns.length}</dd>
+      </div>
+      <div class="fundraising-stat">
+        <dt>Students supported</dt>
+        <dd>{totalStudents}{studentsShort && '+'}</dd>
+      </div>
+    </dl>
+
+    <div class="fundraising-archive__list">
+      {pastCampaigns.map((c, i) => (
+        <details class="fundraising-campaign" id={c.slug} open={i === 0}>
+          <summary>
+            <span class="fundraising-campaign__year">{c.year}</span>
+            <span class="fundraising-campaign__name">{c.name}</span>
+            <span class="fundraising-campaign__raised">{c.raised != null ? `${money(c.raised)} raised` : 'Total pending'}</span>
+          </summary>
+
+          <div class="fundraising-campaign__body">
+            <dl class="fundraising-stats">
+              <div class="fundraising-stat fundraising-stat--total">
+                <dt>Total raised</dt>
+                <dd>{c.raised != null ? money(c.raised) : 'Pending'}</dd>
+              </div>
+              {c.stats.map(s => (
+                <div class="fundraising-stat">
+                  <dt>{s.label}</dt>
+                  <dd>{s.value}</dd>
+                </div>
+              ))}
+              {c.students != null && (
+                <div class="fundraising-stat">
+                  <dt>Students supported</dt>
+                  <dd>{c.students}</dd>
+                </div>
+              )}
+            </dl>
+
+            {c.summary && <p class="fundraising-campaign__summary">{c.summary}</p>}
+
+            {c.sections.map(section => (
+              <div class="fundraising-campaign__section">
+                <h3 class="fundraising-campaign__section-title">{section.title}</h3>
+                {section.description && <p class="fundraising-campaign__summary">{section.description}</p>}
+                <div class="fundraising-projects">
+                  {section.items.map(p => (
+                    <article class="fundraising-project">
+                      <h4 class="fundraising-project__title">
+                        {p.url
+                          ? <a {...linkAttrs(p.url)}>{p.title}</a>
+                          : p.title}
+                      </h4>
+                      {p.meta && <span class="fundraising-project__meta">{p.meta}</span>}
+                      {[p.description].flat().filter(Boolean).map(text => (
+                        <p class="fundraising-project__desc">{text}</p>
+                      ))}
+                      {p.funding && (
+                        <ul class="fundraising-project__funding">
+                          {p.funding.map(f => <li>{f}</li>)}
+                        </ul>
+                      )}
+                      {p.features && (
+                        <ol class="fundraising-project__features">
+                          {p.features.map((f, n) => <li><span class="fundraising-project__num">{n + 1}.</span> {f}</li>)}
+                        </ol>
+                      )}
+                      {p.tags && (
+                        <ul class="fundraising-project__tags">
+                          {p.tags.map(t => <li>{t}</li>)}
+                        </ul>
+                      )}
+                      {p.note && <p class="fundraising-project__note">{p.note}</p>}
+                      {p.links && (
+                        <ul class="fundraising-project__links">
+                          {p.links.map(l => (
+                            <li><a href={l} target="_blank" rel="noopener noreferrer">{linkLabel(l)}</a></li>
+                          ))}
+                        </ul>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </details>
+      ))}
+    </div>
+
+  </section>
+
+</BaseLayout>
