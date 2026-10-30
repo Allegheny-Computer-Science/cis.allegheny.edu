@@ -52,7 +52,7 @@ export const pastCampaigns = [
     slug: "sustain-attain-train",
     name: "Sustain. Attain. Train.",
     year: 2025,
-    raised: null,
+    raised: 7996,
     stats: [
       { label: "Goal", value: "$15,000" },
       { label: "Initiatives", value: "3" },
