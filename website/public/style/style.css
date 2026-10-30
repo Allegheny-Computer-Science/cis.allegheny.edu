@@ -36,6 +36,7 @@
    11. Faculty Directory Page
    11b.Endorsement Carousel
    11c.TL & TAB Directories
+   11d.Fundraising Page      current campaign, campaign archive, home campaign bar
    12. Student Orgs
    13. Footer
    14. Plan Pages            degrees, microcredentials, bulletin, mypath
@@ -2246,6 +2247,524 @@ a:hover .button__ghost--dark {
 }
 
 /* ================================================================
+   11d. FUNDRAISING PAGE
+   ================================================================ */
+
+/* ── Current campaign: plan-page hero (.plan-hero) with a photo beside it ── */
+
+.fundraising-hero {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    align-items: center;
+    gap: var(--section-gap);
+}
+
+/* Filled gator tag, the counterpart of the archive's navy year tag */
+.fundraising-hero__badge {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    letter-spacing: 0.12em;
+    color: var(--navy);
+    background-color: var(--gator);
+    padding: 0.15rem 0.65rem;
+    margin-bottom: 0.75rem;
+}
+
+.fundraising-hero__image img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+/* ── Current campaign: goal readout, focus cards, note ── */
+
+.fundraising-details {
+    border-bottom: 3px solid var(--navy);
+}
+
+/* Goal readout (as the My Path progress strip), accented in gator */
+.fundraising-progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem;
+    padding: 0.85rem 1.25rem;
+    margin-bottom: var(--object-gap);
+    background-color: var(--navy);
+    border-bottom: 3px solid var(--gator);
+}
+
+.fundraising-progress__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.fundraising-progress__label {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gator);
+}
+
+.fundraising-progress__value {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--white);
+}
+
+.fundraising-progress__bar {
+    flex-basis: 100%;
+    height: 0.6rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+}
+
+.fundraising-progress__fill {
+    height: 100%;
+    background-color: var(--gator);
+}
+
+.fundraising-details__heading {
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    color: var(--navy);
+    border-bottom: 3px solid var(--gator);
+    padding-bottom: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.fundraising-areas {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--object-gap);
+}
+
+/* Focus cards: a degree-column header over a requirement-section frame */
+.fundraising-area {
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 2px solid var(--navy);
+    border-bottom: 8px solid var(--navy);
+}
+
+.fundraising-area__header {
+    background-color: var(--navy);
+    padding: 1rem 1.25rem 0.85rem;
+    border-bottom: 3px solid var(--gator);
+}
+
+.fundraising-area__badge {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gator);
+    margin-bottom: 0.2rem;
+}
+
+.fundraising-area__title {
+    font-size: clamp(1.5rem, 2vw, 1.9rem);
+    line-height: 1.1;
+    color: var(--white);
+    padding-bottom: 0;
+}
+
+.fundraising-area__desc {
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--navy);
+    padding: 1rem 1.25rem;
+}
+
+/* Link button (as .bulletin-anchor) */
+.fundraising-area__link {
+    align-self: flex-start;
+    margin: 0 1.25rem 1.25rem;
+    padding: 0.3rem 0.85rem;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    color: var(--navy);
+    border: 2px solid var(--navy);
+    transition: background 150ms, color 150ms;
+}
+
+.fundraising-area__link:hover {
+    background: var(--navy);
+    color: var(--gator);
+}
+
+/* Giving-window items: the browser re-checks the dates and hides what doesn't apply */
+[data-campaign-when][hidden] { display: none; }
+
+/* Note (as .planner__disclaimer) */
+.fundraising-details__note {
+    margin-top: var(--object-gap);
+    padding: 0.6rem 0.85rem;
+    font-size: 0.9rem;
+    color: var(--navy);
+    background: var(--soft-gold);
+    border-left: 4px solid var(--gator);
+}
+
+/* ── Campaign bar: dismissible notice under the nav on the home page ── */
+
+.campaign-bar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    padding: 0.65rem calc(var(--outer-gutter) + 2.5rem) 0.65rem var(--outer-gutter);
+    background-color: var(--gator);
+}
+
+.campaign-bar[hidden] { display: none; }
+
+.campaign-bar__text {
+    flex: 1 1 20rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--navy);
+}
+
+.campaign-bar__name {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    margin-right: 0.5rem;
+}
+
+/* Navy tab button; inverts to white on hover since gator would vanish here */
+.campaign-bar__link {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.85rem;
+    color: var(--white);
+    background-color: var(--navy);
+    transition: background-color 150ms, color 150ms;
+}
+
+.campaign-bar__link:hover {
+    background-color: var(--white);
+    color: var(--navy);
+}
+
+.campaign-bar__close {
+    position: absolute;
+    top: 50%;
+    right: var(--outer-gutter);
+    transform: translateY(-50%);
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--navy);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 150ms;
+}
+
+.campaign-bar__close:hover { color: var(--white); }
+
+.campaign-bar__link:focus-visible,
+.campaign-bar__close:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+}
+
+/* ── Campaign archive ── */
+
+.fundraising-archive__intro {
+    color: var(--navy);
+    max-width: 65ch;
+    line-height: 1.6;
+    margin-bottom: var(--object-gap);
+}
+
+/* Stat tiles: archive totals and per-campaign figures */
+.fundraising-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.6rem;
+}
+
+.fundraising-stat {
+    background-color: var(--soft-gold);
+    border-left: 4px solid var(--bold-gold);
+    padding: 0.6rem 0.85rem;
+}
+
+.fundraising-stat dt {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--navy);
+    opacity: 0.75;
+}
+
+.fundraising-stat dd {
+    font-family: var(--font-heading);
+    font-size: 1.9rem;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: var(--navy);
+}
+
+/* Total raised: navy tile, gold figure */
+.fundraising-stat--total             { background-color: var(--navy); border-left-color: var(--gator); }
+.fundraising-stat--total dt          { color: var(--white); opacity: 1; }
+.fundraising-stat--total dd          { color: var(--bold-gold); }
+
+.fundraising-stats--totals {
+    margin-bottom: var(--object-gap);
+}
+
+.fundraising-stats--totals .fundraising-stat { padding: 0.85rem 1.1rem; }
+.fundraising-stats--totals dd                { font-size: clamp(2.25rem, 3vw, 3rem); }
+
+/* Campaign accordions (same frame as .mc-card) */
+.fundraising-archive__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.fundraising-campaign {
+    border: 2px solid var(--navy);
+    border-bottom: 8px solid var(--navy);
+    background: var(--white);
+    transition: transform 180ms ease;
+}
+
+.fundraising-campaign:not([open]):hover { transform: translateY(-2px); }
+
+.fundraising-campaign > summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    list-style: none;
+    color: var(--navy);
+}
+
+.fundraising-campaign > summary::-webkit-details-marker { display: none; }
+.fundraising-campaign[open] > summary { border-bottom: 2px solid var(--bold-gold); }
+
+.fundraising-campaign__year {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    background-color: var(--navy);
+    color: var(--bold-gold);
+    padding: 0.15rem 0.6rem;
+    flex-shrink: 0;
+}
+
+.fundraising-campaign__name {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    color: var(--navy);
+    flex: 1;
+}
+
+.fundraising-campaign__raised {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    opacity: 0.75;
+    white-space: nowrap;
+}
+
+.fundraising-campaign__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.fundraising-campaign__summary {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--navy);
+    max-width: 80ch;
+}
+
+.fundraising-campaign__section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.fundraising-campaign__section-title {
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--navy);
+    -webkit-text-stroke: transparent 0;
+    border-bottom: 2px solid var(--gator);
+    padding-bottom: 0.2rem;
+}
+
+/* Project cards: navy frame, gold accent edge (as .tab-card--affiliate) */
+.fundraising-projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+    gap: var(--object-gap);
+}
+
+.fundraising-project {
+    background: var(--white);
+    border: 2px solid var(--navy);
+    border-left: 5px solid var(--bold-gold);
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fundraising-project__title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    color: var(--navy);
+}
+
+.fundraising-project__title a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--gator);
+    text-underline-offset: 3px;
+    transition: color 150ms ease;
+}
+
+.fundraising-project__title a:hover { color: var(--gator); }
+
+.fundraising-project__meta {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gator);
+}
+
+.fundraising-project__desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--navy);
+}
+
+.fundraising-project__funding,
+.fundraising-project__features,
+.fundraising-project__tags,
+.fundraising-project__links {
+    list-style: none;
+    display: flex;
+    gap: 0.3rem;
+}
+
+.fundraising-project__funding,
+.fundraising-project__features,
+.fundraising-project__links {
+    flex-direction: column;
+}
+
+.fundraising-project__funding li {
+    font-size: 0.88rem;
+    color: var(--navy);
+    padding: 0.3rem 0.6rem;
+    background: var(--soft-gold);
+    border-left: 3px solid var(--navy);
+}
+
+.fundraising-project__features li {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--navy);
+    display: flex;
+    gap: 0.4rem;
+}
+
+.fundraising-project__num {
+    color: var(--gator);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.fundraising-project__tags { flex-wrap: wrap; }
+
+.fundraising-project__tags li {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--navy);
+    color: var(--white);
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+}
+
+.fundraising-project__note {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--navy);
+    padding: 0.35rem 0.6rem;
+    border-left: 3px solid var(--gator);
+}
+
+/* Repo / site links sink to the bottom of the card */
+.fundraising-project__links {
+    gap: 0.2rem;
+    margin-top: auto;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(27, 48, 84, 0.15);
+}
+
+.fundraising-project__links a {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: underline;
+    text-decoration-color: var(--gator);
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+    transition: color 150ms ease;
+}
+
+.fundraising-project__links a:hover { color: var(--gator); }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .fundraising-hero                { grid-template-columns: 1fr; gap: var(--object-gap); }
+    .fundraising-hero__image img     { aspect-ratio: 16 / 9; }
+    .fundraising-areas               { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .fundraising-hero__image img     { aspect-ratio: 21 / 9; }
+    .fundraising-campaign > summary  { gap: 0.75rem; }
+    .fundraising-campaign__name      { font-size: 1.3rem; }
+    .fundraising-campaign__raised    { display: none; }
+    .fundraising-campaign__body      { padding: 1rem 0.85rem 1.25rem; }
+}
+
+/* ================================================================
    12. STUDENT ORGS  (StudentOrgs.astro)
    ================================================================ */
 
@@ -2439,7 +2958,8 @@ a:hover .button__ghost--dark {
 .degree-outcomes summary::after,
 .degree-module summary::after,
 .mc-card > summary::after,
-.bulletin-course > summary::after {
+.bulletin-course > summary::after,
+.fundraising-campaign > summary::after {
     content: '';
     display: block;
     width: 1.25rem;
@@ -2456,7 +2976,8 @@ a:hover .button__ghost--dark {
 .degree-outcomes[open] summary::after,
 .degree-module[open] summary::after,
 .mc-card[open] > summary::after,
-.bulletin-course[open] > summary::after {
+.bulletin-course[open] > summary::after,
+.fundraising-campaign[open] > summary::after {
     transform: rotate(-90deg);
 }
 
