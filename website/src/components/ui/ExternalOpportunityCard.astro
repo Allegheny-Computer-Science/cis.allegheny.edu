@@ -1,0 +1,51 @@
+---
+const programs = [
+  ["Google Summer of Code", "Google Summer of Code is a global online program connects students with open source organizations for summer projects with small stipend. Work with experienced mentors, contribute to real software, and gain valuable professional experience.", "Students or open-source beginners aged 18 or older. Check the official website for full eligibility requirements.", "Work with mentors on a programming project for an open-source organization.", "A programming project lasting 12 weeks or longer.", "Explore participating organizations and project ideas. Check the official website for application instructions and current timeline.", "https://summerofcode.withgoogle.com/", "Visit Google Summer of Code"],
+  ["Linux Foundation Mentorship Programs", "Linux Foundation mentorship programs that support open source contributions through structured guidance, community involvement, and paid opportunities for emerging developers.", "Applicants must be at least 18 and meet the program’s eligibility rules and project prerequisites. Check the official requirements before applying.", "Contribute to an open-source project with guidance from experienced mentors, developing technical skills and experience working with a community.", "Full-time mentorships typically last 12 weeks. Part-time schedules and dates vary by project; review the selected program’s timeline.", "Browse opportunities on LFX Mentorship. Review each project’s prerequisites, application instructions, and deadlines before applying.", "https://mentorship.lfx.linuxfoundation.org/", "Visit Linux Foundation Mentorship Programs"],
+  ["Outreachy", "Outreachy offers paid, remote internships in open source for people who experience underrepresentation, systemic bias, or discrimination in their local technology industry. Interns work with mentors on projects that may involve programming, documentation, design, data science, and more.", "People aged 18 or older who experience underrepresentation, bias, or discrimination in tech. Student schedules and other eligibility restrictions apply; review the official requirements.", "Work remotely with mentors on an open-source project. Depending on the project, tasks may include coding, documentation, design, research, or data science.", "A three-month internship requiring 30 hours per week. Check the current cohort dates and student availability requirements.", "Check eligibility and follow the current application instructions. Choose projects, make and record contributions, and submit a final application before the deadline.", "https://www.outreachy.org/", "Visit Outreachy"],
+  ["NSF Research Experiences For Undergraduate (REU)", "NSF’s REU program gives undergraduate students opportunities to participate in research at universities and other institutions. Students work with researchers on projects across fields, including computer and information science.", "Undergraduate students pursuing an associate or bachelor’s degree who are U.S. citizens, U.S. nationals, or permanent residents. Individual programs may have additional requirements.", "Contribute to a research project with guidance from faculty and other researchers. Activities vary by program and research area.", "Dates and duration vary by program. Check each REU site for its schedule and participation requirements.", "Search the NSF REU directory for programs that match your interests. Visit each program’s website for eligibility, application instructions, and deadlines. Apply directly through the selected program.", "https://www.nsf.gov/funding/initiatives/reu/search", "Visit NSF REU opportunities"],
+];
+const labels = ["Who can apply", "What you will do", "Time commitment", "How to apply"];
+---
+<div class="opportunity-cards">
+  {programs.map(([title, description, eligibility, work, time, application, url, linkLabel]) => (
+    <details class="bulletin-course">
+      <summary><span class="bulletin-course__title">{title}</span></summary>
+      <div class="bulletin-course__body">
+        <p class="bulletin-course__description">{description}</p>
+        <dl class="opportunity-cards__grid">
+          {[eligibility, work, time, application].map((value, index) => (
+            <div><dt>{labels[index]}</dt><dd>{value}</dd></div>
+          ))}
+        </dl>
+        <a href={url} class="opportunity-cards__link">{linkLabel} <span aria-hidden="true">↗</span></a>
+      </div>
+    </details>
+  ))}
+</div>
+<style>
+  .opportunity-cards { margin-block: 24px; }
+  .opportunity-cards .bulletin-course[open] {
+    border: 1px solid var(--navy);
+    border-radius: 8px;
+    color: var(--navy);
+    padding: 24px;
+  }
+  .opportunity-cards .bulletin-course[open] > summary {
+    background: var(--soft-gold);
+    border-bottom: 2px solid var(--bold-gold);
+    margin: -24px -24px 0;
+    padding: 0.7rem 1rem;
+    border-radius: 7px 7px 0 0;
+  }
+  .opportunity-cards .bulletin-course__body { padding: 12px 0 8px; }
+  .opportunity-cards .bulletin-course__description { font-size: 1rem; line-height: 1.5; }
+  .opportunity-cards__grid { align-items: start; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; margin: 24px 0; }
+  .opportunity-cards :is(summary, dt, dd) { color: var(--navy); }
+  dt { font-weight: 700; margin-bottom: 8px; }
+  dd { margin: 0; line-height: 1.5; }
+  .opportunity-cards .opportunity-cards__link { color: var(--navy); text-decoration: underline; }
+  @media (max-width: 650px) {
+    .opportunity-cards__grid { grid-auto-rows: auto; grid-template-columns: 1fr; gap: 16px; margin: 20px 0; }
+  }
+</style>
