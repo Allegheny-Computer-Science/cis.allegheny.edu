@@ -198,10 +198,30 @@ const firstYear     = Math.min(...pastCampaigns.map(c => c.year));
                           ? <a {...linkAttrs(p.url)}>{p.title}</a>
                           : p.title}
                       </h4>
-                      {p.meta && <span class="fundraising-project__meta">{p.meta}</span>}
+                      {(p.meta || p.spent != null) && (
+                        <div class="fundraising-project__topline">
+                          {p.meta && <span class="fundraising-project__meta">{p.meta}</span>}
+                          {p.spent != null && <span class="fundraising-project__spent">{money(p.spent)} spent</span>}
+                        </div>
+                      )}
                       {[p.description].flat().filter(Boolean).map(text => (
                         <p class="fundraising-project__desc">{text}</p>
                       ))}
+                      {p.bullets && (
+                        <ul class="fundraising-project__bullets">
+                          {p.bullets.map(b => (
+                            <li>
+                              <div class="fundraising-project__bullet-head">
+                                <span class="fundraising-project__bullet-title">
+                                  {b.url ? <a {...linkAttrs(b.url)}>{b.title}</a> : b.title}
+                                </span>
+                                {b.spent != null && <span class="fundraising-project__spent">{money(b.spent)} spent</span>}
+                              </div>
+                              {b.description && <p class="fundraising-project__desc">{b.description}</p>}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                       {p.funding && (
                         <ul class="fundraising-project__funding">
                           {p.funding.map(f => <li>{f}</li>)}
