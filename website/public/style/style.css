@@ -2728,7 +2728,7 @@ a:hover .button__ghost--dark {
     transition: color 150ms ease;
 }
 
-.fundraising-project__bullet-title a:hover { color: var(--gator); }
+.fundraising-project__bullet-title a:hover { color: var(--navy); text-decoration-color: currentColor; }
 
 .fundraising-project__funding,
 .fundraising-project__features,
