@@ -3836,6 +3836,66 @@ a:hover .button__ghost--dark {
     color: var(--navy);
 }
 
+/* Category label and amount spent share one line under the title */
+.fundraising-project__topline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.75rem;
+}
+
+.fundraising-project__spent {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: var(--navy);
+    color: var(--bold-gold);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    white-space: nowrap;
+}
+
+/* Sub-projects inside a card (e.g. research items) */
+.fundraising-project__bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.fundraising-project__bullets > li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.5rem 0.7rem;
+    background: var(--soft-gold);
+    border-left: 3px solid var(--navy);
+}
+
+.fundraising-project__bullet-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.3rem 0.6rem;
+}
+
+.fundraising-project__bullet-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.fundraising-project__bullet-title a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--gator);
+    text-underline-offset: 3px;
+    transition: color 150ms ease;
+}
+
+.fundraising-project__bullet-title a:hover { color: var(--navy); text-decoration-color: currentColor; }
+
 .fundraising-project__funding,
 .fundraising-project__features,
 .fundraising-project__tags,

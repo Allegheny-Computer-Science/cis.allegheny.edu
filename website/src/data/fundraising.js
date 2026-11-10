@@ -13,36 +13,40 @@
 //   stats: extra figures shown between total raised and students supported
 //   sections: groups of projects; each project may have
 //     url (title link), meta (subtitle), description (string or paragraphs),
-//     funding, features (numbered), tags (pills), note, links (repos / sites)
+//     funding, features (numbered), tags (pills), note, links (repos / sites),
+//     spent (whole dollars, shown beside meta), bullets (sub-projects: { title, url, spent, description })
 
 export const currentCampaign = {
-  name: "Campaign Name",
+  name: "Ship It!",
   goal: 10000,
   raised: null,
   startDate: null,
   endDate: null,
   giveUrl: "https://www.givecampus.com/",
   description:
-    "A one- or two-sentence summary of what the new campaign funds and how it helps CIS students.",
-  note: "Recurring gifts help sustain these initiatives year over year.",
+    "This year, the Department of Computer and Information Science is launching its Ship It! campaign to give students more hands-on, real-world experience. In software, “shipping” means delivering a working product to real users, and that is exactly what our students do. Our goal is to raise $10,000 to expand experiential opportunities where students learn by building, releasing, and sharing technology that matters.",
+  note: "Every gift, no matter the size, helps another student gain hands-on experience building and sharing real technology. Help our students ship it!",
   focusAreas: [
     {
-      title: "Initiative One",
-      category: "Category",
+      title: "Department Software",
+      category: "Build",
       url: null,
-      description: "A short line on what this initiative does and who it reaches.",
+      description:
+        "Students work in professional-style teams to design, build, and maintain the tools the department relies on every day, like our GatorGrade assessment platform and the cis.allegheny.edu website.",
     },
     {
-      title: "Initiative Two",
-      category: "Category",
+      title: "Open-Source and Research Projects",
+      category: "Release",
       url: null,
-      description: "A short line on what this initiative does and who it reaches.",
+      description:
+        "Students develop and release real software and hardware through open-source and faculty-led research projects, from robotics to educational technology.",
     },
     {
-      title: "Initiative Three",
-      category: "Category",
+      title: "Community Outreach",
+      category: "Share",
       url: null,
-      description: "A short line on what this initiative does and who it reaches.",
+      description:
+        "Students take what they build into the community, sharing technology and computing lessons with local schools through programs like Code with Chompers.",
     },
   ],
 };
@@ -64,21 +68,43 @@ export const pastCampaigns = [
         title: "Initiatives",
         items: [
           {
-            title: "Gatorverse Hackathon",
+            title: "ACM After Hours Hackathon",
             meta: "Event",
-            url: "/community/news/gatorverse-hackathon-2025",
-            description: "A 48-hour, student-run hackathon in Alden Hall with alumni mentors.",
+            spent: 5000,
+            description: [
+              "In Spring 2026, the Allegheny College ACM chapter hosted the ACM After Hours Hackathon, bringing together nearly 30 students from Computer Science, Business and Economics, Education, Environmental Science, and other fields for a weekend of collaboration, creativity, and innovation.",
+              "Teams contributed through coding, design, research, presentation, and problem solving. Allegheny CIS alumni returned to campus as mentors to guide teams and share industry insights, and judges from multiple disciplines gave thoughtful feedback on every project.",
+            ],
           },
           {
             title: "Student-Driven Projects",
-            meta: "Research",
-            description: "Research and open-source software built by students alongside faculty.",
+            meta: "Student Projects",
+            bullets: [
+              {
+                title: "CIS Website",
+                url: "https://cis.allegheny.edu",
+                spent: 1300,
+                description:
+                  "Funds were used to complete and deploy the department's new website, cis.allegheny.edu, a single home for programs, advising resources, news, and community updates.",
+              },
+              {
+                title: "AquaGator",
+                url: "https://github.com/Underwater-Robotic-System/Autonomous-Robot",
+                spent: 221,
+                description:
+                  "AquaGator is an autonomous underwater robot that monitors lake water quality. Funds purchased a new camera, a GPS module, and framing supplies to prepare it for field testing.",
+              },
+            ],
           },
           {
             title: "Code with Chompers",
             meta: "Outreach",
+            spent: 1500,
             url: "https://codewithchompers.com",
-            description: "Hands-on computing lessons for K–4 students in Crawford Central schools.",
+            description: [
+              "In Spring 2026, Allegheny student fellows led 32 Code with Chompers sessions across 10 classes at three schools: First District Elementary, Second District Elementary, and Bethesda.",
+              "Elementary students in grades K through 5 programmed Dash robots through guided block coding, conditional colors, and navigation challenges. Middle and high school students at Bethesda built MakeArcade games, debugged block code, and completed GoPiGo robot challenges.",
+            ],
           },
         ],
       },
@@ -102,11 +128,13 @@ export const pastCampaigns = [
         items: [
           {
             title: "big-iron",
+            spent: 3500,
             description:
               "big-iron is a student–faculty research effort developing a vendor-neutral cloud development environment that streamlines modern software workflows. This summer, the team expanded its infrastructure to support smoother remote development through improved container orchestration, terminal session management, and secure authentication. Their progress sets the stage for broader deployment and future additions like collaborative coding and instructional tools.",
           },
           {
             title: "Code with Chompers",
+            spent: 2911,
             url: "https://codewithchompers.com",
             description: [
               "Over the summer, Professor Janyl Jumadinova and Allegheny student, Ainslee Plesko, strengthened the program's infrastructure—updating materials, refining lessons, and preparing for expanded collaboration with local districts.",
@@ -115,6 +143,7 @@ export const pastCampaigns = [
           },
           {
             title: "HSCoded",
+            spent: 2200,
             description:
               "During Spring and Fall 2025, students and faculty successfully deployed the previously developed High School Curriculum platform—funded through the Reboot campaign—to two cohorts of high school learners. The Code, Conquer, and Escape! course immersed High School students in a game-based Python adventure that introduced programming, API use, and core software engineering practices. The platform supported mission-based learning, documentation, and teamwork, demonstrating its readiness for scalable high school CS instruction.",
             links: ["https://github.com/HS-Coded-Spring2025", "https://github.com/HS-Coded"],
@@ -142,10 +171,19 @@ export const pastCampaigns = [
         items: [
           {
             title: "High School Curriculum Platforms",
-            links: ["https://github.com/Code-With-Chompers", "https://github.com/hellowhorl"],
+            description: [
+              "Students and faculty designed and built hello-whorl, a gamified platform for teaching introductory Python to high school students. Inspired by classic multi-user dungeons and modern online role-playing games, it gives learners a persistent, immersive digital world where they write code to explore, complete challenges, and earn badges.",
+              "Students worked as co-developers on every layer of the platform, from the game server and client to the container environment and the badge system that rewards passing GatorGrade checks.",
+            ],
+            links: ["https://github.com/hellowhorl"],
           },
-          { title: "Internet of Things Lessons" },
-          { title: "Underwater Robotics Lessons" },
+          {
+            title: "IoT and Robotics Lessons",
+            description: [
+              "IoT and robotics lessons were taught to two sections of high school classes (20+ students) and two sections of middle school classes (40+ students).",
+              "In the IoT lessons, students used the Arduino Explore IoT Kit, built around the MKR WiFi 1010 board and its sensor carrier, to collect real sensor data and connect their projects to the cloud. In the robotics lessons, students built underwater robots using pipes, motors, and remote controls.",
+            ],
+          },
         ],
       },
     ],
