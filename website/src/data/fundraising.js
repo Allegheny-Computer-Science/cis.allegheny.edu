@@ -20,8 +20,8 @@ export const currentCampaign = {
   name: "Ship It!",
   goal: 10000,
   raised: null,
-  startDate: null,
-  endDate: null,
+  startDate: "2026-11-15",
+  endDate: "2026-12-02",
   giveUrl: "https://www.givecampus.com/",
   description:
     "This year, the Department of Computer and Information Science is launching its Ship It! campaign to give students more hands-on, real-world experience. In software, “shipping” means delivering a working product to real users, and that is exactly what our students do. Our goal is to raise $10,000 to expand experiential opportunities where students learn by building, releasing, and sharing technology that matters.",

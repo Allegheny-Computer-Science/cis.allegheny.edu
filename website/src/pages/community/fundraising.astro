@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FillButton from '../../components/ui/FillButton.astro';
 import GhostButton from '../../components/ui/GhostButton.astro';
-import chompersImg from '../../assets/img/code-with-chompers.jpg';
+import currentFundImg from '../../assets/img/ship-it-fundraiser-logo.png';
 import { currentCampaign, pastCampaigns } from '../../data/fundraising.js';
 import { campaignWindow, campaignStatus, formatCampaignDate } from '../../lib/campaignWindow';
 
@@ -49,7 +49,12 @@ const firstYear     = Math.min(...pastCampaigns.map(c => c.year));
     </div>
 
     <div class="fundraising-hero__image">
-      <Image src={chompersImg} alt="An Allegheny student guides an elementary schooler through a tablet lesson during Code with Chompers" />
+      <Image
+        src={currentFundImg}
+        widths={[640, 960, 1440]}
+        sizes="(max-width: 900px) 100vw, 40vw"
+        alt="The logo of the Ship It! Fundraiser which combines a working tree with the fundraiser's title."
+      />
     </div>
 
   </section>
