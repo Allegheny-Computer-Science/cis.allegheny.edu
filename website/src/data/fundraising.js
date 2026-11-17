@@ -20,7 +20,7 @@ export const currentCampaign = {
   name: "Ship It!",
   goal: 10000,
   raised: null,
-  startDate: "2026-11-15",
+  startDate: "2026-11-18",
   endDate: "2026-12-02",
   giveUrl: "https://www.givecampus.com/",
   description:
