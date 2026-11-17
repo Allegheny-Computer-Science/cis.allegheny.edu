@@ -1,0 +1,37 @@
+---
+import { currentCampaign } from '../../data/fundraising.js';
+import { campaignWindow, formatCampaignDate } from '../../lib/campaignWindow';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const giving = campaignWindow(currentCampaign);
+// Ship the bar only if its window hasn't already closed by build time;
+// the script below decides on each visit whether it shows
+const ship = giving !== null && Date.now() < giving.end;
+const dismissKey = `campaign-bar-dismissed:${currentCampaign.name}`;
+---
+
+{ship && (
+  <aside id="campaign-bar" class="campaign-bar" aria-label="Current fundraising campaign" hidden>
+    <p class="campaign-bar__text">
+      <span class="campaign-bar__name">{currentCampaign.name}</span>
+      Gifts to our ${currentCampaign.goal.toLocaleString('en-US')} campaign are open through {formatCampaignDate(currentCampaign.endDate, 'long')}.
+    </p>
+    <a class="campaign-bar__link" href={`${base}community/fundraising`}>Learn More</a>
+    <button class="campaign-bar__close" type="button" aria-label="Dismiss campaign announcement">&times;</button>
+  </aside>
+)}
+
+{ship && (
+  <script is:inline define:vars={{ start: giving.start, end: giving.end, dismissKey }}>
+    const bar = document.getElementById('campaign-bar');
+    const now = Date.now();
+    let dismissed = false;
+    try { dismissed = localStorage.getItem(dismissKey) === 'yes'; } catch (e) {}
+    bar.hidden = dismissed || now < start || now >= end;
+    bar.querySelector('.campaign-bar__close').addEventListener('click', () => {
+      bar.hidden = true;
+      try { localStorage.setItem(dismissKey, 'yes'); } catch (e) {}
+    });
+  </script>
+)}

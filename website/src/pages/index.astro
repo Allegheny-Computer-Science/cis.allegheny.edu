@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CampaignBar from '../components/home/CampaignBar.astro';
 import Hero from '../components/home/Hero.astro';
 import UpdatesGrid from '../components/home/Updates.astro';
 import FacultyIntro from '../components/home/FacultyIntro.astro';
@@ -12,6 +13,7 @@ const pageTitle = "Allegheny College CIS";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
+	<CampaignBar />
 	<Hero />
 	<UpdatesGrid />
 	<FacultyIntro />
